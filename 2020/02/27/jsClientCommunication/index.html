@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="前言一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。 Quick StartCreate a new post1$ hexo new &quot;helloBlog&quot;  Run server1$ hexo">
+<meta name="description" content="前言此章节主要讲解Hybrid和js之间秘密 hrbrid是什么?为何用hybrid? hybrid文字解释  hybrid即’混合’,即前端和客户端的混合开发 需前端开发人员和客户端开发人员配合完成 某些环节也可能涉及到server端 ps.不要以为自己是前端就可以不理会客户端的知识   存在价值,为何用hybrid  可以快速迭代更新(无需app审核,无需高权限) 体验流畅(和native的体">
 <meta name="keywords" content="github,hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hello Blog">
-<meta property="og:url" content="http://yoursite.com/2019/09/05/helloBlog/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/02/27/jsClientCommunication/index.html">
 <meta property="og:site_name" content="娜一隅">
-<meta property="og:description" content="前言一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。 Quick StartCreate a new post1$ hexo new &quot;helloBlog&quot;  Run server1$ hexo">
+<meta property="og:description" content="前言此章节主要讲解Hybrid和js之间秘密 hrbrid是什么?为何用hybrid? hybrid文字解释  hybrid即’混合’,即前端和客户端的混合开发 需前端开发人员和客户端开发人员配合完成 某些环节也可能涉及到server端 ps.不要以为自己是前端就可以不理会客户端的知识   存在价值,为何用hybrid  可以快速迭代更新(无需app审核,无需高权限) 体验流畅(和native的体">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-05T09:31:46.495Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/images/hy.png">
+<meta property="og:updated_time" content="2020-02-27T09:36:51.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello Blog">
-<meta name="twitter:description" content="前言一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。 Quick StartCreate a new post1$ hexo new &quot;helloBlog&quot;  Run server1$ hexo">
+<meta name="twitter:description" content="前言此章节主要讲解Hybrid和js之间秘密 hrbrid是什么?为何用hybrid? hybrid文字解释  hybrid即’混合’,即前端和客户端的混合开发 需前端开发人员和客户端开发人员配合完成 某些环节也可能涉及到server端 ps.不要以为自己是前端就可以不理会客户端的知识   存在价值,为何用hybrid  可以快速迭代更新(无需app审核,无需高权限) 体验流畅(和native的体">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/27/images/hy.png">
 
 
 
@@ -120,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/05/helloBlog/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/27/jsClientCommunication/">
 
 
 
@@ -253,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/05/helloBlog/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/jsClientCommunication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="遗忘的一隅">
@@ -282,8 +284,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-05T10:59:06+08:00">
-                2019-09-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-27T16:43:29+08:00">
+                2020-02-27
               </time>
             
 
@@ -342,14 +344,57 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"helloBlog"</span></span><br></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此章节主要讲解Hybrid和js之间秘密</p>
+<h3 id="hrbrid是什么-为何用hybrid"><a href="#hrbrid是什么-为何用hybrid" class="headerlink" title="hrbrid是什么?为何用hybrid?"></a>hrbrid是什么?为何用hybrid?</h3><ul>
+<li><p>hybrid文字解释</p>
+<ul>
+<li>hybrid即’混合’,即前端和客户端的混合开发</li>
+<li>需前端开发人员和客户端开发人员配合完成</li>
+<li>某些环节也可能涉及到server端</li>
+<li>ps.不要以为自己是前端就可以不理会客户端的知识</li>
+</ul>
+</li>
+<li><p>存在价值,为何用hybrid</p>
+<ul>
+<li>可以快速迭代更新(无需app审核,无需高权限)</li>
+<li>体验流畅(和native的体验基本类似)</li>
+<li>减少开发和沟通成本,双端公用一套代码</li>
+</ul>
+</li>
+<li><p>webview</p>
+<ul>
+<li>它是app中的一个组件(app可以有webview,也可以没有)</li>
+<li>用于加载h5页面,即一个小型的浏览器内核</li>
+</ul>
+</li>
+<li><p>file协议</p>
+<ul>
+<li>其实在一开始我们就接触html开发,就已经使用了file协议,只不过当时没有’协议’,’标准’等这些概念,这里再次强调’协议’,’标准’的重要性!!!</li>
+<li>file协议和http(s)的区别:<ul>
+<li>a. file协议是本地文件,快(断网也可以,打开本地文件即可);  b. “file://“ + 文件绝对路径</li>
+<li>a. http(s)协议是网络加载,慢(断网不可以);  b. “http(s)://“</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>hybrid实现流程</p>
+</li>
+</ul>
+<p>1.不是所有场景都适合使用hybrid<br>2.使用native:体验要求极致,变化不频繁(如头条的首页)<br>3.使用hybrid:体验要求高,变化频繁(如头条的新闻详情页)<br>4.使用h5:体验无要求,不常用(如举报,反馈等页面)</p>
+<p>具体实现如下:</p>
+<ul>
+<li>前端做好静态页面(html js css),将文件交给客户端</li>
+<li>客户端拿到静态页面,以文件形式存储在app中</li>
+<li>客户端在一个webview中(重要!!!)</li>
+<li>使用file协议加载静态页面(重要!!!)<br>用如表示如下:</li>
+</ul>
+<p><img src="../images/hy.png" alt="avatar"></p>
+<p>总结:<br>1.hybrid是客户端和前端的混合开发<br>2.hybrid存在的核心意义在于快速迭代,无需审核<br>3.hybrid实现流程(如上图),以及webview和file协议</p>
+<h3 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="hybrid和h5的主要区别"><a href="#hybrid和h5的主要区别" class="headerlink" title="hybrid和h5的主要区别"></a>hybrid和h5的主要区别</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
 
       
@@ -383,15 +428,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/10/04/React/" rel="next" title="React的那些事儿">
+                <i class="fa fa-chevron-left"></i> React的那些事儿
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/09/05/build-blog/" rel="prev" title="从零搭建一个博客">
-                从零搭建一个博客 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -535,7 +580,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">2.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">2.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">2.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">2.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">2.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hrbrid是什么-为何用hybrid"><span class="nav-number">1.1.</span> <span class="nav-text">hrbrid是什么?为何用hybrid?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍一下hybrid更新和上线的流程"><span class="nav-number">1.2.</span> <span class="nav-text">介绍一下hybrid更新和上线的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hybrid和h5的主要区别"><span class="nav-number">1.3.</span> <span class="nav-text">hybrid和h5的主要区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端js和客户端如何通讯？"><span class="nav-number">1.4.</span> <span class="nav-text">前端js和客户端如何通讯？</span></a></li></ol></li></ol></div>
             
 
           </div>

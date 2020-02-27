@@ -249,6 +249,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/jsClientCommunication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/27/jsClientCommunication/" itemprop="url">Hello Blog</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-27T16:43:29+08:00">
+                2020-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此章节主要讲解Hybrid和js之间秘密</p>
+<h3 id="hrbrid是什么-为何用hybrid"><a href="#hrbrid是什么-为何用hybrid" class="headerlink" title="hrbrid是什么?为何用hybrid?"></a>hrbrid是什么?为何用hybrid?</h3><ul>
+<li><p>hybrid文字解释</p>
+<ul>
+<li>hybrid即’混合’,即前端和客户端的混合开发</li>
+<li>需前端开发人员和客户端开发人员配合完成</li>
+<li>某些环节也可能涉及到server端</li>
+<li>ps.不要以为自己是前端就可以不理会客户端的知识</li>
+</ul>
+</li>
+<li><p>存在价值,为何用hybrid</p>
+<ul>
+<li>可以快速迭代更新(无需app审核,无需高权限)</li>
+<li>体验流畅(和native的体验基本类似)</li>
+<li>减少开发和沟通成本,双端公用一套代码</li>
+</ul>
+</li>
+<li><p>webview</p>
+<ul>
+<li>它是app中的一个组件(app可以有webview,也可以没有)</li>
+<li>用于加载h5页面,即一个小型的浏览器内核</li>
+</ul>
+</li>
+<li><p>file协议</p>
+<ul>
+<li>其实在一开始我们就接触html开发,就已经使用了file协议,只不过当时没有’协议’,’标准’等这些概念,这里再次强调’协议’,’标准’的重要性!!!</li>
+<li>file协议和http(s)的区别:<ul>
+<li>a. file协议是本地文件,快(断网也可以,打开本地文件即可);  b. “file://“ + 文件绝对路径</li>
+<li>a. http(s)协议是网络加载,慢(断网不可以);  b. “http(s)://“</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>hybrid实现流程</p>
+</li>
+</ul>
+<p>1.不是所有场景都适合使用hybrid<br>2.使用native:体验要求极致,变化不频繁(如头条的首页)<br>3.使用hybrid:体验要求高,变化频繁(如头条的新闻详情页)<br>4.使用h5:体验无要求,不常用(如举报,反馈等页面)</p>
+<p>具体实现如下:</p>
+<ul>
+<li>前端做好静态页面(html js css),将文件交给客户端</li>
+<li>客户端拿到静态页面,以文件形式存储在app中</li>
+<li>客户端在一个webview中(重要!!!)</li>
+<li>使用file协议加载静态页面(重要!!!)<br>用如表示如下:</li>
+</ul>
+<p><img src="../images/hy.png" alt="avatar"></p>
+<p>总结:<br>1.hybrid是客户端和前端的混合开发<br>2.hybrid存在的核心意义在于快速迭代,无需审核<br>3.hybrid实现流程(如上图),以及webview和file协议</p>
+<h3 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<h3 id="hybrid和h5的主要区别"><a href="#hybrid和h5的主要区别" class="headerlink" title="hybrid和h5的主要区别"></a>hybrid和h5的主要区别</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/04/React/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -849,7 +1042,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -918,7 +1111,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
