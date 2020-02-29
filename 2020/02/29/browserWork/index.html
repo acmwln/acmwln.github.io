@@ -83,19 +83,19 @@
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器工作原理">
-<meta property="og:url" content="http://yoursite.com/2020/02/29/browserWork/index.html">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/02/29/browserWork/index.html">
 <meta property="og:site_name" content="娜一隅">
 <meta property="og:description" content="序在地址栏输入了baidu.com发生了什么 一、DNS 解析客户端输入 url 后先会问本地 hosts 文件，你有没有baidu.com对应服务器 IP 的映射关系呀。如果 hosts 说有啊，不就是135.128.111.65么拿去，拿到 IP 后这次找寻就结束了。如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/httpreqheader.jpeg">
-<meta property="og:image" content="http://yoursite.com/images/httpresheader.jpeg">
-<meta property="og:image" content="http://yoursite.com/images/htmldom.jpg">
-<meta property="og:image" content="http://yoursite.com/images/cssdom.jpg">
-<meta property="og:updated_time" content="2020-02-29T03:56:04.115Z">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/browserWork/images/httpreqheader.jpeg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/browserWork/images/httpresheader.jpeg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/browserWork/images/htmldom.jpg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/browserWork/images/cssdom.jpg">
+<meta property="og:updated_time" content="2020-02-29T04:26:20.699Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浏览器工作原理">
 <meta name="twitter:description" content="序在地址栏输入了baidu.com发生了什么 一、DNS 解析客户端输入 url 后先会问本地 hosts 文件，你有没有baidu.com对应服务器 IP 的映射关系呀。如果 hosts 说有啊，不就是135.128.111.65么拿去，拿到 IP 后这次找寻就结束了。如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，">
-<meta name="twitter:image" content="http://yoursite.com/images/httpreqheader.jpeg">
+<meta name="twitter:image" content="http://acmwln.github.io.com/2020/02/29/browserWork/images/httpreqheader.jpeg">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/29/browserWork/">
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/02/29/browserWork/">
 
 
 
@@ -258,7 +258,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/29/browserWork/">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/02/29/browserWork/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="遗忘的一隅">
@@ -374,7 +374,7 @@
 <li><p>协议版本（HTTP/1.0、HTTP/1.1、HTTP/2.0）</p>
 </li>
 </ul>
-<h4 id="2-请求头"><a href="#2-请求头" class="headerlink" title="2. 请求头"></a>2. 请求头</h4><p><img src="/images/httpreqheader.jpeg" alt="avatar"></p>
+<h4 id="2-请求头"><a href="#2-请求头" class="headerlink" title="2. 请求头"></a>2. 请求头</h4><p><img src="images/httpreqheader.jpeg" alt="avatar"></p>
 <h4 id="3-请求空行"><a href="#3-请求空行" class="headerlink" title="3. 请求空行"></a>3. 请求空行</h4><ul>
 <li>表示请求头结束，下面是请求数据</li>
 </ul>
@@ -394,7 +394,7 @@
 </li>
 <li>状态描述 （对状态码的简单描述）</li>
 </ul>
-<h4 id="2-响应头"><a href="#2-响应头" class="headerlink" title="2. 响应头"></a>2. 响应头</h4><p><img src="/images/httpresheader.jpeg" alt="avatar"></p>
+<h4 id="2-响应头"><a href="#2-响应头" class="headerlink" title="2. 响应头"></a>2. 响应头</h4><p><img src="images/httpresheader.jpeg" alt="avatar"></p>
 <h4 id="3-响应空行"><a href="#3-响应空行" class="headerlink" title="3. 响应空行"></a>3. 响应空行</h4><ul>
 <li>表示响应头结束，下面是响应数据</li>
 </ul>
@@ -406,8 +406,8 @@
 <h2 id="五、浏览器解析-HTML"><a href="#五、浏览器解析-HTML" class="headerlink" title="五、浏览器解析 HTML"></a>五、浏览器解析 HTML</h2><h4 id="1-生成-DOM-树"><a href="#1-生成-DOM-树" class="headerlink" title="1.生成 DOM 树"></a>1.生成 DOM 树</h4><p>解析器输出解析树，采用堆栈的方式（遇到开始标签压入，遇到结束标签推出）将 html 文档解析成 dom 树</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;这里是title&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;这里是内容&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  &lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 
-<p>解析如下:<br><img src="/images/htmldom.jpg" alt="avatar"></p>
-<h4 id="2-生成-CSSOM-树"><a href="#2-生成-CSSOM-树" class="headerlink" title="2.生成 CSSOM 树"></a>2.生成 CSSOM 树</h4><p><img src="/images/cssdom.jpg" alt="avatar"></p>
+<p>解析如下:<br><img src="images/htmldom.jpg" alt="avatar"></p>
+<h4 id="2-生成-CSSOM-树"><a href="#2-生成-CSSOM-树" class="headerlink" title="2.生成 CSSOM 树"></a>2.生成 CSSOM 树</h4><p><img src="images/cssdom.jpg" alt="avatar"></p>
 <h4 id="3-合并-DOM-树和-CSSOM-树"><a href="#3-合并-DOM-树和-CSSOM-树" class="headerlink" title="3.合并 DOM 树和 CSSOM 树"></a>3.合并 DOM 树和 CSSOM 树</h4><p>合并成渲染树，渲染树只包含渲染网页所需的节点</p>
 <h2 id="六、布局渲染"><a href="#六、布局渲染" class="headerlink" title="六、布局渲染"></a>六、布局渲染</h2><p>根据渲染树计算 CSS 样式，即每个节点在页面中的大小和位置<br>html 默认是流式布局，这里面有两个重要的概念：</p>
 <ol>

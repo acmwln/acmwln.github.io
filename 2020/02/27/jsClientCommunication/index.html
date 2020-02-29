@@ -83,19 +83,19 @@
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hybrid和javascript之间的秘密">
-<meta property="og:url" content="http://yoursite.com/2020/02/27/jsClientCommunication/index.html">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/index.html">
 <meta property="og:site_name" content="娜一隅">
 <meta property="og:description" content="序此章节主要讲解Hybrid和javascript之间的秘密 hrbrid是什么?为何用hybrid?1. hybrid文字解释 hybrid即’混合’,即前端和客户端的混合开发 需前端开发人员和客户端开发人员配合完成 某些环节也可能涉及到server端 ps.不要以为自己是前端就可以不理会客户端的知识  2. 存在价值,为何用hybrid 可以快速迭代更新(无需app审核,无需高权限) 体验流畅">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/hy.png">
-<meta property="og:image" content="http://yoursite.com/images/hyserver.png">
-<meta property="og:image" content="http://yoursite.com/images/hyclient.png">
-<meta property="og:image" content="http://yoursite.com/images/hycommunite.png">
-<meta property="og:updated_time" content="2020-02-29T03:55:46.969Z">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/images/hy.png">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/images/hyserver.png">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/images/hyclient.png">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/images/hycommunite.png">
+<meta property="og:updated_time" content="2020-02-29T04:25:17.575Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hybrid和javascript之间的秘密">
 <meta name="twitter:description" content="序此章节主要讲解Hybrid和javascript之间的秘密 hrbrid是什么?为何用hybrid?1. hybrid文字解释 hybrid即’混合’,即前端和客户端的混合开发 需前端开发人员和客户端开发人员配合完成 某些环节也可能涉及到server端 ps.不要以为自己是前端就可以不理会客户端的知识  2. 存在价值,为何用hybrid 可以快速迭代更新(无需app审核,无需高权限) 体验流畅">
-<meta name="twitter:image" content="http://yoursite.com/images/hy.png">
+<meta name="twitter:image" content="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/images/hy.png">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/27/jsClientCommunication/">
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/">
 
 
 
@@ -258,7 +258,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/jsClientCommunication/">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/02/27/jsClientCommunication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="遗忘的一隅">
@@ -384,7 +384,7 @@
 <li><font size="3" face="微软雅黑">客户端在一个webview中(重要!!!)</font></li>
 <li><font size="3" face="微软雅黑">使用file协议加载静态页面(重要!!!)<br>用如下图表示如下:</font></li>
 </ul>
-<p><img src="/images/hy.png" alt="avatar"></p>
+<p><img src="images/hy.png" alt></p>
 <blockquote>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h4><ol>
 <li><font size="3" face="微软雅黑">hybrid是客户端和前端的混合开发</font></li>
@@ -392,7 +392,7 @@
 <li><font size="3" face="微软雅黑">hybrid实现流程(如上图),以及webview和file协议</font></li>
 </ol>
 </blockquote>
-<h2 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h2><p>先看下面两张图<br><img src="/images/hyserver.png" alt="avatar"><br><img src="/images/hyclient.png" alt="avatar"></p>
+<h2 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h2><p>先看下面两张图<br><img src="images/hyserver.png" alt="avatar"><br><img src="images/hyclient.png" alt="avatar"></p>
 <p><font size="3" face="微软雅黑">要替换每个客户端的静态文件,只能客户端来做(客户端是我们开发的),客户端去server下载最新的静态文件,我们维护server的静态文件</font></p>
 <h4 id="客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载"><a href="#客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载" class="headerlink" title="客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)"></a>客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)</h4><ul>
 <li><font size="3" face="微软雅黑">分版本,有版本号,如20200227(时间戳)</font></li>
@@ -421,7 +421,7 @@
 <li><font size="3" face="微软雅黑">适用的场景: hybrid适合产品型,h5适合运营型</font></li>
 </ul>
 </blockquote>
-<h2 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h2><h3 id="1-js和客户端通讯的基本技术"><a href="#1-js和客户端通讯的基本技术" class="headerlink" title="1. js和客户端通讯的基本技术"></a>1. js和客户端通讯的基本技术</h3><h4 id="js和客户端通讯的基本形式-见下图"><a href="#js和客户端通讯的基本形式-见下图" class="headerlink" title="js和客户端通讯的基本形式(见下图)"></a>js和客户端通讯的基本形式(见下图)</h4><p> <img src="/images/hycommunite.png" alt="avatar"></p>
+<h2 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h2><h3 id="1-js和客户端通讯的基本技术"><a href="#1-js和客户端通讯的基本技术" class="headerlink" title="1. js和客户端通讯的基本技术"></a>1. js和客户端通讯的基本技术</h3><h4 id="js和客户端通讯的基本形式-见下图"><a href="#js和客户端通讯的基本形式-见下图" class="headerlink" title="js和客户端通讯的基本形式(见下图)"></a>js和客户端通讯的基本形式(见下图)</h4><p> <img src="images/hycommunite.png" alt="avatar"></p>
 <ul>
 <li><font size="3" face="微软雅黑"> js访问客户端能力,传递参数和回调函数</font></li>
 <li><font size="3" face="微软雅黑"> 客户端通过回调函数返回内容</font></li>
