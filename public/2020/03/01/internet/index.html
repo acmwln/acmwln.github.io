@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="网络,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="序HTTP和HTTPS的原理 认识 HTTP首先你听的最多的应该就是HTTP是一种 超文本传输协议(Hypertext Transfer Protocol) 那么什么是超文本传输协议？超文本传输协议可以进行文字分割：超文本（Hypertext）、传输（Transfer）、协议（Protocol） 按照范围的大小 协议 &amp;gt; 传输 &amp;gt; 超文本。下面就分别对这三个名次做一个解释。 什么是超文">
+<meta name="keywords" content="网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/03/01/internet/index.html">
+<meta property="og:site_name" content="娜一隅">
+<meta property="og:description" content="序HTTP和HTTPS的原理 认识 HTTP首先你听的最多的应该就是HTTP是一种 超文本传输协议(Hypertext Transfer Protocol) 那么什么是超文本传输协议？超文本传输协议可以进行文字分割：超文本（Hypertext）、传输（Transfer）、协议（Protocol） 按照范围的大小 协议 &amp;gt; 传输 &amp;gt; 超文本。下面就分别对这三个名次做一个解释。 什么是超文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-29T17:44:17.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络">
+<meta name="twitter:description" content="序HTTP和HTTPS的原理 认识 HTTP首先你听的最多的应该就是HTTP是一种 超文本传输协议(Hypertext Transfer Protocol) 那么什么是超文本传输协议？超文本传输协议可以进行文字分割：超文本（Hypertext）、传输（Transfer）、协议（Protocol） 按照范围的大小 协议 &amp;gt; 传输 &amp;gt; 超文本。下面就分别对这三个名次做一个解释。 什么是超文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/03/01/internet/">
+
+
+
+
+
+  <title>计算机网络 | 娜一隅</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">娜一隅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/01/internet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T00:39:40+08:00">
+                2020-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>HTTP和HTTPS的原理</p>
+<h2 id="认识-HTTP"><a href="#认识-HTTP" class="headerlink" title="认识 HTTP"></a>认识 HTTP</h2><p>首先你听的最多的应该就是<code>HTTP</code>是一种 超文本传输协议<code>(Hypertext Transfer Protocol)</code></p>
+<p>那么什么是超文本传输协议？<br>超文本传输协议可以进行文字分割：<code>超文本（Hypertext）</code>、<code>传输（Transfer）</code>、<code>协议（Protocol）</code></p>
+<p>按照范围的大小 协议 &gt; 传输 &gt; 超文本。下面就分别对这三个名次做一个解释。</p>
+<h3 id="什么是超文本"><a href="#什么是超文本" class="headerlink" title="什么是超文本"></a>什么是超文本</h3><p>在互联网早期的时候，我们输入的信息只能保存在本地，无法和其他电脑进行交互。我们保存的信息通常都以文本即简单字符的形式存在，文本是一种能够被计算机解析的有意义的二进制数据包。而随着互联网的高速发展，两台电脑之间能够进行数据的传输后，人们不满足只能在两台电脑之间传输文字，还想要传输图片、音频、视频，甚至点击文字或图片能够进行超链接的跳转，那么文本的语义就被扩大了，这种语义扩大后的文本就被称为超文本(Hypertext)。</p>
+<h3 id="什么是传输"><a href="#什么是传输" class="headerlink" title="什么是传输"></a>什么是传输</h3><p>两台计算机之间会形成互联关系进行通信，我们存储的超文本会被解析成为二进制数据包，由传输载体（例如同轴电缆，电话线，光缆）负责把二进制数据包由计算机终端传输到另一个终端的过程（对终端的详细解释可以参考 你说你懂互联网，那这些你知道么？这篇文章）称为传输(transfer)。</p>
+<h3 id="什么是协议"><a href="#什么是协议" class="headerlink" title="什么是协议"></a>什么是协议</h3><p>自己一个人对自己的约定不能成为协议，协议的前提条件必须是多人约定。<br>网络协议就是网络中(包括互联网)传递、管理信息的一些规范。如同人与人之间相互交流是需要遵循一定的规矩一样，计算机之间的相互通信需要共同遵守一定的规则，这些规则就称为网络协议。</p>
+<blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h3><p>HTTP 是一个在计算机世界里专门在两点之间传输文字、图片、音频、视频等超文本数据的约定和规范</p>
+</blockquote>
+<h2 id="与-HTTP-有关的组件"><a href="#与-HTTP-有关的组件" class="headerlink" title="与 HTTP 有关的组件"></a>与 HTTP 有关的组件</h2><h3 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h3><ul>
+<li><p>应用层(web:<code>HTTP</code>,电子邮件:<code>SMTP</code>,端系统文件上传协议:<code>FTP</code>,域名解析:<code>DNS</code>)</p>
+</li>
+<li><p>运输层(<code>TCP</code>和 <code>UDP</code>)</p>
+</li>
+<li><p>网络层(<code>IP</code>)</p>
+</li>
+<li><p>链路层</p>
+<ul>
+<li>(以太网、<code>WiFi</code>和电缆接入的 <code>DOCSIS</code> 协议)分组称为<code>帧(frame)</code></li>
+<li>作用:将帧从一个端系统运输到另一个端系统</li>
+<li>ARP和RARP是数据链路层协议，是一对协议，分别是MAC和IP地址互查的（RARP把MAC转换成IP地址）</li>
+</ul>
+</li>
+<li><p>物理层(将帧中的一个个 比特 从一个节点运输到另一个节点)</p>
+</li>
+</ul>
+<h3 id="OSI-模型-国际标准化组织"><a href="#OSI-模型-国际标准化组织" class="headerlink" title="OSI 模型(国际标准化组织)"></a>OSI 模型(国际标准化组织)</h3><p>OSI 要比上面的网络模型多了 表示层 和 会话层，其他层基本一致</p>
+<ul>
+<li>应用层</li>
+<li>表示层</li>
+<li>会话层</li>
+<li>运输层</li>
+<li>网络层</li>
+<li>链路层</li>
+<li>物理层<h2 id="HTTP长连接和短连接"><a href="#HTTP长连接和短连接" class="headerlink" title="HTTP长连接和短连接"></a>HTTP长连接和短连接</h2>像<code>web</code>网站的<code>http</code>服务一般都是短连接，因为长连接对于服务端来说会耗费一定的资源，像<code>web</code>网站这么频繁的成千上万甚至上亿客户端连接用短连接会更省一些资源，数据库连接一般是长连接频繁请求资源的客户端适合长连接。长连接可以省去较多的<code>TCP</code>建立和关闭操作，减少浪费，节约资源</li>
+</ul>
+<h2 id="HTTP-的优点和缺点"><a href="#HTTP-的优点和缺点" class="headerlink" title="HTTP 的优点和缺点"></a>HTTP 的优点和缺点</h2><h3 id="HTTP-的优点"><a href="#HTTP-的优点" class="headerlink" title="HTTP 的优点"></a>HTTP 的优点</h3><ul>
+<li>简单灵活易扩展</li>
+<li>应用广泛、环境成熟</li>
+<li>无状态<h3 id="HTTP-的缺点"><a href="#HTTP-的缺点" class="headerlink" title="HTTP 的缺点"></a>HTTP 的缺点</h3></li>
+<li>无状态</li>
+<li>通信使用明文(不加密)，内容可能会被窃听</li>
+<li>不验证通信方的身份，有可能遭遇伪装</li>
+<li>无法证明报文的完整性，所以有可能已遭篡改</li>
+<li>性能</li>
+</ul>
+<h2 id="确保Web安全的HTTPS-身披SSL外壳的HTTP"><a href="#确保Web安全的HTTPS-身披SSL外壳的HTTP" class="headerlink" title="确保Web安全的HTTPS(身披SSL外壳的HTTP)"></a>确保Web安全的HTTPS(身披SSL外壳的HTTP)</h2><p>与SSL组合使用的<code>HTTP</code>被称为<code>HTTPS</code>(超文本传输安全协议<code>HTTP over SSL</code>)，<br>HTTP+加密+认证+完整性保护=HTTPS</p>
+<p>共享密钥加密：共享密钥加密就是在HTTPS原理中人们常说到的对称加密，那么什么是共享密钥加密呢？其实就是两个所用的密钥是同一个。但是其实在共享密钥加密会有一个密钥传递的不安全，因为很可能会被第三方给替换掉，所以就有了一种公开密钥加密。</p>
+<p>公开密钥加密：公开密钥加密就是HTTPS中人们常说到的非对称加密。那么什么是公开密钥加密呢？公开密钥加密会有两个密钥，一个是主密钥也称做私有密钥，这个一般是不能发送给别人的，一个是公共密钥，这个可以给任何人。其原理就是发送方使用接收方给的公共密钥来加密数据，发送给接收方，然后接收方用私钥来解密。这样数据的安全性就高了很多。但这样也不是说一定安全，只是第三方在不知道私钥的时候去解密其实就是对离散对数的求值，难度很大，目前的技术很难实现。<br><a href="https://blog.csdn.net/MierCurry/article/details/104564378" target="_blank" rel="noopener">加密机制</a></p>
+<ul>
+<li>1、浏览器使用<code>https</code>的<code>url</code>访问服务器，建立<code>SSL</code>连接</li>
+<li>2、服务器接收到<code>SSL</code>链接后，发送非对称加密公钥<code>A</code>给浏览器</li>
+<li>3、浏览器生成随机数，作为对称加密的秘钥<code>B</code></li>
+<li>4、浏览器使用服务器返回的公钥<code>A</code>，对自己生成的对称加密秘钥<code>B</code>进行加密，得到秘钥<code>C</code></li>
+<li>5、浏览器将秘钥<code>C</code>发送给服务器</li>
+<li>6、服务器使用自己的私钥<code>D</code>对接受的秘钥<code>C</code>进行解密，得到对称加密秘钥<code>B</code></li>
+<li>7、浏览器和服务器之间使用秘钥<code>B</code>作为对称加密秘钥通信<h4 id="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><a href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密" class="headerlink" title="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"></a>说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</h4><h4 id="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><a href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高" class="headerlink" title="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"></a>优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</h4></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/网络/" rel="tag"># 网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/01/helloBlog/" rel="next" title="Hello Blog">
+                <i class="fa fa-chevron-left"></i> Hello Blog
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="遗忘的一隅">
+            
+              <p class="site-author-name" itemprop="name">遗忘的一隅</p>
+              <p class="site-description motion-element" itemprop="description">千里之行,始于足下</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/acmwln" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识-HTTP"><span class="nav-number">2.</span> <span class="nav-text">认识 HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是超文本"><span class="nav-number">2.1.</span> <span class="nav-text">什么是超文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是传输"><span class="nav-number">2.2.</span> <span class="nav-text">什么是传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">2.3.</span> <span class="nav-text">什么是协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.4.</span> <span class="nav-text">总结:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与-HTTP-有关的组件"><span class="nav-number">3.</span> <span class="nav-text">与 HTTP 有关的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络模型"><span class="nav-number">3.1.</span> <span class="nav-text">网络模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI-模型-国际标准化组织"><span class="nav-number">3.2.</span> <span class="nav-text">OSI 模型(国际标准化组织)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP长连接和短连接"><span class="nav-number">4.</span> <span class="nav-text">HTTP长连接和短连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-的优点和缺点"><span class="nav-number">5.</span> <span class="nav-text">HTTP 的优点和缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的优点"><span class="nav-number">5.1.</span> <span class="nav-text">HTTP 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的缺点"><span class="nav-number">5.2.</span> <span class="nav-text">HTTP 的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确保Web安全的HTTPS-身披SSL外壳的HTTP"><span class="nav-number">6.</span> <span class="nav-text">确保Web安全的HTTPS(身披SSL外壳的HTTP)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><span class="nav-number">6.0.1.</span> <span class="nav-text">说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><span class="nav-number">6.0.2.</span> <span class="nav-text">优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">遗忘的一隅</span>
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
