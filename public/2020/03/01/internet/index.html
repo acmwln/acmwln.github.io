@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="娜一隅">
 <meta property="og:description" content="序HTTP和HTTPS的原理 认识 HTTP首先你听的最多的应该就是HTTP是一种 超文本传输协议(Hypertext Transfer Protocol) 那么什么是超文本传输协议？超文本传输协议可以进行文字分割：超文本（Hypertext）、传输（Transfer）、协议（Protocol） 按照范围的大小 协议 &amp;gt; 传输 &amp;gt; 超文本。下面就分别对这三个名次做一个解释。 什么是超文">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-29T17:44:17.506Z">
+<meta property="og:updated_time" content="2020-03-04T03:07:09.006Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络">
 <meta name="twitter:description" content="序HTTP和HTTPS的原理 认识 HTTP首先你听的最多的应该就是HTTP是一种 超文本传输协议(Hypertext Transfer Protocol) 那么什么是超文本传输协议？超文本传输协议可以进行文字分割：超文本（Hypertext）、传输（Transfer）、协议（Protocol） 按照范围的大小 协议 &amp;gt; 传输 &amp;gt; 超文本。下面就分别对这三个名次做一个解释。 什么是超文">
@@ -379,7 +379,7 @@
 <li>链路层</li>
 <li>物理层<h2 id="HTTP长连接和短连接"><a href="#HTTP长连接和短连接" class="headerlink" title="HTTP长连接和短连接"></a>HTTP长连接和短连接</h2>像<code>web</code>网站的<code>http</code>服务一般都是短连接，因为长连接对于服务端来说会耗费一定的资源，像<code>web</code>网站这么频繁的成千上万甚至上亿客户端连接用短连接会更省一些资源，数据库连接一般是长连接频繁请求资源的客户端适合长连接。长连接可以省去较多的<code>TCP</code>建立和关闭操作，减少浪费，节约资源</li>
 </ul>
-<h2 id="HTTP-的优点和缺点"><a href="#HTTP-的优点和缺点" class="headerlink" title="HTTP 的优点和缺点"></a>HTTP 的优点和缺点</h2><h3 id="HTTP-的优点"><a href="#HTTP-的优点" class="headerlink" title="HTTP 的优点"></a>HTTP 的优点</h3><ul>
+<h2 id="HTTP的请求"><a href="#HTTP的请求" class="headerlink" title="HTTP的请求"></a>HTTP的请求</h2><h2 id="HTTP-的优点和缺点"><a href="#HTTP-的优点和缺点" class="headerlink" title="HTTP 的优点和缺点"></a>HTTP 的优点和缺点</h2><h3 id="HTTP-的优点"><a href="#HTTP-的优点" class="headerlink" title="HTTP 的优点"></a>HTTP 的优点</h3><ul>
 <li>简单灵活易扩展</li>
 <li>应用广泛、环境成熟</li>
 <li>无状态<h3 id="HTTP-的缺点"><a href="#HTTP-的缺点" class="headerlink" title="HTTP 的缺点"></a>HTTP 的缺点</h3></li>
@@ -401,6 +401,18 @@
 <li>6、服务器使用自己的私钥<code>D</code>对接受的秘钥<code>C</code>进行解密，得到对称加密秘钥<code>B</code></li>
 <li>7、浏览器和服务器之间使用秘钥<code>B</code>作为对称加密秘钥通信<h4 id="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><a href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密" class="headerlink" title="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"></a>说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</h4><h4 id="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><a href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高" class="headerlink" title="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"></a>优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</h4></li>
 </ul>
+<h4 id="HTTPS的数字证书？"><a href="#HTTPS的数字证书？" class="headerlink" title="HTTPS的数字证书？"></a>HTTPS的数字证书？</h4><p>中间人可以截取服务器发送给客户端的公钥，冒充服务器将自己的公钥发送给客户端，之后客户端会用中间人公钥进行加密生成对称秘钥，把密钥发给服务器，这时中间人又可以截取对称加密的秘钥。<br>非对称加密之所以不安全，因为客户端不知道这把公钥是不是属于服务器的</p>
+<h4 id="引入数字证书"><a href="#引入数字证书" class="headerlink" title="引入数字证书"></a>引入数字证书</h4><p>认证中心（CA）：一个拥有公信力、大家都认可的认证中心，数字证书认证机构<br>证书内容：签发者、证书用途、公钥、加密算法、Hash算法、证书到期时间</p>
+<h4 id="使用证书认证过程："><a href="#使用证书认证过程：" class="headerlink" title="使用证书认证过程："></a>使用证书认证过程：</h4><ol>
+<li>服务器在给客户端传输公钥过程中，会把公钥和服务器的个人信息通过hash算法生成信息摘要</li>
+<li>为了防止信息要被调换，服务器采用CA提供的私钥对信息摘要进行加密来形成数字签名</li>
+<li>最后把原来没hash算法之前的个人信息、公钥及数字签名合并在一起，形成数字证书</li>
+<li>客户端拿到数字证书之后，使用CA提供的公钥对数字证书里的数字签名进行解密来得到信息摘要，然后对数字证书里的服务器的公钥及个人信息利用hash算法得到另一份信息摘要，最后将两份信息摘要对比，如果一样则证明是服务器，否则就是中间人</li>
+</ol>
+<h4 id="认证中心、数字证书、数字签名"><a href="#认证中心、数字证书、数字签名" class="headerlink" title="认证中心、数字证书、数字签名"></a>认证中心、数字证书、数字签名</h4><p>个人信息+公钥+数字签名合并在一起===数字证书</p>
+<h4 id="CA证书的颁发？"><a href="#CA证书的颁发？" class="headerlink" title="CA证书的颁发？"></a>CA证书的颁发？</h4><p>服务器一开始向认证中心申请证书，客户端也内置了这些证书。</p>
+<h4 id="HTTP和RPC的区别？"><a href="#HTTP和RPC的区别？" class="headerlink" title="HTTP和RPC的区别？"></a>HTTP和RPC的区别？</h4><p>底层协议：Http是基于http协议，RPC基于TCP，也可以是http，自己定义的协议<br>效率：RPC基于自定义的TCP，可以让请求报文体积更小，提高传输效率。<br>性能消耗：RPC基于高效的二进制流传输，消耗低，HTTP大部分通过json来实现，字节大小和序列化都比RPC要消耗性能<br>RPC自带了负载均衡，HTTP需要配置Nginx实现<br>RPC主要用于公司内部服务调用，性能消耗低，传输效率高，服务治理方便；HTTP主要对外如浏览器接口调用，app和第三方接口调用。</p>
+<h4 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h4><p>摘要算法：MD5（128位）、SHA1（160位），是一种不可逆的过程，无论多大的数据，经过摘要算法后都生成相同长度的数据。只能通过字典进行破解。<br>对称加密算法：DES、AES，加密解密时使用相同的秘钥。<br>非对称加密算法：RSA，加密解密时使用不同的秘钥，对接支付宝使用RSA2。</p>
 
       
     </div>
@@ -440,6 +452,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/essay/" rel="prev" title="essay">
+                essay <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -518,7 +534,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -529,7 +545,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -540,7 +556,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -583,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识-HTTP"><span class="nav-number">2.</span> <span class="nav-text">认识 HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是超文本"><span class="nav-number">2.1.</span> <span class="nav-text">什么是超文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是传输"><span class="nav-number">2.2.</span> <span class="nav-text">什么是传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">2.3.</span> <span class="nav-text">什么是协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.4.</span> <span class="nav-text">总结:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与-HTTP-有关的组件"><span class="nav-number">3.</span> <span class="nav-text">与 HTTP 有关的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络模型"><span class="nav-number">3.1.</span> <span class="nav-text">网络模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI-模型-国际标准化组织"><span class="nav-number">3.2.</span> <span class="nav-text">OSI 模型(国际标准化组织)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP长连接和短连接"><span class="nav-number">4.</span> <span class="nav-text">HTTP长连接和短连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-的优点和缺点"><span class="nav-number">5.</span> <span class="nav-text">HTTP 的优点和缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的优点"><span class="nav-number">5.1.</span> <span class="nav-text">HTTP 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的缺点"><span class="nav-number">5.2.</span> <span class="nav-text">HTTP 的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确保Web安全的HTTPS-身披SSL外壳的HTTP"><span class="nav-number">6.</span> <span class="nav-text">确保Web安全的HTTPS(身披SSL外壳的HTTP)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><span class="nav-number">6.0.1.</span> <span class="nav-text">说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><span class="nav-number">6.0.2.</span> <span class="nav-text">优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认识-HTTP"><span class="nav-number">2.</span> <span class="nav-text">认识 HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是超文本"><span class="nav-number">2.1.</span> <span class="nav-text">什么是超文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是传输"><span class="nav-number">2.2.</span> <span class="nav-text">什么是传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是协议"><span class="nav-number">2.3.</span> <span class="nav-text">什么是协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.4.</span> <span class="nav-text">总结:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与-HTTP-有关的组件"><span class="nav-number">3.</span> <span class="nav-text">与 HTTP 有关的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络模型"><span class="nav-number">3.1.</span> <span class="nav-text">网络模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI-模型-国际标准化组织"><span class="nav-number">3.2.</span> <span class="nav-text">OSI 模型(国际标准化组织)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP长连接和短连接"><span class="nav-number">4.</span> <span class="nav-text">HTTP长连接和短连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP的请求"><span class="nav-number">5.</span> <span class="nav-text">HTTP的请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-的优点和缺点"><span class="nav-number">6.</span> <span class="nav-text">HTTP 的优点和缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的优点"><span class="nav-number">6.1.</span> <span class="nav-text">HTTP 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-的缺点"><span class="nav-number">6.2.</span> <span class="nav-text">HTTP 的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确保Web安全的HTTPS-身披SSL外壳的HTTP"><span class="nav-number">7.</span> <span class="nav-text">确保Web安全的HTTPS(身披SSL外壳的HTTP)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><span class="nav-number">7.0.1.</span> <span class="nav-text">说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><span class="nav-number">7.0.2.</span> <span class="nav-text">优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTPS的数字证书？"><span class="nav-number">7.0.3.</span> <span class="nav-text">HTTPS的数字证书？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入数字证书"><span class="nav-number">7.0.4.</span> <span class="nav-text">引入数字证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用证书认证过程："><span class="nav-number">7.0.5.</span> <span class="nav-text">使用证书认证过程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#认证中心、数字证书、数字签名"><span class="nav-number">7.0.6.</span> <span class="nav-text">认证中心、数字证书、数字签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CA证书的颁发？"><span class="nav-number">7.0.7.</span> <span class="nav-text">CA证书的颁发？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP和RPC的区别？"><span class="nav-number">7.0.8.</span> <span class="nav-text">HTTP和RPC的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加密算法"><span class="nav-number">7.0.9.</span> <span class="nav-text">加密算法</span></a></li></ol></li></ol></div>
             
 
           </div>
