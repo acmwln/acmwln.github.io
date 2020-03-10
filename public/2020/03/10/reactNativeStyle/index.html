@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="React Native,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于&amp;lt;textInput&amp;gt;输入框： TextInput在安卓上默认有一个底边黑线框，同时会有一些padding。如果要想使其看起来和iOS上尽量一致，则需要设置padding: 0，同时设置underlineColorAndroid=&amp;quot;transparent&amp;quot;来去掉底边框。加上padding: 0保证不同机型上下垂直居中。  关于省略号： crn中是通过ellip">
+<meta name="keywords" content="React Native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRN布局样式中的一些小分享">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/03/10/reactNativeStyle/index.html">
+<meta property="og:site_name" content="娜一隅">
+<meta property="og:description" content="关于&amp;lt;textInput&amp;gt;输入框： TextInput在安卓上默认有一个底边黑线框，同时会有一些padding。如果要想使其看起来和iOS上尽量一致，则需要设置padding: 0，同时设置underlineColorAndroid=&amp;quot;transparent&amp;quot;来去掉底边框。加上padding: 0保证不同机型上下垂直居中。  关于省略号： crn中是通过ellip">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-10T08:17:21.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CRN布局样式中的一些小分享">
+<meta name="twitter:description" content="关于&amp;lt;textInput&amp;gt;输入框： TextInput在安卓上默认有一个底边黑线框，同时会有一些padding。如果要想使其看起来和iOS上尽量一致，则需要设置padding: 0，同时设置underlineColorAndroid=&amp;quot;transparent&amp;quot;来去掉底边框。加上padding: 0保证不同机型上下垂直居中。  关于省略号： crn中是通过ellip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/03/10/reactNativeStyle/">
+
+
+
+
+
+  <title>CRN布局样式中的一些小分享 | 娜一隅</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">娜一隅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/10/reactNativeStyle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CRN布局样式中的一些小分享</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-10T14:54:07+08:00">
+                2020-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><p>关于<code>&lt;textInput&gt;</code>输入框： <code>TextInput</code>在安卓上默认有一个底边黑线框，同时会有一些<code>padding</code>。如果要想使其看起来和<code>iOS</code>上尽量一致，则需要设置<code>padding: 0</code>，同时设置<code>underlineColorAndroid=&quot;transparent&quot;</code>来去掉底边框。加上<code>padding: 0</code>保证不同机型上下垂直居中。</p>
+</li>
+<li><p>关于省略号： crn中是通过<code>ellipsizeMode=&#39;tail&#39; numberOfLines={1}</code>两个属性同时控制省略号…（注：这两个属性需要写在<code>&lt;Text&gt;</code>上，不能写在<code>style</code>里。）</p>
+</li>
+<li><p><code>borderRadius</code>不能和实现三角形样式一起使用，否则不生效；单独写<code>borderBottomLeftRadius</code>和<code>borderBottomRightRadius、borderTopLeftRadius、borderTopRightRadius</code>也不会生效。</p>
+</li>
+<li><p>实现文本垂直居中的时候尽量不要使用行高，因为行高会在不同平台和机型上面表现的形式不一样，为了保险起见，根据主轴方向使用<code>justifyContent: ‘center’</code>就可以啦!</p>
+</li>
+<li><p>一般设计稿的尺寸是<code>iphone6</code>的尺寸<code>750px</code>的，我们需要做个适配：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; width, height &#125; = Dimensions.get(<span class="string">'window'</span>);</span><br><span class="line"><span class="keyword">let</span> WIDTH = width, HEIGHT = height;</span><br><span class="line"><span class="keyword">const</span> rem = <span class="function">(<span class="params">a</span>) =&gt;</span> &#123; <span class="keyword">return</span> a * (WIDTH / <span class="number">750</span>); &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关于<code>&lt;Text&gt;</code>： <code>Text</code>元素会继承<code>View</code>层的<code>background</code>: 可以给<code>Text</code>设置<code>backgroundColor:&#39;transparent&#39;</code>解决</p>
+</li>
+<li><p><code>crn</code>中的<code>width</code>和<code>height</code>是包含<code>padding</code>和<code>border</code>的。</p>
+</li>
+<li><p>关于<code>Image</code>：可以做背景图展示，它有几个属性方法：<br><code>Source：{uri:string}</code> 进行标记图片的引用，该参数可以为一个网络url地址或者一个本地的路径<br>resizeMode：缩放比例，可选参数<code>(&#39;cover&#39;, &#39;contain&#39;, &#39;stretch&#39;)</code> 该当图片的尺寸超过布局的尺寸的时候，会根据设置<code>Mode</code>进行缩放或者裁剪图片，eg：<code>resizeMode: Image.resizeMode.cover</code></p>
+</li>
+<li><p>关于雪碧图<code>&lt;SpriteImage&gt;</code>： 雪碧图需要去根据crop裁剪图片，所以会导致在不同机型或者平台中有拉伸缩小情况。以后建议尽量不适用雪碧图。如果需要使用雪碧图也有解决方案: 通过判断机型的dpr来加载图片，安卓的dpr比较散，有1、1.5、2、3、4的，ios的dpr有2、3的。所以需要@3图和@2倍图来做下兼容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;SpriteImage style=&#123;styles.spritePic&#125;</span><br><span class="line">source=&#123;&#123; <span class="attr">uri</span>: PixelRatio.get() === <span class="number">3</span> ? <span class="string">'https://pic.c-ctrip.com/VacationH5Pic/taocan/sdp/n_banner/un_banner@3.png'</span> : <span class="string">'https://pic.c-ctrip.com/VacationH5Pic/taocan/sdp/n_banner/un_banner.png'</span>, <span class="attr">imageSize</span>: &#123; <span class="attr">width</span>: <span class="number">169</span>, <span class="attr">height</span>: <span class="number">167</span> &#125;, crop &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">&lt;<span class="regexp">/SpriteImage&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于小屏手机例如<code>320</code>的，可以通过<code>width === 320</code> 来进行小屏手机的一些兼容</p>
+</li>
+<li><p>针对<code>1px</code>的<code>border</code>线: <code>border: 1 / PixelRatio.get()</code></p>
+</li>
+<li><p>关于<code>&lt;TouchableOpacity&gt;</code>：添加点击事件的标签，展示效果会有透明度的变化可以使用<code>activeOpacity={1}</code>去除透明度的变化，<code>&lt;View&gt;</code>外层套此标签的时候style样式尽量写在<code>&lt;View&gt;</code>里，之前做的时候发现写在<br><code>&lt;TouchableOpacity&gt;</code>这个里面出现问题。</p>
+</li>
+<li><p><code>crn</code>中的分辨率适配： <code>react native</code>中使用的尺寸单位是<code>pt</code>,是一个绝对长度，设计稿使用的是<code>px</code>，这两种尺寸换算可以通过<code>PixelRatio</code>转换。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;PixelRatio&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">const</span> pt2px = <span class="function"><span class="params">pt</span>=&gt;</span>PixelRatio.getPixelSizeForLayoutSize(pt);</span><br><span class="line"><span class="keyword">const</span> px2pt = <span class="function"><span class="params">px</span>=&gt;</span>PixelRatio.roundToNearestPixel(px);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>梯形+圆角</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Text, View, StyleSheet &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">          &lt;View style = &#123;[styles.btn_one,&#123;<span class="attr">backgroundColor</span>: <span class="string">'#fff'</span>&#125;]&#125;&gt;</span><br><span class="line">            &lt;Text style = &#123;styles.textblock&#125;&gt;高铁+地铁&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">            &lt;View style = &#123;styles.cateory&#125;&gt;&lt;/</span>View&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">          &lt;View style = &#123;styles.btn_one&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Text style = &#123;styles.textblock&#125;&gt;高铁&lt;/</span>Text&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">           &lt;View style = &#123;styles.btn_one&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Text style = &#123;styles.textblock&#125;&gt;地铁&lt;/</span>Text&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>View&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  container: &#123;</span><br><span class="line">    backgroundColor: <span class="string">'#53b8fb'</span>,</span><br><span class="line">    height: <span class="number">100</span>,</span><br><span class="line">    flexDirection: <span class="string">"row"</span>,</span><br><span class="line">    borderTopLeftRadius: <span class="number">7</span>,</span><br><span class="line">    borderTopRightRadius: <span class="number">7</span>,</span><br><span class="line">    marginTop: <span class="number">100</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btn_one: &#123;</span><br><span class="line">    flex: <span class="number">1</span>,</span><br><span class="line">    borderRadius: <span class="number">10</span>,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">cateory: &#123;</span><br><span class="line"> height:<span class="number">0</span>,</span><br><span class="line"> width:<span class="number">0</span>,</span><br><span class="line"> borderBottomWidth: <span class="number">100</span>,</span><br><span class="line"> borderLeftWidth: <span class="number">50</span>,</span><br><span class="line"> borderRightWidth: <span class="number">50</span>,</span><br><span class="line"> borderStyle: <span class="string">'solid'</span>,</span><br><span class="line"> borderBottomColor: <span class="string">'#f00'</span>,</span><br><span class="line"> borderLeftColor: <span class="string">'transparent'</span>,</span><br><span class="line"> borderRightColor: <span class="string">'transparent'</span>,</span><br><span class="line"> marginRight: <span class="number">10</span>,</span><br><span class="line"> transform: [&#123;<span class="attr">skewX</span>: <span class="string">'45deg'</span>&#125;,&#123;<span class="attr">rotateX</span>:<span class="string">'180deg'</span>&#125;,&#123;<span class="attr">rotateY</span>:<span class="string">'180deg'</span>&#125;],</span><br><span class="line"> position: <span class="string">'absolute'</span>,</span><br><span class="line"> bottom: <span class="number">0</span>,</span><br><span class="line"> left: <span class="number">0</span>,</span><br><span class="line"> &#125;,</span><br><span class="line">textblock: &#123;</span><br><span class="line">    color: <span class="string">'#fff'</span>,</span><br><span class="line">    fontSize: <span class="number">14</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/10/reactNative/" rel="next" title="CRN踩坑记">
+                <i class="fa fa-chevron-left"></i> CRN踩坑记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/10/frameDiff/" rel="prev" title="框架/类库的比较">
+                框架/类库的比较 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="遗忘的一隅">
+            
+              <p class="site-author-name" itemprop="name">遗忘的一隅</p>
+              <p class="site-description motion-element" itemprop="description">千里之行,始于足下</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/acmwln" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">遗忘的一隅</span>
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

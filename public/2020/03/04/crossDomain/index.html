@@ -88,7 +88,7 @@
 <meta property="og:description" content="序跨域，相信大家无论是在工作中还是在面试中经常遇到这个问题，常常在网上看到别人所整理的一些方法，看似知道是怎么回事，但如果没有动手实践过，总觉得自己没有真正的掌握，在这里，通过自己认真思考整理一些常用的方法。 跨域的产生相信大家都知道跨域是因为浏览器的同源策略所导致的。所谓同源是指”协议+域名+端口”三者相同，即便两个不同的域名指向同一个ip地址，也非同源。浏览器引入同源策略主要是为了防止XSS，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://acmwln.github.io.com/2020/03/04/images/post01.png">
-<meta property="og:updated_time" content="2020-03-04T13:17:40.861Z">
+<meta property="og:updated_time" content="2020-03-10T06:51:11.223Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="9种跨域解决方案">
 <meta name="twitter:description" content="序跨域，相信大家无论是在工作中还是在面试中经常遇到这个问题，常常在网上看到别人所整理的一些方法，看似知道是怎么回事，但如果没有动手实践过，总觉得自己没有真正的掌握，在这里，通过自己认真思考整理一些常用的方法。 跨域的产生相信大家都知道跨域是因为浏览器的同源策略所导致的。所谓同源是指”协议+域名+端口”三者相同，即便两个不同的域名指向同一个ip地址，也非同源。浏览器引入同源策略主要是为了防止XSS，">
@@ -347,11 +347,7 @@
         <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>跨域，相信大家无论是在工作中还是在面试中经常遇到这个问题，常常在网上看到别人所整理的一些方法，看似知道是怎么回事，但如果没有动手实践过，总觉得自己没有真正的掌握，在这里，通过自己认真思考整理一些常用的方法。</p>
 <h2 id="跨域的产生"><a href="#跨域的产生" class="headerlink" title="跨域的产生"></a>跨域的产生</h2><p>相信大家都知道跨域是因为浏览器的同源策略所导致的。所谓同源是指”协议+域名+端口”三者相同，即便两个不同的域名指向同一个ip地址，也非同源。浏览器引入同源策略主要是为了防止XSS，CSRF攻击。</p>
 <blockquote>
-<blockquote>
-<blockquote>
 <p>CSRF（Cross-site request forgery），跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。</p>
-</blockquote>
-</blockquote>
 </blockquote>
 <h2 id="跨域的解决方案"><a href="#跨域的解决方案" class="headerlink" title="跨域的解决方案"></a>跨域的解决方案</h2><h3 id="1-通过jsonp跨域"><a href="#1-通过jsonp跨域" class="headerlink" title="1.通过jsonp跨域"></a>1.通过jsonp跨域</h3><p>首先说一下jsonp的原理，例如我们平时写html的时候常常会使用<br><code>&lt;script src=&quot;www.b.com/js/jquery.js&quot;&gt;&lt;/script&gt;</code>这种方式去取放在另外服务器上的静态资源，这个是不受同源策略所限制的，所以我们利用这一点可以解决跨域的问题。</p>
 <h4 id="原生实现"><a href="#原生实现" class="headerlink" title="原生实现"></a>原生实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在www.a.com域名写下如下代码，去请求www.b.com域名的数据</span></span><br><span class="line"><span class="keyword">var</span> script = <span class="built_in">document</span>.creatElement(<span class="string">'script'</span>);</span><br><span class="line">script.type = <span class="string">'text/javascript'</span>;</span><br><span class="line">script.src = <span class="string">'http://www.b.com/getdata?callback=demo'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -473,6 +469,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/03/10/reactNative/" rel="prev" title="CRN踩坑记">
+                CRN踩坑记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -550,7 +550,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -561,7 +561,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -572,7 +572,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -10,7 +10,7 @@ tags:
 
 ## 跨域的产生
 相信大家都知道跨域是因为浏览器的同源策略所导致的。所谓同源是指"协议+域名+端口"三者相同，即便两个不同的域名指向同一个ip地址，也非同源。浏览器引入同源策略主要是为了防止XSS，CSRF攻击。
->>> CSRF（Cross-site request forgery），跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
+> CSRF（Cross-site request forgery），跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
 
 ## 跨域的解决方案
 ### 1.通过jsonp跨域

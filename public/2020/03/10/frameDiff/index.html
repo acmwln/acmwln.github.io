@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="序你使用过哪些前端框架/类库，其各有什么优缺点？ 1. React优点： 速度快：通过在vdom的操作实现真实dom的局部更新 跨浏览器兼容 模块化 单向数据流 同构,接近原生的js 和打包工具配合使用兼容性好  缺点：React本身知识一个v而已，并不是一个完整的框架，如果大型项目中如果需要一套完整的框架的话需要搭配react-router使用。 2. Vue是一个构建数据驱动的web界面的渐进">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="框架&#x2F;类库的比较">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/03/10/frameDiff/index.html">
+<meta property="og:site_name" content="娜一隅">
+<meta property="og:description" content="序你使用过哪些前端框架/类库，其各有什么优缺点？ 1. React优点： 速度快：通过在vdom的操作实现真实dom的局部更新 跨浏览器兼容 模块化 单向数据流 同构,接近原生的js 和打包工具配合使用兼容性好  缺点：React本身知识一个v而已，并不是一个完整的框架，如果大型项目中如果需要一套完整的框架的话需要搭配react-router使用。 2. Vue是一个构建数据驱动的web界面的渐进">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-10T08:38:02.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="框架&#x2F;类库的比较">
+<meta name="twitter:description" content="序你使用过哪些前端框架/类库，其各有什么优缺点？ 1. React优点： 速度快：通过在vdom的操作实现真实dom的局部更新 跨浏览器兼容 模块化 单向数据流 同构,接近原生的js 和打包工具配合使用兼容性好  缺点：React本身知识一个v而已，并不是一个完整的框架，如果大型项目中如果需要一套完整的框架的话需要搭配react-router使用。 2. Vue是一个构建数据驱动的web界面的渐进">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/03/10/frameDiff/">
+
+
+
+
+
+  <title>框架/类库的比较 | 娜一隅</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">娜一隅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/10/frameDiff/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">框架/类库的比较</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-10T15:35:03+08:00">
+                2020-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>你使用过哪些前端框架/类库，其各有什么优缺点？</p>
+<h3 id="1-React"><a href="#1-React" class="headerlink" title="1. React"></a>1. React</h3><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>速度快：通过在vdom的操作实现真实dom的局部更新</li>
+<li>跨浏览器兼容</li>
+<li>模块化</li>
+<li>单向数据流</li>
+<li>同构,接近原生的js</li>
+<li>和打包工具配合使用兼容性好</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><p>React本身知识一个v而已，并不是一个完整的框架，如果大型项目中如果需要一套完整的框架的话需要搭配react-router使用。</p>
+<h3 id="2-Vue"><a href="#2-Vue" class="headerlink" title="2. Vue"></a>2. Vue</h3><p>是一个构建数据驱动的web界面的渐进式MVVM框架</p>
+<h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>性能好</li>
+<li>简单易用</li>
+<li>前后端分离</li>
+<li>单页面应用用户体验好</li>
+<li>组件化</li>
+<li>MVVM</li>
+</ol>
+<h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>不适于seo优化，而且封装的比较厉害，报错不明显，适合单人开发，适合中小型项目</li>
+<li>导航不可用，如果一定要导航需要自行实现前进、后退。（由于是单页面不能用浏览器的前进后退功能，所以需要自己建立堆栈管理）。</li>
+<li>初次加载时耗时多。</li>
+<li>页面复杂度提高很多。</li>
+</ol>
+<h3 id="3-Angular"><a href="#3-Angular" class="headerlink" title="3. Angular"></a>3. Angular</h3><h4 id="优点：-2"><a href="#优点：-2" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>模块功能强大丰富，自带了极其丰富的angular指令</li>
+<li>是一个比较完善的前端框架，包含服务，模版，数据双向绑定，模块化，路由等。。。</li>
+<li>可以自定义指令，可以在项目中多次使用</li>
+</ol>
+<h4 id="缺点：-2"><a href="#缺点：-2" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>入门很容易，深入学习后概念很多，较难理解</li>
+<li>对IE6/7兼容性不好</li>
+<li>很灵活，指令应用最佳实践教程少</li>
+</ol>
+<h3 id="4-Jquery"><a href="#4-Jquery" class="headerlink" title="4. Jquery"></a>4. Jquery</h3><h4 id="优点：-3"><a href="#优点：-3" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>代码简洁</li>
+<li>脚本与页面分离</li>
+<li>丰富的插件开发</li>
+<li>性能支持好</li>
+<li>节约学习成本</li>
+<li>是各大厂商使用类库的标准</li>
+</ol>
+<h4 id="缺点：-3"><a href="#缺点：-3" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>不能向后兼容，不能兼容早期版本，早期的插件不可用</li>
+<li>同一个页面不能使用多个插件，会有冲突</li>
+<li>版本更新较快，不稳定</li>
+</ol>
+<h3 id="5-Nodejs"><a href="#5-Nodejs" class="headerlink" title="5. Nodejs"></a>5. Nodejs</h3><h4 id="优点：-4"><a href="#优点：-4" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>高并发</li>
+<li>适合I/O密集型应用</li>
+</ol>
+<h4 id="缺点：-4"><a href="#缺点：-4" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>不适合CPU密集型应用</li>
+<li>只支持单核CPU</li>
+<li>可靠性低，一旦代码某个环节崩溃，整个系统都崩溃</li>
+<li>更新快</li>
+<li>Debug不方便，错误没有stack trace</li>
+</ol>
+<h3 id="6-Express"><a href="#6-Express" class="headerlink" title="6. Express"></a>6. Express</h3><h4 id="优点：-5"><a href="#优点：-5" class="headerlink" title="优点："></a>优点：</h4><p> 历史悠久，文档资料多并且完整，容易学习</p>
+<h4 id="缺点：-5"><a href="#缺点：-5" class="headerlink" title="缺点："></a>缺点：</h4><p>callback比较多</p>
+<h3 id="7-lodash"><a href="#7-lodash" class="headerlink" title="7. lodash"></a>7. lodash</h3><h4 id="优点：-6"><a href="#优点：-6" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>内部封装了很多字符串，数组，对象等常见数据类型的处理函数</li>
+<li>不是在原有数据上进行操作，而是复制出一份新的数据而不改变原有数据</li>
+</ol>
+<h4 id="缺点：-6"><a href="#缺点：-6" class="headerlink" title="缺点："></a>缺点：</h4><p>使用lodash库偏离了原生js的写法</p>
+<p>8.9.。。。。。后续继续补充。。。</p>
+<h2 id="React和Vue的区别与共同点"><a href="#React和Vue的区别与共同点" class="headerlink" title="React和Vue的区别与共同点"></a>React和Vue的区别与共同点</h2><h4 id="共同点"><a href="#共同点" class="headerlink" title="共同点:"></a>共同点:</h4><ol>
+<li>都支持组件化</li>
+<li>都是数据驱动视图</li>
+</ol>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><h5 id="本质区别"><a href="#本质区别" class="headerlink" title="本质区别:"></a>本质区别:</h5><ol>
+<li>Vue本质是MVVM框架，由MVC发展而来</li>
+<li>React本质上是前端组件化框架，由后端组件化发展而来</li>
+</ol>
+<h5 id="模版区别"><a href="#模版区别" class="headerlink" title="模版区别:"></a>模版区别:</h5><ol>
+<li>Vue使用模版(最初由Angular提出)</li>
+<li>React使用JSX</li>
+<li>模版语法上，更加倾向于JSX</li>
+<li>模版分离上，更加倾向于Vue</li>
+</ol>
+<h5 id="组件化区别"><a href="#组件化区别" class="headerlink" title="组件化区别:"></a>组件化区别:</h5><ol>
+<li>React本身就是组件化，没有组件化就不是React</li>
+<li>Vue也支持组件化，不过是在MVVM上的扩展</li>
+<li>查阅Vue组件化的文档有很多（侧面反应）</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>国内使用，首推Vue，文档更易读，易学，社区够大</li>
+<li>如果团队水平较高，推荐使用React，组件化和JSX</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/10/reactNativeStyle/" rel="next" title="CRN布局样式中的一些小分享">
+                <i class="fa fa-chevron-left"></i> CRN布局样式中的一些小分享
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="遗忘的一隅">
+            
+              <p class="site-author-name" itemprop="name">遗忘的一隅</p>
+              <p class="site-description motion-element" itemprop="description">千里之行,始于足下</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/acmwln" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-React"><span class="nav-number">1.1.</span> <span class="nav-text">1. React</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">1.1.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">1.1.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Vue"><span class="nav-number">1.2.</span> <span class="nav-text">2. Vue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Angular"><span class="nav-number">1.3.</span> <span class="nav-text">3. Angular</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Jquery"><span class="nav-number">1.4.</span> <span class="nav-text">4. Jquery</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Nodejs"><span class="nav-number">1.5.</span> <span class="nav-text">5. Nodejs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Express"><span class="nav-number">1.6.</span> <span class="nav-text">6. Express</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-5"><span class="nav-number">1.6.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-lodash"><span class="nav-number">1.7.</span> <span class="nav-text">7. lodash</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点：-6"><span class="nav-number">1.7.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点：-6"><span class="nav-number">1.7.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React和Vue的区别与共同点"><span class="nav-number">2.</span> <span class="nav-text">React和Vue的区别与共同点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#共同点"><span class="nav-number">2.0.1.</span> <span class="nav-text">共同点:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区别"><span class="nav-number">2.0.2.</span> <span class="nav-text">区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#本质区别"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">本质区别:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模版区别"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">模版区别:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#组件化区别"><span class="nav-number">2.0.2.3.</span> <span class="nav-text">组件化区别:</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">遗忘的一隅</span>
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
