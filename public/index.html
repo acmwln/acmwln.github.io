@@ -252,6 +252,389 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/15/jsClientCommunication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/15/jsClientCommunication/" itemprop="url">Hybrid和Javascript之间的秘密</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-15T17:51:03+08:00">
+                2020-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>此章节主要讲解<code>Hybrid</code>和<code>Javascript</code>之间的秘密</p>
+<h2 id="hrbrid是什么-为何用hybrid"><a href="#hrbrid是什么-为何用hybrid" class="headerlink" title="hrbrid是什么?为何用hybrid?"></a>hrbrid是什么?为何用hybrid?</h2><h4 id="1-hybrid文字解释"><a href="#1-hybrid文字解释" class="headerlink" title="1. hybrid文字解释"></a>1. hybrid文字解释</h4><ul>
+<li><code>hybrid</code>即’混合’,即前端和客户端的混合开发</li>
+<li>需前端开发人员和客户端开发人员配合完成</li>
+<li>某些环节也可能涉及到<code>server</code>端</li>
+<li>ps.不要以为自己是前端就可以不理会客户端的知识</li>
+</ul>
+<h4 id="2-存在价值-为何用hybrid"><a href="#2-存在价值-为何用hybrid" class="headerlink" title="2. 存在价值,为何用hybrid"></a>2. 存在价值,为何用hybrid</h4><ul>
+<li>可以快速迭代更新(无需<code>app</code>审核,无需高权限)</li>
+<li>体验流畅(和<code>native</code>的体验基本类似)</li>
+<li>减少开发和沟通成本,双端公用一套代码</li>
+</ul>
+<h4 id="3-webview"><a href="#3-webview" class="headerlink" title="3. webview"></a>3. webview</h4><ul>
+<li>它是<code>app</code>中的一个组件(<code>app</code>可以有<code>webview</code>,也可以没有)</li>
+<li>用于加载<code>h5</code>页面,即一个小型的浏览器内核</li>
+</ul>
+<h5 id="补充：常见的浏览器内核如下："><a href="#补充：常见的浏览器内核如下：" class="headerlink" title="补充：常见的浏览器内核如下："></a>补充：常见的浏览器内核如下：</h5><ol>
+<li><code>Chrome,Safari: webkit</code></li>
+<li><code>Firefox:Gecko</code></li>
+<li><code>IE: Trident</code></li>
+<li><code>360</code>,搜狗等国内浏览器：<code>Trident+webkit</code></li>
+</ol>
+<h4 id="4-file协议"><a href="#4-file协议" class="headerlink" title="4. file协议"></a>4. file协议</h4><p>【其实在一开始我们就接触<code>html</code>开发,就已经使用了<code>file</code>协议,只不过当时没有’协议’,’标准’等这些概念,这里再次强调’协议’,’标准’的重要性！！！】</p>
+<h5 id="file协议和http-s-的区别"><a href="#file协议和http-s-的区别" class="headerlink" title="file协议和http(s)的区别:"></a>file协议和http(s)的区别:</h5><ol>
+<li><code>file</code>协议是本地文件,快(断网也可以,打开本地文件即可);<br>表示： <code>&quot;file://&quot;</code> + 文件绝对路径</li>
+<li><code>http(s)</code>协议是网络加载,慢(断网不可以);<br>表示：<code>&quot;http(s)://&quot;</code></li>
+</ol>
+<h4 id="5-hybrid实现流程"><a href="#5-hybrid实现流程" class="headerlink" title="5. hybrid实现流程"></a>5. hybrid实现流程</h4><ul>
+<li>不是所有场景都适合使用<code>hybrid</code></li>
+<li>使用<code>native</code>:体验要求极致,变化不频繁(如头条的首页)</li>
+<li>使用<code>hybrid</code>:体验要求高,变化频繁(如头条的新闻详情页)</li>
+<li>使用<code>h5</code>:体验无要求,不常用(如举报,反馈等页面)</li>
+</ul>
+<h2 id="具体实现如下"><a href="#具体实现如下" class="headerlink" title="具体实现如下:"></a>具体实现如下:</h2><ol>
+<li>前端做好静态页面<code>(html js css)</code>,将文件交给客户端</li>
+<li>客户端拿到静态页面,以文件形式存储在<code>app</code>中</li>
+<li>客户端在一个<code>webview</code>中(重要！！！)</li>
+<li>使用<code>file</code>协议加载静态页面(重要！！！)<br>用如下图表示如下:</li>
+</ol>
+<p><img src="../images/hy.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h2><ol>
+<li><code>hybrid</code>是客户端和前端的混合开发</li>
+<li><code>hybrid</code>存在的核心意义在于快速迭代,无需审核</li>
+<li><code>hybrid</code>实现流程(如上图),以及<code>webview</code>和<code>file</code>协议</li>
+</ol>
+<h2 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h2><p>先看下面两张图<br><img src="../images/hyserver.png" alt="avatar"><br><img src="../images/hyclient.png" alt="avatar"></p>
+<p>要替换每个客户端的静态文件,只能客户端来做(客户端是我们开发的),客户端去<code>server</code>下载最新的静态文件,我们维护<code>server</code>的静态文件</p>
+<h4 id="客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载"><a href="#客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载" class="headerlink" title="客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)"></a>客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)</h4><ul>
+<li>分版本,有版本号,如<code>20200227</code>(时间戳)</li>
+<li>将静态文件压缩成<code>zip</code>包上传到服务器</li>
+<li>客户端每次启动,都去服务端检查版本号</li>
+<li>如果服务端版本号大于客户端版本号,就去下载最新的<code>zip</code>包</li>
+<li>下载完之后解压包,然后将现有文件覆盖</li>
+</ul>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结:"></a>总结:</h2><p>要点1.掌握流程图<br>要点2.服务端的版本和<code>zip</code>包维护<br>要点3.更新<code>zip</code>包之前先对比版本号<br>要点4.<code>zip</code>包下载解压和覆盖</p>
+<h2 id="hybrid和h5的主要区别"><a href="#hybrid和h5的主要区别" class="headerlink" title="hybrid和h5的主要区别"></a>hybrid和h5的主要区别</h2><h4 id="1-优点"><a href="#1-优点" class="headerlink" title="1.优点:"></a>1.优点:</h4><ul>
+<li>体验更好,跟<code>native</code>体验基本一致</li>
+<li>可快速迭代,无需审核(关键)</li>
+</ul>
+<h4 id="2-缺点"><a href="#2-缺点" class="headerlink" title="2.缺点:"></a>2.缺点:</h4><ul>
+<li>开发成本高,联调,测试,查<code>bug</code>都比较麻烦</li>
+<li>运维成本高,可参考此前讲过的更新上线的流程</li>
+</ul>
+<h4 id="3-适用的场景"><a href="#3-适用的场景" class="headerlink" title="3.适用的场景:"></a>3.适用的场景:</h4><ul>
+<li><code>hybrid</code>: 产品的稳定功能,体验要求高,频繁迭代</li>
+<li><code>h5</code>: 单次的运营活动(如xx红包)或不常用功能</li>
+</ul>
+<h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结:"></a>总结:</h2><ul>
+<li>优点: 体验好,可快速迭代</li>
+<li>缺点: 开发成本高,运维成本高</li>
+<li>适用的场景: <code>hybrid</code>适合产品型,<code>h5</code>适合运营型</li>
+</ul>
+<h2 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h2><h3 id="1-js和客户端通讯的基本技术"><a href="#1-js和客户端通讯的基本技术" class="headerlink" title="1. js和客户端通讯的基本技术"></a>1. js和客户端通讯的基本技术</h3><h4 id="js和客户端通讯的基本形式-见下图"><a href="#js和客户端通讯的基本形式-见下图" class="headerlink" title="js和客户端通讯的基本形式(见下图)"></a>js和客户端通讯的基本形式(见下图)</h4><p> <img src="../images/hycommunite.png" alt="avatar"></p>
+<ul>
+<li><code>js</code>访问客户端能力,传递参数和回调函数</li>
+<li>客户端通过回调函数返回内容</li>
+</ul>
+<h3 id="2-遗留问题-新闻详情页适用hybrid-file协议-前端如何获取到新闻内容？"><a href="#2-遗留问题-新闻详情页适用hybrid-file协议-前端如何获取到新闻内容？" class="headerlink" title="2.遗留问题:新闻详情页适用hybrid(file协议),前端如何获取到新闻内容？"></a>2.遗留问题:新闻详情页适用hybrid(file协议),前端如何获取到新闻内容？</h3><ol>
+<li>不能用<code>ajax</code>获取(<code>http</code>协议):第一跨域,第二速度慢。</li>
+<li>客户端获取新闻内容后然后通过<code>js</code>通讯拿到内容,再渲染。</li>
+</ol>
+<h4 id="schema协议简介和适用"><a href="#schema协议简介和适用" class="headerlink" title="schema协议简介和适用"></a>schema协议简介和适用</h4><p><code>schema</code>协议：前端和客户端的约定<br>eg：<br>微信<code>schema</code>格式：<code>&quot;weixin://&quot;</code><br><code>QQ schema</code>协议格式：<code>&quot;QQ://&quot;</code></p>
+<h4 id="schema使用的封装"><a href="#schema使用的封装" class="headerlink" title="schema使用的封装"></a>schema使用的封装</h4><h4 id="简单版"><a href="#简单版" class="headerlink" title="简单版"></a>简单版</h4> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>)</span><br><span class="line"> iframe.style.display = <span class="string">'none'</span></span><br><span class="line"> <span class="comment">//iframe访问schema（重要！！！）</span></span><br><span class="line"> iframe.src = <span class="string">'weixin://dl/scan?k1=v1&amp;k2=v2&amp;k3=v3&amp;callback=_weixin_scan_callback'</span>    </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> body = <span class="built_in">document</span>.body || <span class="built_in">document</span>.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>]</span><br><span class="line"> body.appendchild(iframe)</span><br><span class="line"> setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     body.removeChild(iframe)  <span class="comment">//销毁iframe</span></span><br><span class="line">     iframe = <span class="literal">null</span></span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果要加上参数和callback，那么就必须要这么写</span></span><br><span class="line"> <span class="built_in">window</span>[<span class="string">'_weixin_scan_callback'</span>] = <span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">     alert(alert)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="封装版"><a href="#封装版" class="headerlink" title="封装版"></a>封装版</h4> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"> <span class="built_in">window</span>.invoke.share(&#123;<span class="attr">title</span>:<span class="string">'xxx'</span>,<span class="attr">content</span>:<span class="string">'xxx'</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(result.errno === <span class="number">0</span>) &#123;</span><br><span class="line">         alert(<span class="string">'分享成功！'</span>)</span><br><span class="line">     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">         alert(<span class="string">'分享失败！'</span>,result.message)</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;)</span><br><span class="line"><span class="comment">//分享</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeShare</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">     _invoke(<span class="string">'share'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//登录</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeLogin</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">    _invoke(<span class="string">'login'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//扫一扫</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeScan</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">     _invoke(<span class="string">'scan'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">//暴露给全局</span></span><br><span class="line"> <span class="built_in">window</span>.invoke = &#123;</span><br><span class="line">     share:invokeShare,</span><br><span class="line">     login:invokeLogin,</span><br><span class="line">     scan:invokeScan</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">_invoke</span>(<span class="params">action,data,callback</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">var</span> schema = <span class="string">'myapp://utils'</span></span><br><span class="line">     schema += <span class="string">'/'</span> + action</span><br><span class="line">     schema += <span class="string">'?a=a'</span></span><br><span class="line">     <span class="keyword">var</span> key</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> data)&#123;     <span class="comment">//data=&#123;title:'xxx',content:'xxx'&#125;</span></span><br><span class="line">         <span class="keyword">if</span>(data.hasOwnProperty(key))&#123;</span><br><span class="line">             schema += <span class="string">'&amp;'</span> + key + <span class="string">'='</span> + data[key]</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//处理callback</span></span><br><span class="line"> <span class="keyword">var</span> callbackName = <span class="string">''</span></span><br><span class="line"> <span class="keyword">if</span>(<span class="keyword">typeof</span> callback === <span class="string">'string'</span>)&#123;</span><br><span class="line">     callbackName = callback</span><br><span class="line"> &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">     callbackName = action + <span class="built_in">Date</span>.now()</span><br><span class="line">     <span class="built_in">window</span>[callbackName] = callback</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> schema += <span class="string">'&amp;callback='</span>+ callbackName</span><br><span class="line"> <span class="comment">//iframe调用schema</span></span><br><span class="line"> 此处省略N行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> (<span class="function"><span class="keyword">function</span>(<span class="params">window,undefined</span>)</span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">_invoke</span>(<span class="params">action,data,callback</span>)</span>&#123;</span><br><span class="line">         <span class="comment">//拼接schema的封装</span></span><br><span class="line">         <span class="keyword">var</span> schema = <span class="string">'myapp://utils'</span> + action</span><br><span class="line">         schema += <span class="string">'?a=a'</span> <span class="comment">//拼接参数</span></span><br><span class="line">         <span class="built_in">window</span>.invoke = &#123;</span><br><span class="line">             share:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'share'</span>,data,callback)</span><br><span class="line">             &#125;,</span><br><span class="line">             scan:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'scan'</span>,data,callback)</span><br><span class="line">             &#125;,</span><br><span class="line">             login:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'login'</span>,data,callback)</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="内置上线"><a href="#内置上线" class="headerlink" title="内置上线"></a>内置上线</h4><h2 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>通讯的基本形式： 调用能力，传递参数，监听回调</li>
+<li>对<code>schema</code>协议的理解和使用</li>
+<li>调用<code>schema</code>代码的封装</li>
+<li>内置上线的好处：更快，更安全</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/15/helloBlog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/15/helloBlog/" itemprop="url">Hello Blog</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-15T17:51:03+08:00">
+                2020-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"helloBlog"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/10/frameDiff/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1573,7 +1956,8 @@
       
         
           
-            
+            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>随笔。。。。。<br>这是一个测试这是一个测试这是一个测试</p>
+
           
         
       
@@ -1785,389 +2169,6 @@
 <h4 id="CA证书的颁发？"><a href="#CA证书的颁发？" class="headerlink" title="CA证书的颁发？"></a>CA证书的颁发？</h4><p>服务器一开始向认证中心申请证书，客户端也内置了这些证书。</p>
 <h4 id="HTTP和RPC的区别？"><a href="#HTTP和RPC的区别？" class="headerlink" title="HTTP和RPC的区别？"></a>HTTP和RPC的区别？</h4><p>底层协议：Http是基于http协议，RPC基于TCP，也可以是http，自己定义的协议<br>效率：RPC基于自定义的TCP，可以让请求报文体积更小，提高传输效率。<br>性能消耗：RPC基于高效的二进制流传输，消耗低，HTTP大部分通过json来实现，字节大小和序列化都比RPC要消耗性能<br>RPC自带了负载均衡，HTTP需要配置Nginx实现<br>RPC主要用于公司内部服务调用，性能消耗低，传输效率高，服务治理方便；HTTP主要对外如浏览器接口调用，app和第三方接口调用。</p>
 <h4 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h4><p>摘要算法：MD5（128位）、SHA1（160位），是一种不可逆的过程，无论多大的数据，经过摘要算法后都生成相同长度的数据。只能通过字典进行破解。<br>对称加密算法：DES、AES，加密解密时使用相同的秘钥。<br>非对称加密算法：RSA，加密解密时使用不同的秘钥，对接支付宝使用RSA2。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/01/helloBlog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/helloBlog/" itemprop="url">Hello Blog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T00:32:42+08:00">
-                2020-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一直想有一个属于自己的博客，专门记录平时遇到的一些难题，或者记录些自己对于某些知识点的理解，算是一个记忆吧。由于本人又懒又菜，思考之下决定通过写博客的方式来提供持续学习的动力，积累更多的知识点，顺便在平时遇到的难题中的解决方案进行二次思考，反思，总结。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"helloBlog"</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/01/jsClientCommunication/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/jsClientCommunication/" itemprop="url">Hybrid和Javascript之间的秘密</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T00:32:42+08:00">
-                2020-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>此章节主要讲解<code>Hybrid</code>和<code>Javascript</code>之间的秘密</p>
-<h2 id="hrbrid是什么-为何用hybrid"><a href="#hrbrid是什么-为何用hybrid" class="headerlink" title="hrbrid是什么?为何用hybrid?"></a>hrbrid是什么?为何用hybrid?</h2><h4 id="1-hybrid文字解释"><a href="#1-hybrid文字解释" class="headerlink" title="1. hybrid文字解释"></a>1. hybrid文字解释</h4><ul>
-<li><code>hybrid</code>即’混合’,即前端和客户端的混合开发</li>
-<li>需前端开发人员和客户端开发人员配合完成</li>
-<li>某些环节也可能涉及到<code>server</code>端</li>
-<li>ps.不要以为自己是前端就可以不理会客户端的知识</li>
-</ul>
-<h4 id="2-存在价值-为何用hybrid"><a href="#2-存在价值-为何用hybrid" class="headerlink" title="2. 存在价值,为何用hybrid"></a>2. 存在价值,为何用hybrid</h4><ul>
-<li>可以快速迭代更新(无需<code>app</code>审核,无需高权限)</li>
-<li>体验流畅(和<code>native</code>的体验基本类似)</li>
-<li>减少开发和沟通成本,双端公用一套代码</li>
-</ul>
-<h4 id="3-webview"><a href="#3-webview" class="headerlink" title="3. webview"></a>3. webview</h4><ul>
-<li>它是<code>app</code>中的一个组件(<code>app</code>可以有<code>webview</code>,也可以没有)</li>
-<li>用于加载<code>h5</code>页面,即一个小型的浏览器内核</li>
-</ul>
-<h5 id="补充：常见的浏览器内核如下："><a href="#补充：常见的浏览器内核如下：" class="headerlink" title="补充：常见的浏览器内核如下："></a>补充：常见的浏览器内核如下：</h5><ol>
-<li><code>Chrome,Safari: webkit</code></li>
-<li><code>Firefox:Gecko</code></li>
-<li><code>IE: Trident</code></li>
-<li><code>360</code>,搜狗等国内浏览器：<code>Trident+webkit</code></li>
-</ol>
-<h4 id="4-file协议"><a href="#4-file协议" class="headerlink" title="4. file协议"></a>4. file协议</h4><p>【其实在一开始我们就接触<code>html</code>开发,就已经使用了<code>file</code>协议,只不过当时没有’协议’,’标准’等这些概念,这里再次强调’协议’,’标准’的重要性！！！】</p>
-<h5 id="file协议和http-s-的区别"><a href="#file协议和http-s-的区别" class="headerlink" title="file协议和http(s)的区别:"></a>file协议和http(s)的区别:</h5><ol>
-<li><code>file</code>协议是本地文件,快(断网也可以,打开本地文件即可);<br>表示： <code>&quot;file://&quot;</code> + 文件绝对路径</li>
-<li><code>http(s)</code>协议是网络加载,慢(断网不可以);<br>表示：<code>&quot;http(s)://&quot;</code></li>
-</ol>
-<h4 id="5-hybrid实现流程"><a href="#5-hybrid实现流程" class="headerlink" title="5. hybrid实现流程"></a>5. hybrid实现流程</h4><ul>
-<li>不是所有场景都适合使用<code>hybrid</code></li>
-<li>使用<code>native</code>:体验要求极致,变化不频繁(如头条的首页)</li>
-<li>使用<code>hybrid</code>:体验要求高,变化频繁(如头条的新闻详情页)</li>
-<li>使用<code>h5</code>:体验无要求,不常用(如举报,反馈等页面)</li>
-</ul>
-<h2 id="具体实现如下"><a href="#具体实现如下" class="headerlink" title="具体实现如下:"></a>具体实现如下:</h2><ol>
-<li>前端做好静态页面<code>(html js css)</code>,将文件交给客户端</li>
-<li>客户端拿到静态页面,以文件形式存储在<code>app</code>中</li>
-<li>客户端在一个<code>webview</code>中(重要！！！)</li>
-<li>使用<code>file</code>协议加载静态页面(重要！！！)<br>用如下图表示如下:</li>
-</ol>
-<p><img src="../images/hy.png" alt></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h2><ol>
-<li><code>hybrid</code>是客户端和前端的混合开发</li>
-<li><code>hybrid</code>存在的核心意义在于快速迭代,无需审核</li>
-<li><code>hybrid</code>实现流程(如上图),以及<code>webview</code>和<code>file</code>协议</li>
-</ol>
-<h2 id="介绍一下hybrid更新和上线的流程"><a href="#介绍一下hybrid更新和上线的流程" class="headerlink" title="介绍一下hybrid更新和上线的流程"></a>介绍一下hybrid更新和上线的流程</h2><p>先看下面两张图<br><img src="../images/hyserver.png" alt="avatar"><br><img src="../images/hyclient.png" alt="avatar"></p>
-<p>要替换每个客户端的静态文件,只能客户端来做(客户端是我们开发的),客户端去<code>server</code>下载最新的静态文件,我们维护<code>server</code>的静态文件</p>
-<h4 id="客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载"><a href="#客户端和server先对比版本-如果一致客户端没必要重新下载-不做无谓的下载" class="headerlink" title="客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)"></a>客户端和server先对比版本,如果一致客户端没必要重新下载(不做无谓的下载)</h4><ul>
-<li>分版本,有版本号,如<code>20200227</code>(时间戳)</li>
-<li>将静态文件压缩成<code>zip</code>包上传到服务器</li>
-<li>客户端每次启动,都去服务端检查版本号</li>
-<li>如果服务端版本号大于客户端版本号,就去下载最新的<code>zip</code>包</li>
-<li>下载完之后解压包,然后将现有文件覆盖</li>
-</ul>
-<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结:"></a>总结:</h2><p>要点1.掌握流程图<br>要点2.服务端的版本和<code>zip</code>包维护<br>要点3.更新<code>zip</code>包之前先对比版本号<br>要点4.<code>zip</code>包下载解压和覆盖</p>
-<h2 id="hybrid和h5的主要区别"><a href="#hybrid和h5的主要区别" class="headerlink" title="hybrid和h5的主要区别"></a>hybrid和h5的主要区别</h2><h4 id="1-优点"><a href="#1-优点" class="headerlink" title="1.优点:"></a>1.优点:</h4><ul>
-<li>体验更好,跟<code>native</code>体验基本一致</li>
-<li>可快速迭代,无需审核(关键)</li>
-</ul>
-<h4 id="2-缺点"><a href="#2-缺点" class="headerlink" title="2.缺点:"></a>2.缺点:</h4><ul>
-<li>开发成本高,联调,测试,查<code>bug</code>都比较麻烦</li>
-<li>运维成本高,可参考此前讲过的更新上线的流程</li>
-</ul>
-<h4 id="3-适用的场景"><a href="#3-适用的场景" class="headerlink" title="3.适用的场景:"></a>3.适用的场景:</h4><ul>
-<li><code>hybrid</code>: 产品的稳定功能,体验要求高,频繁迭代</li>
-<li><code>h5</code>: 单次的运营活动(如xx红包)或不常用功能</li>
-</ul>
-<h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结:"></a>总结:</h2><ul>
-<li>优点: 体验好,可快速迭代</li>
-<li>缺点: 开发成本高,运维成本高</li>
-<li>适用的场景: <code>hybrid</code>适合产品型,<code>h5</code>适合运营型</li>
-</ul>
-<h2 id="前端js和客户端如何通讯？"><a href="#前端js和客户端如何通讯？" class="headerlink" title="前端js和客户端如何通讯？"></a>前端js和客户端如何通讯？</h2><h3 id="1-js和客户端通讯的基本技术"><a href="#1-js和客户端通讯的基本技术" class="headerlink" title="1. js和客户端通讯的基本技术"></a>1. js和客户端通讯的基本技术</h3><h4 id="js和客户端通讯的基本形式-见下图"><a href="#js和客户端通讯的基本形式-见下图" class="headerlink" title="js和客户端通讯的基本形式(见下图)"></a>js和客户端通讯的基本形式(见下图)</h4><p> <img src="../images/hycommunite.png" alt="avatar"></p>
-<ul>
-<li><code>js</code>访问客户端能力,传递参数和回调函数</li>
-<li>客户端通过回调函数返回内容</li>
-</ul>
-<h3 id="2-遗留问题-新闻详情页适用hybrid-file协议-前端如何获取到新闻内容？"><a href="#2-遗留问题-新闻详情页适用hybrid-file协议-前端如何获取到新闻内容？" class="headerlink" title="2.遗留问题:新闻详情页适用hybrid(file协议),前端如何获取到新闻内容？"></a>2.遗留问题:新闻详情页适用hybrid(file协议),前端如何获取到新闻内容？</h3><ol>
-<li>不能用<code>ajax</code>获取(<code>http</code>协议):第一跨域,第二速度慢。</li>
-<li>客户端获取新闻内容后然后通过<code>js</code>通讯拿到内容,再渲染。</li>
-</ol>
-<h4 id="schema协议简介和适用"><a href="#schema协议简介和适用" class="headerlink" title="schema协议简介和适用"></a>schema协议简介和适用</h4><p><code>schema</code>协议：前端和客户端的约定<br>eg：<br>微信<code>schema</code>格式：<code>&quot;weixin://&quot;</code><br><code>QQ schema</code>协议格式：<code>&quot;QQ://&quot;</code></p>
-<h4 id="schema使用的封装"><a href="#schema使用的封装" class="headerlink" title="schema使用的封装"></a>schema使用的封装</h4><h4 id="简单版"><a href="#简单版" class="headerlink" title="简单版"></a>简单版</h4> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>)</span><br><span class="line"> iframe.style.display = <span class="string">'none'</span></span><br><span class="line"> <span class="comment">//iframe访问schema（重要！！！）</span></span><br><span class="line"> iframe.src = <span class="string">'weixin://dl/scan?k1=v1&amp;k2=v2&amp;k3=v3&amp;callback=_weixin_scan_callback'</span>    </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> body = <span class="built_in">document</span>.body || <span class="built_in">document</span>.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>]</span><br><span class="line"> body.appendchild(iframe)</span><br><span class="line"> setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     body.removeChild(iframe)  <span class="comment">//销毁iframe</span></span><br><span class="line">     iframe = <span class="literal">null</span></span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果要加上参数和callback，那么就必须要这么写</span></span><br><span class="line"> <span class="built_in">window</span>[<span class="string">'_weixin_scan_callback'</span>] = <span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">     alert(alert)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="封装版"><a href="#封装版" class="headerlink" title="封装版"></a>封装版</h4> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"> <span class="built_in">window</span>.invoke.share(&#123;<span class="attr">title</span>:<span class="string">'xxx'</span>,<span class="attr">content</span>:<span class="string">'xxx'</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(result.errno === <span class="number">0</span>) &#123;</span><br><span class="line">         alert(<span class="string">'分享成功！'</span>)</span><br><span class="line">     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">         alert(<span class="string">'分享失败！'</span>,result.message)</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;)</span><br><span class="line"><span class="comment">//分享</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeShare</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">     _invoke(<span class="string">'share'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//登录</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeLogin</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">    _invoke(<span class="string">'login'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//扫一扫</span></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">invokeScan</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">     _invoke(<span class="string">'scan'</span>,data,callback)</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">//暴露给全局</span></span><br><span class="line"> <span class="built_in">window</span>.invoke = &#123;</span><br><span class="line">     share:invokeShare,</span><br><span class="line">     login:invokeLogin,</span><br><span class="line">     scan:invokeScan</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">_invoke</span>(<span class="params">action,data,callback</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">var</span> schema = <span class="string">'myapp://utils'</span></span><br><span class="line">     schema += <span class="string">'/'</span> + action</span><br><span class="line">     schema += <span class="string">'?a=a'</span></span><br><span class="line">     <span class="keyword">var</span> key</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> data)&#123;     <span class="comment">//data=&#123;title:'xxx',content:'xxx'&#125;</span></span><br><span class="line">         <span class="keyword">if</span>(data.hasOwnProperty(key))&#123;</span><br><span class="line">             schema += <span class="string">'&amp;'</span> + key + <span class="string">'='</span> + data[key]</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//处理callback</span></span><br><span class="line"> <span class="keyword">var</span> callbackName = <span class="string">''</span></span><br><span class="line"> <span class="keyword">if</span>(<span class="keyword">typeof</span> callback === <span class="string">'string'</span>)&#123;</span><br><span class="line">     callbackName = callback</span><br><span class="line"> &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">     callbackName = action + <span class="built_in">Date</span>.now()</span><br><span class="line">     <span class="built_in">window</span>[callbackName] = callback</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> schema += <span class="string">'&amp;callback='</span>+ callbackName</span><br><span class="line"> <span class="comment">//iframe调用schema</span></span><br><span class="line"> 此处省略N行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> (<span class="function"><span class="keyword">function</span>(<span class="params">window,undefined</span>)</span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">_invoke</span>(<span class="params">action,data,callback</span>)</span>&#123;</span><br><span class="line">         <span class="comment">//拼接schema的封装</span></span><br><span class="line">         <span class="keyword">var</span> schema = <span class="string">'myapp://utils'</span> + action</span><br><span class="line">         schema += <span class="string">'?a=a'</span> <span class="comment">//拼接参数</span></span><br><span class="line">         <span class="built_in">window</span>.invoke = &#123;</span><br><span class="line">             share:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'share'</span>,data,callback)</span><br><span class="line">             &#125;,</span><br><span class="line">             scan:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'scan'</span>,data,callback)</span><br><span class="line">             &#125;,</span><br><span class="line">             login:<span class="function"><span class="keyword">function</span>(<span class="params">data,callback</span>)</span>&#123;</span><br><span class="line">                 _invoke(<span class="string">'login'</span>,data,callback)</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
-
-<h4 id="内置上线"><a href="#内置上线" class="headerlink" title="内置上线"></a>内置上线</h4><h2 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>通讯的基本形式： 调用能力，传递参数，监听回调</li>
-<li>对<code>schema</code>协议的理解和使用</li>
-<li>调用<code>schema</code>代码的封装</li>
-<li>内置上线的好处：更快，更安全</li>
-</ol>
 
           
         
