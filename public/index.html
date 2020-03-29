@@ -252,6 +252,774 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/28/性能优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/28/性能优化/" itemprop="url">性能优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T16:52:30+08:00">
+                2020-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>这篇文章用来总结前端的一些性能优化点</p>
+<h2 id="网络篇"><a href="#网络篇" class="headerlink" title="网络篇"></a>网络篇</h2><h3 id="一-http"><a href="#一-http" class="headerlink" title="一. http"></a>一. http</h3><h4 id="1-减少HTTP请求次数和请求资源大小"><a href="#1-减少HTTP请求次数和请求资源大小" class="headerlink" title="1.  减少HTTP请求次数和请求资源大小"></a>1.  减少HTTP请求次数和请求资源大小</h4><ul>
+<li><p>资源合并压缩</p>
+</li>
+<li><p>字体图标</p>
+</li>
+<li><p>Base64</p>
+</li>
+<li><p>GZIP（一般的文件能压缩60%多）</p>
+</li>
+<li><p>图片懒加载<br>比如：图片较多的情况下采用懒加载，首先将页面上的图片的 src 属性设为空字符串，而图片的真实路径则设置在data-original属性中，当页面滚动的时候需要去监听scroll事件，在scroll事件的回调中，判断我们的懒加载的图片是否进入可视区域,如果图片在可视区内将图片的 src 属性设置为data-original 的值，这样就可以实现延迟加载。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src=<span class="string">""</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"image-item"</span> lazyload=<span class="string">"true"</span> data-original=<span class="string">"https://images4.c-ctrip.com/target/200t160000010oeje3CF7_R_900_504.jpg"</span>/&gt;</span><br><span class="line">&lt;img src=<span class="string">""</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"image-item"</span> lazyload=<span class="string">"true"</span> data-original=<span class="string">"https://images4.c-ctrip.com/target/200q160000010rida8F51_R_750_400.jpg"</span>/&gt;</span><br><span class="line">&lt;img src=<span class="string">""</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"image-item"</span> lazyload=<span class="string">"true"</span> data-original=<span class="string">"https://images4.c-ctrip.com/target/200s160000010x38q9DB4_R_750_400.jpg"</span>/&gt;</span><br><span class="line">&lt;img src=<span class="string">""</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"image-item"</span> lazyload=<span class="string">"true"</span> data-original=<span class="string">"https://images4.c-ctrip.com/target/2009160000010smcl0C45_R_750_400.jpg"</span>/&gt;</span><br><span class="line">&lt;img src=<span class="string">""</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"image-item"</span> lazyload=<span class="string">"true"</span> data-original=<span class="string">"https://images4.c-ctrip.com/target/200e1e000001ey31h2478_R_130_130.jpg"</span>/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> viewHeight = <span class="built_in">document</span>.documentElement.clientHeight;<span class="comment">//获取可视区域的高度</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lazyload</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> eles=<span class="built_in">document</span>.querySelectorAll(<span class="string">'img[data-original][lazyload]'</span>)   </span><br><span class="line">	  <span class="built_in">Array</span>.prototype.forEach.call(eles,<span class="function"><span class="keyword">function</span>(<span class="params">item,index</span>)</span>&#123;</span><br><span class="line">           <span class="keyword">var</span> rect;</span><br><span class="line">           <span class="keyword">if</span>(item.dataset.original===<span class="string">""</span>) <span class="keyword">return</span></span><br><span class="line">		rect=item.getBoundingClientRect() </span><br><span class="line">		     <span class="comment">//用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置</span></span><br><span class="line">			<span class="keyword">if</span>(rect.bottom&gt;=<span class="number">0</span> &amp;&amp; rect.top &lt; viewHeight)&#123;</span><br><span class="line">			(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">				<span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">				img.src=item.dataset.original;</span><br><span class="line">				img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">					item.src = img.src</span><br><span class="line">				&#125;</span><br><span class="line">				item.removeAttribute(<span class="string">"data-original"</span>)   <span class="comment">//移除属性，下次不再遍历</span></span><br><span class="line">				item.removeAttribute(<span class="string">"lazyload"</span>)</span><br><span class="line">			&#125;)()</span><br><span class="line">		&#125;</span><br><span class="line">	 &#125;)</span><br><span class="line">	&#125;</span><br><span class="line">	lazyload();<span class="comment">//刚开始还没滚动屏幕时，要先触发一次函数，初始化首页的页面图片</span></span><br><span class="line">	 <span class="built_in">document</span>.addEventListener(<span class="string">"scroll"</span>,lazyload)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预加载<br>预加载简单来说就是将所有所需的资源提前请求加载到本地，这样后面在需要用到时就直接从缓存取资源。</p>
+</li>
+<li><p>数据延迟分批加载</p>
+</li>
+<li><p>CDN资源</p>
+<ul>
+<li><p>CDN的核心功能</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">缓存  “缓存”就是说我们把资源 copy 一份到 CDN 服务器上这个过程</span><br><span class="line">回源  CDN 发现自己没有这个资源（一般是缓存的数据过期了），转头向根服务器（或者它的上层服务器）去要这个资源的过程。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CDN用来存放静态资源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对变化比较少的资源配置超长时间的本地缓存   --- 节省带宽</span><br><span class="line">对资源采用内容摘要作为缓存更新依据 --- 精确的缓存控制静态资源</span><br><span class="line">静态资源实现CDN部署  ---优化网络请求</span><br><span class="line">更新资源发布路径实现非覆盖式发布  —— 平滑升级</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="二-图片优化"><a href="#二-图片优化" class="headerlink" title="二.图片优化"></a>二.图片优化</h3><h4 id="不同业务场景下的图片方案选型"><a href="#不同业务场景下的图片方案选型" class="headerlink" title="不同业务场景下的图片方案选型"></a>不同业务场景下的图片方案选型</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JPEG/JPG-有损压缩、体积小、加载快、不支持透明</span><br><span class="line">png - 无损压缩、质量高、体积大、支持透明</span><br><span class="line">SVG - 文本文件、体积小、不失真、兼容性好</span><br><span class="line">Base64 - 文本文件、依赖编码、小图标解决方案</span><br><span class="line">WebP - 是 Google 专为 Web 开发的一种旨在加快图片加载速度的图片格式，它支持有损压缩和无损压缩。兼容性不好</span><br></pre></td></tr></table></figure>
+
+<h2 id="渲染篇"><a href="#渲染篇" class="headerlink" title="渲染篇"></a>渲染篇</h2><h4 id="1-浏览器渲染"><a href="#1-浏览器渲染" class="headerlink" title="1. 浏览器渲染"></a>1. 浏览器渲染</h4><ul>
+<li><p>标签语义化和避免深层次嵌套</p>
+</li>
+<li><p>CSS选择器渲染是从右到左</p>
+<ul>
+<li>避免使用通配符，只对需要用到的元素进行选择</li>
+<li>关注可以通过继承实现的属性，避免重复匹配重复定义。</li>
+<li>少用标签选择器。如果可以，用类选择器替代</li>
+<li>减少嵌套，尽可能扁平化。后代选择器的开销是最高的，因此我们应该尽量将选择器的深度降到最低（最高不要超过三层），尽可能使用类来关联每一个标签元素</li>
+</ul>
+</li>
+<li><p>尽早尽快地把CSS下载到客户端（充分利用HTTP多请求并发机制）</p>
+<ul>
+<li>style  针对内联样式不多的情况下可以使用，和html一起解析</li>
+<li>link   异步的请求下载css</li>
+<li>@import  同步的请求下载css</li>
+<li>放到顶部</li>
+</ul>
+</li>
+<li><p>避免阻塞的JS加载</p>
+<ul>
+<li>放到底部</li>
+</ul>
+</li>
+<li><p>减少DOM的回流和重绘<br>  避免DOM回流</p>
+<ul>
+<li><p>放弃传统操作DOM的时代，基于react/vue开始数据影响视图模式</p>
+</li>
+<li><p>分离读写操作（现在的浏览器都有渲染队列的机制）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">offsetTop,offsetLeft,offsetWidth,offsetHeight,clientTop,clientLeft,</span><br><span class="line">clientWidth,clientHeight,scrollTop,scrollLeft,scrollWidth,scrollHeight,getComputedStyle,currentStyle....会刷新渲染队列</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>样式集中改变</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.style.cssText = <span class="string">'width:20px;height:20px;'</span></span><br><span class="line">div.className=<span class="string">'box'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>缓存布局信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">div.style.left = div.offsetLeft+<span class="number">1</span>+<span class="string">'px'</span></span><br><span class="line">div style.top = div.offsetTop+<span class="number">1</span>+<span class="string">'px'</span></span><br><span class="line">改为</span><br><span class="line"><span class="keyword">var</span> curLeft = div.offsetLeft;</span><br><span class="line"><span class="keyword">var</span> curTop = div.offsetTop;</span><br><span class="line">div.style.left = curLeft+<span class="number">1</span>+<span class="string">'px'</span></span><br><span class="line">div.style.top = curTop+<span class="number">1</span>+<span class="string">'px'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>元素批量修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">文档碎片：createDocumentFragment</span><br><span class="line">模板字符串拼接</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>动画效果应用到<code>position</code>属性为<code>absolute</code>或<code>fixed</code>的元素上（脱离文档流）</p>
+</li>
+<li><p><code>CSS3</code>硬件加速（<code>GPU</code>加速）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">比起考虑如何减少回流和重绘，我们更期望的是，根本不要回流重绘；transform/opacity/filters...这些属性会触发硬件加速，不会引发回流和重绘...</span><br><span class="line">可能会引发的坑：过多使用会占用大量内存性能，消耗严重，有时候会导致字体模糊等。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>牺牲平滑度换取速度<br>每次1像素移动一个动画，但是如果此动画使用了100%的CPU，动画就会看上去是跳动的，因为浏览器正在与更新回流作斗争。每次移动3像素可能看起来平滑度低了，但它不会导致CPU在较慢的机器中抖动。</p>
+</li>
+<li><p>避免table布局和使用css的javascript表达式</p>
+</li>
+<li><p>有图片的地方采用占位图，防止下载下来的图片导致页面结构发生变化，引起不必要的回流。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-服务端渲染"><a href="#2-服务端渲染" class="headerlink" title="2. 服务端渲染"></a>2. 服务端渲染</h4><p>为了响应快，用户体验好，首屏渲染快，利于SEO，使用了服务端渲染。</p>
+<h4 id="3-事件的节流与防抖"><a href="#3-事件的节流与防抖" class="headerlink" title="3. 事件的节流与防抖"></a>3. 事件的节流与防抖</h4><h4 id="4-加载动画"><a href="#4-加载动画" class="headerlink" title="4.加载动画"></a>4.加载动画</h4><p>对页面上的一些连续的动画，采用requestAnimationFrame或者InteractionManager实现，前者是浏览器按照60/s的频率控制ui刷新，实现流畅的效果，而不再需要开发人员烦心刷新频率的问题了。后者是将一些耗时较长的工作安排到所有互动或动画完成之后再进行。这样可以保证JavaScript动画的流畅运行。<br><a href="https://www.jianshu.com/p/4c1d96132756" target="_blank" rel="noopener">参考</a></p>
+<h2 id="应用缓存"><a href="#应用缓存" class="headerlink" title="应用缓存"></a>应用缓存</h2><h4 id="缓存位置"><a href="#缓存位置" class="headerlink" title="缓存位置"></a>缓存位置</h4><ul>
+<li><code>Service Worker</code>：浏览器独立线程进行缓存</li>
+<li><code>Memory Cache</code> : 内存缓存</li>
+<li><code>Disk Cache</code>：硬盘缓存</li>
+<li><code>Push Cache</code>：推送缓存（<code>HTTP/2</code>中的）</li>
+</ul>
+<p>打开网页，地址栏输入地址： 查找 <code>disk cache</code> 中是否有匹配，如有则使用，如没有则发送网络请求。<br>普通刷新 (<code>F5</code>)：因为 TAB 并没有关闭，因此 <code>memory cache</code> 是可用的，会被优先使用(如果匹配的话)，其次才是 <code>disk cache</code>。<br>强制刷新 (<code>Ctrl + F5</code>)：浏览器不使用缓存，因此发送的请求头部均带有 <code>Cache-control: no-cache</code>(为了兼容，还带了 <code>Pragma: no-cache</code>)，服务器直接返回 <code>200</code> 和最新内容。<br>接着涉及到浏览器强缓存和协商缓存，自行了解</p>
+<ul>
+<li>数据缓存：<code>LocalStorage</code>本地存储</li>
+</ul>
+<h2 id="RN方面"><a href="#RN方面" class="headerlink" title="RN方面"></a>RN方面</h2><ol>
+<li><p><code>RN</code>中在渲染城市列表页这种长列表时候，使用<code>FlatList</code>代替<code>ScrollView</code>,<code>ListView</code>，缓解页面的卡顿。他们的区别是<code>ScrollView</code>只会<code>render</code>一次，当数据量很大的情况下很卡；<br><code>ListView</code>基于一个数据源，对数据源中的每一项数据调用<code>renderRow</code>进行<code>render</code>。并且不会一次性<code>render</code>所有数据，而是首先<code>render</code>屏幕上能看到的数据（假实现），<code>Listview</code>就是在<code>scrollView</code>里面不断添加<code>row</code>，但<code>row</code>移出可见范围之外后依然还在<code>scrollview</code>里面；<code>FlatList</code>，是在<code>Listview</code>继续优化的，用户看不到的 <code>items</code>，就用空白代替，这样既节约内存，渲染又快。缺点就是，用户可能滚动太快，空白还没被渲染成真的 <code>items</code>，就被看见了。</p>
+</li>
+<li><p><code>rn</code>中的查询提前加载资源页的<code>webview</code></p>
+</li>
+<li><p>动画与操作性能中的路由切换掉帧，使用了 <code>InteractionManager.runAfterInteractions</code></p>
+</li>
+</ol>
+<h2 id="业务层面-BFF"><a href="#业务层面-BFF" class="headerlink" title="业务层面(BFF)"></a>业务层面(BFF)</h2><p>  <code>bff（GraphQL+koa）</code>，随着多终端、多平台、多业务形态、多技术选型等各方面的发展，前后端的数据交互，日益复杂，同一份数据，可能以多种不同的形态和结构，在多种场景下被消费，理想情况下这部分是由后端解决，然而，不知是因为后端的领域模型，作为前端，我们感受到的是，后端提供的接口，越发不够前端友好。我们必须自行组合多个后端接口，才能获取到完整的数据结构。</p>
+<h2 id="工程化方面-webpack"><a href="#工程化方面-webpack" class="headerlink" title="工程化方面(webpack)"></a>工程化方面(webpack)</h2><ol>
+<li>增加资源 <code>happypack</code></li>
+<li>缩小打包作用域  <code>dll</code>动态链接库</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/22/React新特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/22/React新特性/" itemprop="url">精读React新特性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T14:54:07+08:00">
+                2020-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>于 2017.09.26 Facebook 发布 React v16.0 版本，时至今日已更新到 React v16.6，且引入了大量的令人振奋的新特性，本文章将带领大家根据 React 更新的时间脉络了解 React16 的新特性。<br>按照 React16 的更新时间，从 React v16.0 ~ React v16.6 进行概述。</p>
+<h2 id="React-v16-0"><a href="#React-v16-0" class="headerlink" title="React v16.0"></a>React v16.0</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render 支持返回数组和字符串、Error Boundaries、createPortal、支持自定义 DOM 属性、减少文件体积、fiber；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-1"><a href="#React-v16-1" class="headerlink" title="React v16.1"></a>React v16.1</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-call-return；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-2"><a href="#React-v16-2" class="headerlink" title="React v16.2"></a>React v16.2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fragment；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-3"><a href="#React-v16-3" class="headerlink" title="React v16.3"></a>React v16.3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">createContext、createRef、forwardRef、生命周期函数的更新、Strict Mode；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-4"><a href="#React-v16-4" class="headerlink" title="React v16.4"></a>React v16.4</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pointer Events、update getDerivedStateFromProps；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-5"><a href="#React-v16-5" class="headerlink" title="React v16.5"></a>React v16.5</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Profiler；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-6"><a href="#React-v16-6" class="headerlink" title="React v16.6"></a>React v16.6</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memo、lazy、Suspense、static contextType、static getDerivedStateFromError()；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-7（-Q1-2019）"><a href="#React-v16-7（-Q1-2019）" class="headerlink" title="React v16.7（~Q1 2019）"></a>React v16.7（~Q1 2019）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hooks；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-8（-Q2-2019）"><a href="#React-v16-8（-Q2-2019）" class="headerlink" title="React v16.8（~Q2 2019）"></a>React v16.8（~Q2 2019）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Concurrent Rendering；</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-v16-9（-mid-2019）"><a href="#React-v16-9（-mid-2019）" class="headerlink" title="React v16.9（~mid 2019）"></a>React v16.9（~mid 2019）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Suspense <span class="keyword">for</span> Data Fetching；</span><br></pre></td></tr></table></figure>
+
+<h2 id="新的生命周期"><a href="#新的生命周期" class="headerlink" title="新的生命周期"></a>新的生命周期</h2><h3 id="Mounting（加载阶段：涉及4个钩子函数）"><a href="#Mounting（加载阶段：涉及4个钩子函数）" class="headerlink" title="Mounting（加载阶段：涉及4个钩子函数）"></a>Mounting（加载阶段：涉及4个钩子函数）</h3><h6 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor()"></a>constructor()</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">加载的时候调用一次，可以初始化state</span><br></pre></td></tr></table></figure>
+
+<h6 id="static-getDerivedStateFromProps-props-state"><a href="#static-getDerivedStateFromProps-props-state" class="headerlink" title="static getDerivedStateFromProps(props, state)"></a>static getDerivedStateFromProps(props, state)</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">组件每次被rerender的时候，包括在组件构建之后</span><br><span class="line">(虚拟dom之后，实际dom挂载之前)，每次获取新的props或state之后；</span><br><span class="line">每次接收新的props之后都会返回一个对象作为</span><br><span class="line">新的state，返回null则说明不需要更新state；配合componentDidUpdate，</span><br><span class="line">可以覆盖componentWillReceiveProps的所有用法</span><br></pre></td></tr></table></figure>
+
+<p><code>getDerivedStateFromProps(nextProps, prevState)</code> 其作用是根据传递的 <code>props</code> 来更新 <code>state</code>。它的一大特点是无副作用，由于处在 <code>Render Phase</code> 阶段，所以在每次的更新都会触发该函数， 在 API 设计上采用了静态方法，使其无法访问实例、无法通过 <code>ref</code> 访问到 <code>DOM</code> 对象等，保证了该函数的纯粹高效。</p>
+<p>为了配合未来的 <code>React</code> 异步渲染机制，<code>React v16.4</code> 对 <code>getDerivedStateFromProps</code> 做了一些改变， 使其不仅在 <code>props</code> 更新时会被调用，<code>setState</code> 时也会被触发。</p>
+<ul>
+<li>如果改变 <code>props</code> 的同时，有副作用的产生，这时应该使用 <code>componentDidUpdate</code>；</li>
+<li>如果想要根据 <code>props</code> 计算属性，应该考虑将结果 <code>memoization</code> 化；</li>
+<li>如果想要根据 <code>props</code> 变化来重置某些状态，应该考虑使用 受控组件；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> getDerivedStateFromProps(props, state) &#123;</span><br><span class="line">  <span class="keyword">if</span> (props.value !== state.controlledValue) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      controlledValue: props.value,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="render"><a href="#render" class="headerlink" title="render()"></a>render()</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react最重要的步骤，创建虚拟dom，进行diff算法，更新dom树都在此进行</span><br></pre></td></tr></table></figure>
+
+<h6 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount()"></a>componentDidMount()</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">组件渲染之后调用，只调用一次</span><br></pre></td></tr></table></figure>
+
+<h3 id="Updating（更新阶段：涉及5个钩子函数"><a href="#Updating（更新阶段：涉及5个钩子函数" class="headerlink" title="Updating（更新阶段：涉及5个钩子函数)"></a>Updating（更新阶段：涉及5个钩子函数)</h3><h6 id="static-getDerivedStateFromProps-props-state-1"><a href="#static-getDerivedStateFromProps-props-state-1" class="headerlink" title="static getDerivedStateFromProps(props, state)"></a>static getDerivedStateFromProps(props, state)</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">组件每次被rerender的时候，包括在组件构建之后</span><br><span class="line">(虚拟dom之后，实际dom挂载之前)，每次获取新的props或state之后；</span><br><span class="line">每次接收新的props之后都会返回一个对象</span><br><span class="line">作为新的state，返回null则说明不需要更新state；配合componentDidUpdate，</span><br><span class="line">可以覆盖componentWillReceiveProps的所有用法</span><br></pre></td></tr></table></figure>
+
+<h6 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">组件接收到新的props或者state时调用，</span><br><span class="line"><span class="built_in">return</span> <span class="literal">true</span>就会更新dom（使用diff算法更新），</span><br><span class="line"><span class="built_in">return</span> <span class="literal">false</span>能阻止更新（不调用render）</span><br></pre></td></tr></table></figure>
+
+<h6 id="render-1"><a href="#render-1" class="headerlink" title="render()"></a>render()</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react最重要的步骤，创建虚拟dom，进行diff算法，更新dom树都在此进行</span><br></pre></td></tr></table></figure>
+
+<h6 id="getSnapshotBeforeUpdate-prevProps-prevState"><a href="#getSnapshotBeforeUpdate-prevProps-prevState" class="headerlink" title="getSnapshotBeforeUpdate(prevProps, prevState)"></a>getSnapshotBeforeUpdate(prevProps, prevState)</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">触发时间: 会在组件更新之前获取一个snapshot</span><br><span class="line">（update发生的时候，在render之后，在组件dom渲染之前），</span><br><span class="line">并可以将计算得到的值或从DOM得到的信息传递到</span><br><span class="line">componentDidUpdate(prevProps,prevState,snapshot)函数的第三个参数，</span><br><span class="line">配合componentDidUpdate, 可以覆盖componentWillUpdate的所有用法，</span><br><span class="line">常用于scroll位置定位等场景。</span><br></pre></td></tr></table></figure>
+
+<h6 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate()"></a>componentDidUpdate()</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">组件加载时不调用，组件更新完成后调用</span><br></pre></td></tr></table></figure>
+
+<h3 id="Unmounting（卸载阶段：涉及1个钩子函数）"><a href="#Unmounting（卸载阶段：涉及1个钩子函数）" class="headerlink" title="Unmounting（卸载阶段：涉及1个钩子函数）"></a>Unmounting（卸载阶段：涉及1个钩子函数）</h3><h6 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">组件渲染之后调用，只调用一次</span><br></pre></td></tr></table></figure>
+
+<h3 id="Error-Handling-错误处理"><a href="#Error-Handling-错误处理" class="headerlink" title="Error Handling(错误处理)"></a>Error Handling(错误处理)</h3><h6 id="componentDidCatch-error，info"><a href="#componentDidCatch-error，info" class="headerlink" title="componentDidCatch(error，info)"></a>componentDidCatch(error，info)</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">任何一处的javascript报错会触发</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/17/interview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/interview/" itemprop="url">常见面试题总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T11:57:40+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>最近面了很多公司，整理一波常考的知识点</p>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><p>http相关没有特别难的，常见的了解下就没问题。</p>
+<ol>
+<li><p>介绍Http2，优点和存在什么坑或问题（必考）</p>
+</li>
+<li><p>HTTP报文的请求和返回会有几个部分（请求行、请求头、请求体）；每部分具体都有什么（常见的请求头）</p>
+</li>
+<li><p>GET和POST的区别</p>
+</li>
+<li><p>输入url到页面加载全过程（必考）</p>
+</li>
+<li><p>介绍HTTPS；HTTP和HTTPS的区别（必考）</p>
+</li>
+<li><p>HTTPS加密过程</p>
+</li>
+<li><p>HTTP缓存控制（强缓存、弱缓存）；缓存相关的HTTP请求头（必考）</p>
+</li>
+<li><p>对跨域的了解，跨域怎么解决（必考）</p>
+</li>
+<li><p>cors的返回头、cors预请求，什么时候会出发预请求（必考）</p>
+</li>
+<li><p>tcp的长连接和http2多路复用相关</p>
+</li>
+<li><p>tcp拥塞控制和流量控制</p>
+</li>
+<li><p>三次握手四次挥手，为什么三次和四次</p>
+</li>
+<li><p>前端性能优化（必考）</p>
+</li>
+</ol>
+<h2 id="css"><a href="#css" class="headerlink" title="css"></a>css</h2><p>css最近问的越来越少了，只要会写常见的布局就ok，难点的答不出来也没事。相比移动端相关的会问题的比较多。</p>
+<ol>
+<li>盒模型</li>
+<li>positon的值，都是根据什么定位（注意下还有sticky）</li>
+<li>栅格布局的原理</li>
+<li>垂直居中布局</li>
+<li>上中下布局，中间自适应</li>
+<li>左中右布局，中间自适应</li>
+<li>什么css可以减少重绘</li>
+</ol>
+<h3 id="8-动画相关属性"><a href="#8-动画相关属性" class="headerlink" title="8. 动画相关属性"></a>8. 动画相关属性</h3><h5 id="过渡动画"><a href="#过渡动画" class="headerlink" title="过渡动画"></a>过渡动画</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">transition-property（过渡的属性的名称）。</span><br><span class="line">transition-duration（定义过渡效果花费的时间,默认是 0）。</span><br><span class="line">transition-timing-function:linear(匀速) ease(慢速开始，然后变快，然后慢速结束)（规定过渡效果的时间曲线，最常用的是这两个）。</span><br><span class="line">transition-delay</span><br></pre></td></tr></table></figure>
+
+<h5 id="关键帧动画-通过这个对一个动画的过程的每一部分的表现都做出要求。"><a href="#关键帧动画-通过这个对一个动画的过程的每一部分的表现都做出要求。" class="headerlink" title="关键帧动画:通过这个对一个动画的过程的每一部分的表现都做出要求。"></a>关键帧动画:通过这个对一个动画的过程的每一部分的表现都做出要求。</h5><p>一个关键帧动画，最少包含两部分，animation 属性及属性值（动画的名称和运行方式运行时间等）。@keyframes（规定动画的具体实现过程）<br>animation 属性可以拆分为（当然，我们一般都写一起）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">animation-name 规定@keyframes 动画的名称。</span><br><span class="line">animation-duration 规定动画完成一个周期所花费的秒或毫秒。默认是 0。</span><br><span class="line">animation-timing-function 规定动画的速度曲线。默认是 “ease”，常用的还有linear，同transtion 。</span><br><span class="line">animation-delay 规定动画何时开始。默认是 0。</span><br><span class="line">animation-iteration-count 规定动画被播放的次数。默认是 1，但我们一般用infinite，一直播放。</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>移动端适配方案（必考）</li>
+<li>移动端适配1px的问题</li>
+</ol>
+<h3 id="11-line-height属性1-5和150-区别"><a href="#11-line-height属性1-5和150-区别" class="headerlink" title="11. line-height属性1.5和150%区别"></a>11. line-height属性1.5和150%区别</h3><p><img src="../images/line-height.png" alt><br>其实区别就在于继承的问题上</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style=<span class="string">"line-height:150%;font-size:16px;background-colo:yellow;margin:0;"</span>&gt;</span><br><span class="line"> &lt;span&gt;第一行&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp"> &lt;p style="margin:0;font-size:36px;"&gt;第二行&lt;/</span>p&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>150%是先计算后继承，根据父元素的字体大小计算出行高，并且子元素依然沿用这个计算后的行高，此时的第一行的行高是：16px*150%=24px，而第二行的行高是继承父元素的值，所以行高为24px。可以看到如果子元素的字体大小大于父元素，就会出现错位等问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style=<span class="string">"line-height:1.5;font-size:16px;background-colo:yellow;margin:0;"</span>&gt;</span><br><span class="line"> &lt;span&gt;第一行&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp"> &lt;p style="margin:0;font-size:36px;"&gt;第二行&lt;/</span>p&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>设置不带单位的，那它就是个“缩放因子”，后代元素会继承这个缩放因子进行计算，而不是继承父元素计算后的值继承，1.5则是先继承后计算（无单位参数），根据子元素自己字体的大小去乘以1.5来计算行高 ： 这时的第一行行高为：16px<em>1.5=24px，而第二行的行高先继承了缩放因子再进行计算，行高为：36px</em>1.5=54px</p>
+<h3 id="12-em和rem的区别"><a href="#12-em和rem的区别" class="headerlink" title="12. em和rem的区别"></a>12. em和rem的区别</h3><p><code>em</code>是相对于父元素，而<code>rem</code>是相对于根元素，<code>rem</code>定义是根元素的<code>font-size</code>，以<code>rem</code>为单位，其数值与<code>px</code>的关系，需相对于根元素<code>&lt;html&gt;</code>的<code>font-size</code>计算，比如设置根元素<code>font-size=16px</code>，则表示<code>1rem=16px</code>；</p>
+<h2 id="js"><a href="#js" class="headerlink" title="js"></a>js</h2><p>重中之重，没啥可说的刷题就完事了，而且像节流防抖、bind、promise之类的都要会手写。这里就不标必考了，因为大部分都是重点。</p>
+<ol>
+<li>判断数组方法</li>
+<li>Object.assign和Object.create相关</li>
+<li>深拷贝和浅拷贝</li>
+<li>let、const和var的区别</li>
+<li>基本类型和引用类型相关（堆栈）</li>
+<li>bind, call, apply相关（自己要会实现）</li>
+<li>介绍事件循环（宏任务微任务，要知道执行顺序）</li>
+<li>定时器为什么不准（有可能会让你实现一个倒计时）</li>
+<li>原型介绍</li>
+<li>继承方法（手写）</li>
+</ol>
+<h3 id="11-闭包介绍和它的作用（手写）"><a href="#11-闭包介绍和它的作用（手写）" class="headerlink" title="11. 闭包介绍和它的作用（手写）"></a>11. 闭包介绍和它的作用（手写）</h3><p>作用：闭包可以让临时变量在外部函数生命周期结束时，仍然存在于内存之中！</p>
+<h3 id="12-new实现过程"><a href="#12-new实现过程" class="headerlink" title="12. new实现过程"></a>12. new实现过程</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fn:当前要new的类Dog</span></span><br><span class="line"><span class="comment">//arg:后期需要给构造函数传递的参数信息['三毛']</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_new</span>(<span class="params">Fn,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj = &#123;&#125;;</span><br><span class="line">    obj.__proto__ = Fn.prototype;<span class="comment">//let obj = object.create(Fn.prototype)</span></span><br><span class="line">    Fn.call(obj,...args);</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> sanmao = _new Dog(Dog,<span class="string">'三毛'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">像普通函数执行一样，形成一个私有的作用域+形参赋值+变量提升</span><br><span class="line">默认创建一个对象</span><br><span class="line">链接到原型</span><br><span class="line">让函数中的this指向这个对象，这个对象就是当前类的一个实例</span><br><span class="line">默认把创建的对象返回</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-防抖和节流（手写）"><a href="#13-防抖和节流（手写）" class="headerlink" title="13. 防抖和节流（手写）"></a>13. 防抖和节流（手写）</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//防抖定义:对于短时间内连续触发的事件（上面的滚动事件）,防抖的含义就是让某个时间期限（如上面的1000毫秒）内,事件处理函数只执行一次。</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* fn [function] 需要防抖的函数</span></span><br><span class="line"><span class="comment">* delay [number] 毫秒，防抖期限值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(timer)&#123;</span><br><span class="line">            clearTimeout(timer)</span><br><span class="line">        &#125;</span><br><span class="line">        timer = setTimeout(fn,delay);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> ctx;</span><br><span class="line">    <span class="keyword">let</span> args;</span><br><span class="line">    <span class="keyword">let</span> previous = <span class="built_in">Date</span>.now();  <span class="comment">//记录上次触发时间</span></span><br><span class="line">    <span class="keyword">let</span> laterFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        fn.apply(ctx,args)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        ctx = <span class="keyword">this</span>;</span><br><span class="line">        args = <span class="built_in">arguments</span>;</span><br><span class="line">        <span class="keyword">let</span> now = <span class="built_in">Date</span>.now();</span><br><span class="line">        <span class="keyword">if</span>(now - previous &gt;= delay)&#123;   <span class="comment">//本次触发时间和上次触发时间比较，如果间隔时间超过设定时间，则再次设置触发的定时器</span></span><br><span class="line">            previous = now;</span><br><span class="line">            setTimeout(laterFn,delay)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>数组去重、扁平化、柯里化</li>
+<li>this指向</li>
+<li>es6特性</li>
+<li>promise介绍（最好会写）</li>
+<li>promise.all和promise.race介绍（手写）</li>
+<li>async介绍（了解原理 generator+自执行器）</li>
+<li>异步的串行（可以用promise也可以async）</li>
+<li>箭头函数指向</li>
+</ol>
+<h3 id="22-set、map介绍；和数组、对象的区别"><a href="#22-set、map介绍；和数组、对象的区别" class="headerlink" title="22. set、map介绍；和数组、对象的区别"></a>22. set、map介绍；和数组、对象的区别</h3><h4 id="set基本用法"><a href="#set基本用法" class="headerlink" title="set基本用法"></a>set基本用法</h4><p><code>ES6</code> 提供了新的数据结构 <code>Set</code>。它类似于数组，但是成员的值都是唯一的，没有重复的值。<br><code>Set</code>本身是一个构造函数，用来生成 <code>Set</code> 数据结构。<br>向 <code>Set</code> 加入值的时候，不会发生类型转换，所以5和”5”是两个不同的值。<code>Set</code> 内部判断两个值是否不同，使用的算法叫做“Same-value-zero equality”，它类似于精确相等运算符（===），主要的区别是向 <code>Set</code> 加入值时认为NaN等于自身，而精确相等运算符认为<code>NaN</code>不等于自身。</p>
+<h4 id="Set-实例的属性和方法"><a href="#Set-实例的属性和方法" class="headerlink" title="Set 实例的属性和方法"></a>Set 实例的属性和方法</h4><p><code>Set</code> 结构的实例有以下属性。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.constructor：构造函数，默认就是Set函数。</span><br><span class="line">Set.prototype.size：返回Set实例的成员总数。</span><br></pre></td></tr></table></figure>
+
+<h4 id="Set-实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。"><a href="#Set-实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。" class="headerlink" title="Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。"></a>Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.add(value)：添加某个值，返回 `Set` 结构本身。</span><br><span class="line">Set.prototype.delete(value)：删除某个值，返回一个布尔值，表示删除是否成功。</span><br><span class="line">Set.prototype.has(value)：返回一个布尔值，表示该值是否为`Set`的成员。</span><br><span class="line">Set.prototype.clear()：清除所有成员，没有返回值。</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历操作"><a href="#遍历操作" class="headerlink" title="遍历操作"></a>遍历操作</h4><p><code>Set</code> 结构的实例有四个遍历方法，可以用于遍历成员。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.keys()：返回键名的遍历器</span><br><span class="line">Set.prototype.values()：返回键值的遍历器</span><br><span class="line">Set.prototype.entries()：返回键值对的遍历器</span><br><span class="line">Set.prototype.forEach()：使用回调函数遍历每个成员</span><br></pre></td></tr></table></figure>
+
+<h3 id="Map含义和基本用法"><a href="#Map含义和基本用法" class="headerlink" title="Map含义和基本用法"></a>Map含义和基本用法</h3><p><code>ES6</code> 提供了 <code>Map</code> 数据结构。它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。也就是说，<code>Object</code> 结构提供了“字符串—值”的对应，<code>Map</code> 结构提供了“值—值”的对应，是一种更完善的 <code>Hash</code> 结构实现。如果你需要“键值对”的数据结构，<code>Map</code> 比 <code>Object</code>更合适。</p>
+<h4 id="Map实例的属性和操作方法"><a href="#Map实例的属性和操作方法" class="headerlink" title="Map实例的属性和操作方法"></a>Map实例的属性和操作方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">size 属性</span><br><span class="line">Map.prototype.set(key, value)</span><br><span class="line">Map.prototype.get(key)</span><br><span class="line">Map.prototype.has(key)</span><br><span class="line">Map.prototype.delete(key)</span><br><span class="line">Map.prototype.clear()</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历方法"><a href="#遍历方法" class="headerlink" title="遍历方法"></a>遍历方法</h4><p><code>Map</code> 结构原生提供三个遍历器生成函数和一个遍历方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map.prototype.keys()：返回键名的遍历器。</span><br><span class="line">Map.prototype.values()：返回键值的遍历器。</span><br><span class="line">Map.prototype.entries()：返回所有成员的遍历器。</span><br><span class="line">Map.prototype.forEach()：遍历 Map 的所有成员。</span><br></pre></td></tr></table></figure>
+
+<h3 id="23-模块化介绍-commnjs-amd-cmd-umd-export"><a href="#23-模块化介绍-commnjs-amd-cmd-umd-export" class="headerlink" title="23. 模块化介绍(commnjs amd cmd umd export)"></a>23. 模块化介绍(commnjs amd cmd umd export)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">目前模块化的解决方案</span><br><span class="line">CommonJS -- Node.js</span><br><span class="line">AMD -- RequireJS</span><br><span class="line">CMD -- SeaJS</span><br><span class="line">UMD</span><br><span class="line">ES6 Module</span><br></pre></td></tr></table></figure>
+
+<ol start="24">
+<li>localstorage sessionstorage cookie</li>
+<li>事件委托</li>
+</ol>
+<h3 id="26-Proxy和Object-defineProperty"><a href="#26-Proxy和Object-defineProperty" class="headerlink" title="26. Proxy和Object.defineProperty"></a>26. Proxy和Object.defineProperty</h3><h4 id="使用Object-defineProperty"><a href="#使用Object-defineProperty" class="headerlink" title="使用Object.defineProperty"></a>使用Object.defineProperty</h4><p><code>ES5</code> 提供了 <code>Object.defineProperty</code> 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object.defineProperty(obj, prop, descriptor)</span><br><span class="line">参数：</span><br><span class="line">obj: 要在其上定义属性的对象。</span><br><span class="line">prop: 要定义或修改的属性的名称。</span><br><span class="line">descriptor: 将被定义或修改的属性的描述符。</span><br></pre></td></tr></table></figure>
+
+<p>当然一般不会只是改变一个属性,如下所示，遍历劫持对象所有的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要劫持的对象</span></span><br><span class="line"><span class="keyword">const</span> data = &#123;</span><br><span class="line">    name:<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">  <span class="comment">//遍历对象,对其属性值进行劫持</span></span><br><span class="line">  <span class="built_in">Object</span>.keys(data).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">key</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(data,key,&#123;</span><br><span class="line">        enumerable: <span class="literal">true</span>,</span><br><span class="line">        configurable: <span class="literal">true</span>,</span><br><span class="line">        <span class="keyword">get</span>: function() &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'get'</span>);</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="keyword">set</span>: function(newVal) &#123;</span><br><span class="line">            <span class="comment">// 当属性值发生变化时我们可以进行额外操作</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`我修改了成了<span class="subst">$&#123;newVal&#125;</span>`</span>);           </span><br><span class="line">          &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  data.name = <span class="string">'王莉娜'</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h5><p><code>Object.defineProperty</code>的第一个缺陷,无法监听数组变化</p>
+<h5 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h5><ol>
+<li><code>Proxy</code>可以直接监听对象而非属性</li>
+<li><code>Proxy</code>直接可以劫持整个对象,并返回一个新对象,不管是操作便利程度还是底层功能上都远强于<code>Object.defineProperty</code>。</li>
+<li><code>Proxy</code>可以直接监听数组的变化</li>
+<li><code>Proxy</code>有多达13种拦截方法,不限于<code>apply、ownKeys、deleteProperty、has</code>等等，这些是<code>Object.defineProperty</code>不具备的。</li>
+</ol>
+<ol start="27">
+<li>下面的输出结果是NaN，3</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	a++;</span><br><span class="line">	<span class="built_in">console</span>.log(a)</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	inner()</span><br><span class="line">&#125;</span><br><span class="line">outer()</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-native"><a href="#React-native" class="headerlink" title="React native"></a>React native</h2><h5 id="ScrollView-FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？"><a href="#ScrollView-FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？" class="headerlink" title="ScrollView,FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？"></a>ScrollView,FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ScrollView：渲染数据量少</span><br><span class="line">FlatList：数据量多的</span><br><span class="line">ListView：数据量过大的情况会卡顿（row是持续添加不销毁，导致内存占用大）</span><br><span class="line">FlatList：看不见的元素用空白代替，节省内存渲染快。缺点：滑动太快会有白屏</span><br></pre></td></tr></table></figure>
+
+<h2 id="hybrid"><a href="#hybrid" class="headerlink" title="hybrid"></a>hybrid</h2><h5 id="移动端点击事件为什么会有延迟？有哪些方法可以解决？"><a href="#移动端点击事件为什么会有延迟？有哪些方法可以解决？" class="headerlink" title="移动端点击事件为什么会有延迟？有哪些方法可以解决？"></a>移动端点击事件为什么会有延迟？有哪些方法可以解决？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原因：等待300ms看用户是点击还是双击缩放</span><br><span class="line">解决方法：禁止缩放，设置默认视口宽度为设备宽度设置css touch-action:none</span><br><span class="line">fastclick.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="jsBridge通信原理"><a href="#jsBridge通信原理" class="headerlink" title="jsBridge通信原理"></a>jsBridge通信原理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JavaScript调用native的方式，主要有两种：注入API和拦截URL scheme</span><br><span class="line">注入API方式的主要原理是：通过webview提供的接口，向JavaScript的Context（Window）中注入对象或者方法</span><br><span class="line">，让JavaScript调用时，直接执行相应的Native代码逻辑，达到JavaScript调用Native的目的。</span><br><span class="line">URL scheme是一种类似url的链接，是为了方便app直接互相调用设计的，形式和普通的url类似，主要区别是</span><br><span class="line">protocol和host一般是自定义的，例如：qunarhy://hy/url?url=ymfe.tech，protocol是qunarhy，host是hy。</span><br><span class="line">拦截URL scheme的主要流程是：web端通过某种方式(iframe.src)发送URL Scheme请求，之后Native拦截到请求并根据URL Scheme（包括所带的参数）进行相关操作</span><br><span class="line">Native调用JavaScript，其实就是执行拼接JavaScript字符串，从外部调用JavaScript中的方法，因此JavaScript的方法</span><br><span class="line">必须在全局的Window上。</span><br></pre></td></tr></table></figure>
+
+<h2 id="算法、数据结构部分"><a href="#算法、数据结构部分" class="headerlink" title="算法、数据结构部分"></a>算法、数据结构部分</h2><p>本来以为只有头条、猿辅导之类的公司才考算法，但是最后发现每家公司都会考，可能都想拿算法来做下区分度了吧。不过遇到做不出来的面试官基本也都会给提示，提示完能写出来也没问题。总体来说考的都是常见的题或者变形而来的，把LeetCode或剑指offer里常见的easy题看了就行。数据结构和设计模式问的很少，但是自己也需要总结了解下。</p>
+<ol>
+<li>冒泡排序</li>
+<li>快速排序</li>
+<li>回文字符串</li>
+<li>两数之和、k sum</li>
+<li>大数相加</li>
+<li>二分查找</li>
+<li>二叉树前中后遍历</li>
+<li>二叉树层次遍历</li>
+<li>二叉树深度优先遍历(递归、非递归)</li>
+<li>二叉树广度优先遍历(递归、非递归)</li>
+<li>和为n的二叉树路径</li>
+<li>二叉树深度</li>
+<li>二叉树是否对称</li>
+<li>链表反转</li>
+<li>16进制转10进制</li>
+</ol>
+<h2 id="项目部分"><a href="#项目部分" class="headerlink" title="项目部分"></a>项目部分</h2><p>每个公司都会有项目的介绍，如果你介绍的项目面试官有兴趣的话会很加分，所以一定要认真准备。我一般会介绍之前做的一个前端微服务的架构，项目做了很多优化也比较复杂，感觉算是自己比较加分的部分。</p>
+<ol>
+<li><p>介绍下你项目的难点（房型吸顶）</p>
+</li>
+<li><p>如果现在再看这个项目你会做哪些优化</p>
+</li>
+<li><p>根据项目的具体问题</p>
+</li>
+<li><p>我们项目怎么打包发布部署的？<br>通过webpack打包，发布到node服务器，pm2监控及负载均衡。<br>PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g pm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>静态资源怎么发布的<br>a. 简单来说就是文件上传，在不同的区域访问不同的cdn服务器（有cdn中间商来做的，类似七牛云，我们只负责上传就好），<br>b. 版本控制，目前我们是在请求后面加V=xxxxx或者文件生成的时候使用不同的后缀（类似hash）一些静态资源是日期,也有部分hash；目前也是采用日期的形式<br>eg:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;link</span><br><span class="line">        key=<span class="string">"tourplan"</span></span><br><span class="line">        rel=<span class="string">"stylesheet"</span></span><br><span class="line">        type=<span class="string">"text/css"</span></span><br><span class="line">        href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/tourplan.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;,</span><br><span class="line">&lt;link</span><br><span class="line">    key=<span class="string">"h5_koala"</span></span><br><span class="line">    rel=<span class="string">"stylesheet"</span></span><br><span class="line">    type=<span class="string">"text/css"</span></span><br><span class="line">    href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/h5_koala.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;,</span><br><span class="line">&lt;link</span><br><span class="line">    key=<span class="string">"dp_n"</span></span><br><span class="line">    rel=<span class="string">"stylesheet"</span></span><br><span class="line">    type=<span class="string">"text/css"</span></span><br><span class="line">    href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/dp_new.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>做了哪些性能优化？<br>。。。</p>
+</li>
+<li><p>rn用了什么脚手架？底层是什么原理？<br>react-native-cli<br>讲jsx映射成native组件</p>
+</li>
+<li><p>rn中样式为啥不直接写个object却需要写成stylesheet（{}）这种形式<br>Instead of creating a new style object every time, StyleSheet helps to create style objects with an ID which is further used to reference instead rendering it again.<br>Moving code outside the render() helps in achieving the better understanding of code and adds meaning to low-level components.<br>The stylesheet is sent only once over the bridge unlike normal style object inside render().</p>
+</li>
+<li><p>怎么和服务端通信的，加密怎么加密的？<br>采用公钥密码体制RSA算法对数据加密</p>
+</li>
+<li><p>怎么回滚代码的？<br>git log -&gt; reset head -&gt; git push -f</p>
+</li>
+<li><p>你们jest-converage怎么跑到100%的，这个很难，你们怎么做到的？<br>通过代码覆盖率的检查，分析代码的合理性。删除冗余判断及逻辑，直到覆盖率达到100%</p>
+</li>
+<li><p>grahql你们后端怎么用的<br>目前后端不使用, 只要针对BFF来做graphql</p>
+</li>
+<li><p><a href="https://blog.csdn.net/u014209205/article/details/89892359" target="_blank" rel="noopener">cdn基本工作过程</a></p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/15/jsClientCommunication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1709,501 +2477,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/02/browserCache/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/02/browserCache/" itemprop="url">浏览器缓存</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T10:43:46+08:00">
-                2020-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/01/essay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/essay/" itemprop="url">essay</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T01:52:53+08:00">
-                2020-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>随笔。。。。。<br>这是一个测试这是一个测试这是一个测试</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/01/internet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/01/internet/" itemprop="url">计算机网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T00:39:40+08:00">
-                2020-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>HTTP和HTTPS的原理</p>
-<h2 id="认识-HTTP"><a href="#认识-HTTP" class="headerlink" title="认识 HTTP"></a>认识 HTTP</h2><p>首先你听的最多的应该就是<code>HTTP</code>是一种 超文本传输协议<code>(Hypertext Transfer Protocol)</code></p>
-<p>那么什么是超文本传输协议？<br>超文本传输协议可以进行文字分割：<code>超文本（Hypertext）</code>、<code>传输（Transfer）</code>、<code>协议（Protocol）</code></p>
-<p>按照范围的大小 协议 &gt; 传输 &gt; 超文本。下面就分别对这三个名次做一个解释。</p>
-<h3 id="什么是超文本"><a href="#什么是超文本" class="headerlink" title="什么是超文本"></a>什么是超文本</h3><p>在互联网早期的时候，我们输入的信息只能保存在本地，无法和其他电脑进行交互。我们保存的信息通常都以文本即简单字符的形式存在，文本是一种能够被计算机解析的有意义的二进制数据包。而随着互联网的高速发展，两台电脑之间能够进行数据的传输后，人们不满足只能在两台电脑之间传输文字，还想要传输图片、音频、视频，甚至点击文字或图片能够进行超链接的跳转，那么文本的语义就被扩大了，这种语义扩大后的文本就被称为超文本(Hypertext)。</p>
-<h3 id="什么是传输"><a href="#什么是传输" class="headerlink" title="什么是传输"></a>什么是传输</h3><p>两台计算机之间会形成互联关系进行通信，我们存储的超文本会被解析成为二进制数据包，由传输载体（例如同轴电缆，电话线，光缆）负责把二进制数据包由计算机终端传输到另一个终端的过程（对终端的详细解释可以参考 你说你懂互联网，那这些你知道么？这篇文章）称为传输(transfer)。</p>
-<h3 id="什么是协议"><a href="#什么是协议" class="headerlink" title="什么是协议"></a>什么是协议</h3><p>自己一个人对自己的约定不能成为协议，协议的前提条件必须是多人约定。<br>网络协议就是网络中(包括互联网)传递、管理信息的一些规范。如同人与人之间相互交流是需要遵循一定的规矩一样，计算机之间的相互通信需要共同遵守一定的规则，这些规则就称为网络协议。</p>
-<blockquote>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h3><p>HTTP 是一个在计算机世界里专门在两点之间传输文字、图片、音频、视频等超文本数据的约定和规范</p>
-</blockquote>
-<h2 id="与-HTTP-有关的组件"><a href="#与-HTTP-有关的组件" class="headerlink" title="与 HTTP 有关的组件"></a>与 HTTP 有关的组件</h2><h3 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h3><ul>
-<li><p>应用层(web:<code>HTTP</code>,电子邮件:<code>SMTP</code>,端系统文件上传协议:<code>FTP</code>,域名解析:<code>DNS</code>)</p>
-</li>
-<li><p>运输层(<code>TCP</code>和 <code>UDP</code>)</p>
-</li>
-<li><p>网络层(<code>IP</code>)</p>
-</li>
-<li><p>链路层</p>
-<ul>
-<li>(以太网、<code>WiFi</code>和电缆接入的 <code>DOCSIS</code> 协议)分组称为<code>帧(frame)</code></li>
-<li>作用:将帧从一个端系统运输到另一个端系统</li>
-<li>ARP和RARP是数据链路层协议，是一对协议，分别是MAC和IP地址互查的（RARP把MAC转换成IP地址）</li>
-</ul>
-</li>
-<li><p>物理层(将帧中的一个个 比特 从一个节点运输到另一个节点)</p>
-</li>
-</ul>
-<h3 id="OSI-模型-国际标准化组织"><a href="#OSI-模型-国际标准化组织" class="headerlink" title="OSI 模型(国际标准化组织)"></a>OSI 模型(国际标准化组织)</h3><p>OSI 要比上面的网络模型多了 表示层 和 会话层，其他层基本一致</p>
-<ul>
-<li>应用层</li>
-<li>表示层</li>
-<li>会话层</li>
-<li>运输层</li>
-<li>网络层</li>
-<li>链路层</li>
-<li>物理层<h2 id="HTTP长连接和短连接"><a href="#HTTP长连接和短连接" class="headerlink" title="HTTP长连接和短连接"></a>HTTP长连接和短连接</h2>像<code>web</code>网站的<code>http</code>服务一般都是短连接，因为长连接对于服务端来说会耗费一定的资源，像<code>web</code>网站这么频繁的成千上万甚至上亿客户端连接用短连接会更省一些资源，数据库连接一般是长连接频繁请求资源的客户端适合长连接。长连接可以省去较多的<code>TCP</code>建立和关闭操作，减少浪费，节约资源</li>
-</ul>
-<h2 id="HTTP的请求"><a href="#HTTP的请求" class="headerlink" title="HTTP的请求"></a>HTTP的请求</h2><h2 id="HTTP-的优点和缺点"><a href="#HTTP-的优点和缺点" class="headerlink" title="HTTP 的优点和缺点"></a>HTTP 的优点和缺点</h2><h3 id="HTTP-的优点"><a href="#HTTP-的优点" class="headerlink" title="HTTP 的优点"></a>HTTP 的优点</h3><ul>
-<li>简单灵活易扩展</li>
-<li>应用广泛、环境成熟</li>
-<li>无状态<h3 id="HTTP-的缺点"><a href="#HTTP-的缺点" class="headerlink" title="HTTP 的缺点"></a>HTTP 的缺点</h3></li>
-<li>无状态</li>
-<li>通信使用明文(不加密)，内容可能会被窃听</li>
-<li>不验证通信方的身份，有可能遭遇伪装</li>
-<li>无法证明报文的完整性，所以有可能已遭篡改</li>
-<li>性能</li>
-</ul>
-<h2 id="确保Web安全的HTTPS-身披SSL外壳的HTTP"><a href="#确保Web安全的HTTPS-身披SSL外壳的HTTP" class="headerlink" title="确保Web安全的HTTPS(身披SSL外壳的HTTP)"></a>确保Web安全的HTTPS(身披SSL外壳的HTTP)</h2><p>与SSL组合使用的<code>HTTP</code>被称为<code>HTTPS</code>(超文本传输安全协议<code>HTTP over SSL</code>)，<br>HTTP+加密+认证+完整性保护=HTTPS</p>
-<p>共享密钥加密：共享密钥加密就是在HTTPS原理中人们常说到的对称加密，那么什么是共享密钥加密呢？其实就是两个所用的密钥是同一个。但是其实在共享密钥加密会有一个密钥传递的不安全，因为很可能会被第三方给替换掉，所以就有了一种公开密钥加密。</p>
-<p>公开密钥加密：公开密钥加密就是HTTPS中人们常说到的非对称加密。那么什么是公开密钥加密呢？公开密钥加密会有两个密钥，一个是主密钥也称做私有密钥，这个一般是不能发送给别人的，一个是公共密钥，这个可以给任何人。其原理就是发送方使用接收方给的公共密钥来加密数据，发送给接收方，然后接收方用私钥来解密。这样数据的安全性就高了很多。但这样也不是说一定安全，只是第三方在不知道私钥的时候去解密其实就是对离散对数的求值，难度很大，目前的技术很难实现。<br><a href="https://blog.csdn.net/MierCurry/article/details/104564378" target="_blank" rel="noopener">加密机制</a></p>
-<ol>
-<li>浏览器使用<code>https</code>的<code>url</code>访问服务器，建立<code>SSL</code>连接</li>
-<li>服务器接收到<code>SSL</code>链接后，发送非对称加密公钥<code>A</code>给浏览器</li>
-<li>浏览器生成随机数，作为对称加密的秘钥<code>B</code></li>
-<li>浏览器使用服务器返回的公钥<code>A</code>，对自己生成的对称加密秘钥<code>B</code>进行加密，得到秘钥<code>C</code></li>
-<li>浏览器将秘钥<code>C</code>发送给服务器</li>
-<li>服务器使用自己的私钥<code>D</code>对接受的秘钥<code>C</code>进行解密，得到对称加密秘钥<code>B</code></li>
-<li>浏览器和服务器之间使用秘钥<code>B</code>作为对称加密秘钥通信</li>
-</ol>
-<h4 id="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"><a href="#说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密" class="headerlink" title="说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密"></a>说明：通过上面流程浏览器和服务器之间共享一个对称加密秘钥B，而且不会被人监听和拦截到，之后的消息传递使用秘钥B进行对称加密</h4><h4 id="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"><a href="#优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高" class="headerlink" title="优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高"></a>优点：非对称加密只使用了一次，后续所有通信消息都是用对称加密，效率比非对称加密高</h4><h4 id="HTTPS的数字证书？"><a href="#HTTPS的数字证书？" class="headerlink" title="HTTPS的数字证书？"></a>HTTPS的数字证书？</h4><p>中间人可以截取服务器发送给客户端的公钥，冒充服务器将自己的公钥发送给客户端，之后客户端会用中间人公钥进行加密生成对称秘钥，把密钥发给服务器，这时中间人又可以截取对称加密的秘钥。<br>非对称加密之所以不安全，因为客户端不知道这把公钥是不是属于服务器的</p>
-<h4 id="引入数字证书"><a href="#引入数字证书" class="headerlink" title="引入数字证书"></a>引入数字证书</h4><p>认证中心（CA）：一个拥有公信力、大家都认可的认证中心，数字证书认证机构<br>证书内容：签发者、证书用途、公钥、加密算法、Hash算法、证书到期时间</p>
-<h4 id="使用证书认证过程："><a href="#使用证书认证过程：" class="headerlink" title="使用证书认证过程："></a>使用证书认证过程：</h4><ol>
-<li>服务器在给客户端传输公钥过程中，会把公钥和服务器的个人信息通过hash算法生成信息摘要</li>
-<li>为了防止信息要被调换，服务器采用CA提供的私钥对信息摘要进行加密来形成数字签名</li>
-<li>最后把原来没hash算法之前的个人信息、公钥及数字签名合并在一起，形成数字证书</li>
-<li>客户端拿到数字证书之后，使用CA提供的公钥对数字证书里的数字签名进行解密来得到信息摘要，然后对数字证书里的服务器的公钥及个人信息利用hash算法得到另一份信息摘要，最后将两份信息摘要对比，如果一样则证明是服务器，否则就是中间人</li>
-</ol>
-<h4 id="认证中心、数字证书、数字签名"><a href="#认证中心、数字证书、数字签名" class="headerlink" title="认证中心、数字证书、数字签名"></a>认证中心、数字证书、数字签名</h4><p>个人信息+公钥+数字签名===数字证书</p>
-<h4 id="CA证书的颁发？"><a href="#CA证书的颁发？" class="headerlink" title="CA证书的颁发？"></a>CA证书的颁发？</h4><p>服务器一开始向认证中心申请证书，客户端也内置了这些证书。</p>
-<h4 id="HTTP和RPC的区别？"><a href="#HTTP和RPC的区别？" class="headerlink" title="HTTP和RPC的区别？"></a>HTTP和RPC的区别？</h4><p>底层协议：Http是基于http协议，RPC基于TCP，也可以是http，自己定义的协议<br>效率：RPC基于自定义的TCP，可以让请求报文体积更小，提高传输效率。<br>性能消耗：RPC基于高效的二进制流传输，消耗低，HTTP大部分通过json来实现，字节大小和序列化都比RPC要消耗性能<br>RPC自带了负载均衡，HTTP需要配置Nginx实现<br>RPC主要用于公司内部服务调用，性能消耗低，传输效率高，服务治理方便；HTTP主要对外如浏览器接口调用，app和第三方接口调用。</p>
-<h4 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h4><p>摘要算法：MD5（128位）、SHA1（160位），是一种不可逆的过程，无论多大的数据，经过摘要算法后都生成相同长度的数据。只能通过字典进行破解。<br>对称加密算法：DES、AES，加密解密时使用相同的秘钥。<br>非对称加密算法：RSA，加密解密时使用不同的秘钥，对接支付宝使用RSA2。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2256,7 +2529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2267,7 +2540,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2278,7 +2551,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

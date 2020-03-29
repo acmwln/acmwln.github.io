@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="序最近面了很多公司，整理一波常考的知识点 httphttp相关没有特别难的，常见的了解下就没问题。  介绍Http2，优点和存在什么坑或问题（必考）  HTTP报文的请求和返回会有几个部分（请求行、请求头、请求体）；每部分具体都有什么（常见的请求头）  GET和POST的区别  输入url到页面加载全过程（必考）  介绍HTTPS；HTTP和HTTPS的区别（必考）  HTTPS加密过程  HTT">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见面试题总结">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/03/17/interview/index.html">
+<meta property="og:site_name" content="娜一隅">
+<meta property="og:description" content="序最近面了很多公司，整理一波常考的知识点 httphttp相关没有特别难的，常见的了解下就没问题。  介绍Http2，优点和存在什么坑或问题（必考）  HTTP报文的请求和返回会有几个部分（请求行、请求头、请求体）；每部分具体都有什么（常见的请求头）  GET和POST的区别  输入url到页面加载全过程（必考）  介绍HTTPS；HTTP和HTTPS的区别（必考）  HTTPS加密过程  HTT">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/03/17/images/line-height.png">
+<meta property="og:updated_time" content="2020-03-19T04:08:17.945Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常见面试题总结">
+<meta name="twitter:description" content="序最近面了很多公司，整理一波常考的知识点 httphttp相关没有特别难的，常见的了解下就没问题。  介绍Http2，优点和存在什么坑或问题（必考）  HTTP报文的请求和返回会有几个部分（请求行、请求头、请求体）；每部分具体都有什么（常见的请求头）  GET和POST的区别  输入url到页面加载全过程（必考）  介绍HTTPS；HTTP和HTTPS的区别（必考）  HTTPS加密过程  HTT">
+<meta name="twitter:image" content="http://acmwln.github.io.com/2020/03/17/images/line-height.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://acmwln.github.io.com/2020/03/17/interview/">
+
+
+
+
+
+  <title>常见面试题总结 | 娜一隅</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">娜一隅</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/17/interview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常见面试题总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T11:57:40+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>最近面了很多公司，整理一波常考的知识点</p>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><p>http相关没有特别难的，常见的了解下就没问题。</p>
+<ol>
+<li><p>介绍Http2，优点和存在什么坑或问题（必考）</p>
+</li>
+<li><p>HTTP报文的请求和返回会有几个部分（请求行、请求头、请求体）；每部分具体都有什么（常见的请求头）</p>
+</li>
+<li><p>GET和POST的区别</p>
+</li>
+<li><p>输入url到页面加载全过程（必考）</p>
+</li>
+<li><p>介绍HTTPS；HTTP和HTTPS的区别（必考）</p>
+</li>
+<li><p>HTTPS加密过程</p>
+</li>
+<li><p>HTTP缓存控制（强缓存、弱缓存）；缓存相关的HTTP请求头（必考）</p>
+</li>
+<li><p>对跨域的了解，跨域怎么解决（必考）</p>
+</li>
+<li><p>cors的返回头、cors预请求，什么时候会出发预请求（必考）</p>
+</li>
+<li><p>tcp的长连接和http2多路复用相关</p>
+</li>
+<li><p>tcp拥塞控制和流量控制</p>
+</li>
+<li><p>三次握手四次挥手，为什么三次和四次</p>
+</li>
+<li><p>前端性能优化（必考）</p>
+</li>
+</ol>
+<h2 id="css"><a href="#css" class="headerlink" title="css"></a>css</h2><p>css最近问的越来越少了，只要会写常见的布局就ok，难点的答不出来也没事。相比移动端相关的会问题的比较多。</p>
+<ol>
+<li>盒模型</li>
+<li>positon的值，都是根据什么定位（注意下还有sticky）</li>
+<li>栅格布局的原理</li>
+<li>垂直居中布局</li>
+<li>上中下布局，中间自适应</li>
+<li>左中右布局，中间自适应</li>
+<li>什么css可以减少重绘</li>
+</ol>
+<h3 id="8-动画相关属性"><a href="#8-动画相关属性" class="headerlink" title="8. 动画相关属性"></a>8. 动画相关属性</h3><h5 id="过渡动画"><a href="#过渡动画" class="headerlink" title="过渡动画"></a>过渡动画</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">transition-property（过渡的属性的名称）。</span><br><span class="line">transition-duration（定义过渡效果花费的时间,默认是 0）。</span><br><span class="line">transition-timing-function:linear(匀速) ease(慢速开始，然后变快，然后慢速结束)（规定过渡效果的时间曲线，最常用的是这两个）。</span><br><span class="line">transition-delay</span><br></pre></td></tr></table></figure>
+
+<h5 id="关键帧动画-通过这个对一个动画的过程的每一部分的表现都做出要求。"><a href="#关键帧动画-通过这个对一个动画的过程的每一部分的表现都做出要求。" class="headerlink" title="关键帧动画:通过这个对一个动画的过程的每一部分的表现都做出要求。"></a>关键帧动画:通过这个对一个动画的过程的每一部分的表现都做出要求。</h5><p>一个关键帧动画，最少包含两部分，animation 属性及属性值（动画的名称和运行方式运行时间等）。@keyframes（规定动画的具体实现过程）<br>animation 属性可以拆分为（当然，我们一般都写一起）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">animation-name 规定@keyframes 动画的名称。</span><br><span class="line">animation-duration 规定动画完成一个周期所花费的秒或毫秒。默认是 0。</span><br><span class="line">animation-timing-function 规定动画的速度曲线。默认是 “ease”，常用的还有linear，同transtion 。</span><br><span class="line">animation-delay 规定动画何时开始。默认是 0。</span><br><span class="line">animation-iteration-count 规定动画被播放的次数。默认是 1，但我们一般用infinite，一直播放。</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>移动端适配方案（必考）</li>
+<li>移动端适配1px的问题</li>
+</ol>
+<h3 id="11-line-height属性1-5和150-区别"><a href="#11-line-height属性1-5和150-区别" class="headerlink" title="11. line-height属性1.5和150%区别"></a>11. line-height属性1.5和150%区别</h3><p><img src="../images/line-height.png" alt><br>其实区别就在于继承的问题上</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style=<span class="string">"line-height:150%;font-size:16px;background-colo:yellow;margin:0;"</span>&gt;</span><br><span class="line"> &lt;span&gt;第一行&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp"> &lt;p style="margin:0;font-size:36px;"&gt;第二行&lt;/</span>p&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>150%是先计算后继承，根据父元素的字体大小计算出行高，并且子元素依然沿用这个计算后的行高，此时的第一行的行高是：16px*150%=24px，而第二行的行高是继承父元素的值，所以行高为24px。可以看到如果子元素的字体大小大于父元素，就会出现错位等问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style=<span class="string">"line-height:1.5;font-size:16px;background-colo:yellow;margin:0;"</span>&gt;</span><br><span class="line"> &lt;span&gt;第一行&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp"> &lt;p style="margin:0;font-size:36px;"&gt;第二行&lt;/</span>p&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>设置不带单位的，那它就是个“缩放因子”，后代元素会继承这个缩放因子进行计算，而不是继承父元素计算后的值继承，1.5则是先继承后计算（无单位参数），根据子元素自己字体的大小去乘以1.5来计算行高 ： 这时的第一行行高为：16px<em>1.5=24px，而第二行的行高先继承了缩放因子再进行计算，行高为：36px</em>1.5=54px</p>
+<h3 id="12-em和rem的区别"><a href="#12-em和rem的区别" class="headerlink" title="12. em和rem的区别"></a>12. em和rem的区别</h3><p><code>em</code>是相对于父元素，而<code>rem</code>是相对于根元素，<code>rem</code>定义是根元素的<code>font-size</code>，以<code>rem</code>为单位，其数值与<code>px</code>的关系，需相对于根元素<code>&lt;html&gt;</code>的<code>font-size</code>计算，比如设置根元素<code>font-size=16px</code>，则表示<code>1rem=16px</code>；</p>
+<h2 id="js"><a href="#js" class="headerlink" title="js"></a>js</h2><p>重中之重，没啥可说的刷题就完事了，而且像节流防抖、bind、promise之类的都要会手写。这里就不标必考了，因为大部分都是重点。</p>
+<ol>
+<li>判断数组方法</li>
+<li>Object.assign和Object.create相关</li>
+<li>深拷贝和浅拷贝</li>
+<li>let、const和var的区别</li>
+<li>基本类型和引用类型相关（堆栈）</li>
+<li>bind, call, apply相关（自己要会实现）</li>
+<li>介绍事件循环（宏任务微任务，要知道执行顺序）</li>
+<li>定时器为什么不准（有可能会让你实现一个倒计时）</li>
+<li>原型介绍</li>
+<li>继承方法（手写）</li>
+</ol>
+<h3 id="11-闭包介绍和它的作用（手写）"><a href="#11-闭包介绍和它的作用（手写）" class="headerlink" title="11. 闭包介绍和它的作用（手写）"></a>11. 闭包介绍和它的作用（手写）</h3><p>作用：闭包可以让临时变量在外部函数生命周期结束时，仍然存在于内存之中！</p>
+<h3 id="12-new实现过程"><a href="#12-new实现过程" class="headerlink" title="12. new实现过程"></a>12. new实现过程</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fn:当前要new的类Dog</span></span><br><span class="line"><span class="comment">//arg:后期需要给构造函数传递的参数信息['三毛']</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_new</span>(<span class="params">Fn,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj = &#123;&#125;;</span><br><span class="line">    obj.__proto__ = Fn.prototype;<span class="comment">//let obj = object.create(Fn.prototype)</span></span><br><span class="line">    Fn.call(obj,...args);</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> sanmao = _new Dog(Dog,<span class="string">'三毛'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">像普通函数执行一样，形成一个私有的作用域+形参赋值+变量提升</span><br><span class="line">默认创建一个对象</span><br><span class="line">链接到原型</span><br><span class="line">让函数中的this指向这个对象，这个对象就是当前类的一个实例</span><br><span class="line">默认把创建的对象返回</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-防抖和节流（手写）"><a href="#13-防抖和节流（手写）" class="headerlink" title="13. 防抖和节流（手写）"></a>13. 防抖和节流（手写）</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//防抖定义:对于短时间内连续触发的事件（上面的滚动事件）,防抖的含义就是让某个时间期限（如上面的1000毫秒）内,事件处理函数只执行一次。</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* fn [function] 需要防抖的函数</span></span><br><span class="line"><span class="comment">* delay [number] 毫秒，防抖期限值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(timer)&#123;</span><br><span class="line">            clearTimeout(timer)</span><br><span class="line">        &#125;</span><br><span class="line">        timer = setTimeout(fn,delay);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> ctx;</span><br><span class="line">    <span class="keyword">let</span> args;</span><br><span class="line">    <span class="keyword">let</span> previous = <span class="built_in">Date</span>.now();  <span class="comment">//记录上次触发时间</span></span><br><span class="line">    <span class="keyword">let</span> laterFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        fn.apply(ctx,args)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        ctx = <span class="keyword">this</span>;</span><br><span class="line">        args = <span class="built_in">arguments</span>;</span><br><span class="line">        <span class="keyword">let</span> now = <span class="built_in">Date</span>.now();</span><br><span class="line">        <span class="keyword">if</span>(now - previous &gt;= delay)&#123;   <span class="comment">//本次触发时间和上次触发时间比较，如果间隔时间超过设定时间，则再次设置触发的定时器</span></span><br><span class="line">            previous = now;</span><br><span class="line">            setTimeout(laterFn,delay)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>数组去重、扁平化、柯里化</li>
+<li>this指向</li>
+<li>es6特性</li>
+<li>promise介绍（最好会写）</li>
+<li>promise.all和promise.race介绍（手写）</li>
+<li>async介绍（了解原理 generator+自执行器）</li>
+<li>异步的串行（可以用promise也可以async）</li>
+<li>箭头函数指向</li>
+</ol>
+<h3 id="22-set、map介绍；和数组、对象的区别"><a href="#22-set、map介绍；和数组、对象的区别" class="headerlink" title="22. set、map介绍；和数组、对象的区别"></a>22. set、map介绍；和数组、对象的区别</h3><h4 id="set基本用法"><a href="#set基本用法" class="headerlink" title="set基本用法"></a>set基本用法</h4><p><code>ES6</code> 提供了新的数据结构 <code>Set</code>。它类似于数组，但是成员的值都是唯一的，没有重复的值。<br><code>Set</code>本身是一个构造函数，用来生成 <code>Set</code> 数据结构。<br>向 <code>Set</code> 加入值的时候，不会发生类型转换，所以5和”5”是两个不同的值。<code>Set</code> 内部判断两个值是否不同，使用的算法叫做“Same-value-zero equality”，它类似于精确相等运算符（===），主要的区别是向 <code>Set</code> 加入值时认为NaN等于自身，而精确相等运算符认为<code>NaN</code>不等于自身。</p>
+<h4 id="Set-实例的属性和方法"><a href="#Set-实例的属性和方法" class="headerlink" title="Set 实例的属性和方法"></a>Set 实例的属性和方法</h4><p><code>Set</code> 结构的实例有以下属性。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.constructor：构造函数，默认就是Set函数。</span><br><span class="line">Set.prototype.size：返回Set实例的成员总数。</span><br></pre></td></tr></table></figure>
+
+<h4 id="Set-实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。"><a href="#Set-实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。" class="headerlink" title="Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。"></a>Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.add(value)：添加某个值，返回 `Set` 结构本身。</span><br><span class="line">Set.prototype.delete(value)：删除某个值，返回一个布尔值，表示删除是否成功。</span><br><span class="line">Set.prototype.has(value)：返回一个布尔值，表示该值是否为`Set`的成员。</span><br><span class="line">Set.prototype.clear()：清除所有成员，没有返回值。</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历操作"><a href="#遍历操作" class="headerlink" title="遍历操作"></a>遍历操作</h4><p><code>Set</code> 结构的实例有四个遍历方法，可以用于遍历成员。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set.prototype.keys()：返回键名的遍历器</span><br><span class="line">Set.prototype.values()：返回键值的遍历器</span><br><span class="line">Set.prototype.entries()：返回键值对的遍历器</span><br><span class="line">Set.prototype.forEach()：使用回调函数遍历每个成员</span><br></pre></td></tr></table></figure>
+
+<h3 id="Map含义和基本用法"><a href="#Map含义和基本用法" class="headerlink" title="Map含义和基本用法"></a>Map含义和基本用法</h3><p><code>ES6</code> 提供了 <code>Map</code> 数据结构。它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。也就是说，<code>Object</code> 结构提供了“字符串—值”的对应，<code>Map</code> 结构提供了“值—值”的对应，是一种更完善的 <code>Hash</code> 结构实现。如果你需要“键值对”的数据结构，<code>Map</code> 比 <code>Object</code>更合适。</p>
+<h4 id="Map实例的属性和操作方法"><a href="#Map实例的属性和操作方法" class="headerlink" title="Map实例的属性和操作方法"></a>Map实例的属性和操作方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">size 属性</span><br><span class="line">Map.prototype.set(key, value)</span><br><span class="line">Map.prototype.get(key)</span><br><span class="line">Map.prototype.has(key)</span><br><span class="line">Map.prototype.delete(key)</span><br><span class="line">Map.prototype.clear()</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历方法"><a href="#遍历方法" class="headerlink" title="遍历方法"></a>遍历方法</h4><p><code>Map</code> 结构原生提供三个遍历器生成函数和一个遍历方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map.prototype.keys()：返回键名的遍历器。</span><br><span class="line">Map.prototype.values()：返回键值的遍历器。</span><br><span class="line">Map.prototype.entries()：返回所有成员的遍历器。</span><br><span class="line">Map.prototype.forEach()：遍历 Map 的所有成员。</span><br></pre></td></tr></table></figure>
+
+<h3 id="23-模块化介绍-commnjs-amd-cmd-umd-export"><a href="#23-模块化介绍-commnjs-amd-cmd-umd-export" class="headerlink" title="23. 模块化介绍(commnjs amd cmd umd export)"></a>23. 模块化介绍(commnjs amd cmd umd export)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">目前模块化的解决方案</span><br><span class="line">CommonJS -- Node.js</span><br><span class="line">AMD -- RequireJS</span><br><span class="line">CMD -- SeaJS</span><br><span class="line">UMD</span><br><span class="line">ES6 Module</span><br></pre></td></tr></table></figure>
+
+<ol start="24">
+<li>localstorage sessionstorage cookie</li>
+<li>事件委托</li>
+</ol>
+<h3 id="26-Proxy和Object-defineProperty"><a href="#26-Proxy和Object-defineProperty" class="headerlink" title="26. Proxy和Object.defineProperty"></a>26. Proxy和Object.defineProperty</h3><h4 id="使用Object-defineProperty"><a href="#使用Object-defineProperty" class="headerlink" title="使用Object.defineProperty"></a>使用Object.defineProperty</h4><p><code>ES5</code> 提供了 <code>Object.defineProperty</code> 方法，该方法可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object.defineProperty(obj, prop, descriptor)</span><br><span class="line">参数：</span><br><span class="line">obj: 要在其上定义属性的对象。</span><br><span class="line">prop: 要定义或修改的属性的名称。</span><br><span class="line">descriptor: 将被定义或修改的属性的描述符。</span><br></pre></td></tr></table></figure>
+
+<p>当然一般不会只是改变一个属性,如下所示，遍历劫持对象所有的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要劫持的对象</span></span><br><span class="line"><span class="keyword">const</span> data = &#123;</span><br><span class="line">    name:<span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line">  <span class="comment">//遍历对象,对其属性值进行劫持</span></span><br><span class="line">  <span class="built_in">Object</span>.keys(data).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">key</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(data,key,&#123;</span><br><span class="line">        enumerable: <span class="literal">true</span>,</span><br><span class="line">        configurable: <span class="literal">true</span>,</span><br><span class="line">        <span class="keyword">get</span>: function() &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'get'</span>);</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="keyword">set</span>: function(newVal) &#123;</span><br><span class="line">            <span class="comment">// 当属性值发生变化时我们可以进行额外操作</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`我修改了成了<span class="subst">$&#123;newVal&#125;</span>`</span>);           </span><br><span class="line">          &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  data.name = <span class="string">'王莉娜'</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h5><p><code>Object.defineProperty</code>的第一个缺陷,无法监听数组变化</p>
+<h5 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h5><ol>
+<li><code>Proxy</code>可以直接监听对象而非属性</li>
+<li><code>Proxy</code>直接可以劫持整个对象,并返回一个新对象,不管是操作便利程度还是底层功能上都远强于<code>Object.defineProperty</code>。</li>
+<li><code>Proxy</code>可以直接监听数组的变化</li>
+<li><code>Proxy</code>有多达13种拦截方法,不限于<code>apply、ownKeys、deleteProperty、has</code>等等，这些是<code>Object.defineProperty</code>不具备的。</li>
+</ol>
+<ol start="27">
+<li>下面的输出结果是NaN，3</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	a++;</span><br><span class="line">	<span class="built_in">console</span>.log(a)</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	inner()</span><br><span class="line">&#125;</span><br><span class="line">outer()</span><br></pre></td></tr></table></figure>
+
+<h2 id="React-native"><a href="#React-native" class="headerlink" title="React native"></a>React native</h2><h5 id="ScrollView-FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？"><a href="#ScrollView-FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？" class="headerlink" title="ScrollView,FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？"></a>ScrollView,FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ScrollView：渲染数据量少</span><br><span class="line">FlatList：数据量多的</span><br><span class="line">ListView：数据量过大的情况会卡顿（row是持续添加不销毁，导致内存占用大）</span><br><span class="line">FlatList：看不见的元素用空白代替，节省内存渲染快。缺点：滑动太快会有白屏</span><br></pre></td></tr></table></figure>
+
+<h2 id="hybrid"><a href="#hybrid" class="headerlink" title="hybrid"></a>hybrid</h2><h5 id="移动端点击事件为什么会有延迟？有哪些方法可以解决？"><a href="#移动端点击事件为什么会有延迟？有哪些方法可以解决？" class="headerlink" title="移动端点击事件为什么会有延迟？有哪些方法可以解决？"></a>移动端点击事件为什么会有延迟？有哪些方法可以解决？</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原因：等待300ms看用户是点击还是双击缩放</span><br><span class="line">解决方法：禁止缩放，设置默认视口宽度为设备宽度设置css touch-action:none</span><br><span class="line">fastclick.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="jsBridge通信原理"><a href="#jsBridge通信原理" class="headerlink" title="jsBridge通信原理"></a>jsBridge通信原理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JavaScript调用native的方式，主要有两种：注入API和拦截URL scheme</span><br><span class="line">注入API方式的主要原理是：通过webview提供的接口，向JavaScript的Context（Window）中注入对象或者方法</span><br><span class="line">，让JavaScript调用时，直接执行相应的Native代码逻辑，达到JavaScript调用Native的目的。</span><br><span class="line">URL scheme是一种类似url的链接，是为了方便app直接互相调用设计的，形式和普通的url类似，主要区别是</span><br><span class="line">protocol和host一般是自定义的，例如：qunarhy://hy/url?url=ymfe.tech，protocol是qunarhy，host是hy。</span><br><span class="line">拦截URL scheme的主要流程是：web端通过某种方式(iframe.src)发送URL Scheme请求，之后Native拦截到请求并根据URL Scheme（包括所带的参数）进行相关操作</span><br><span class="line">Native调用JavaScript，其实就是执行拼接JavaScript字符串，从外部调用JavaScript中的方法，因此JavaScript的方法</span><br><span class="line">必须在全局的Window上。</span><br></pre></td></tr></table></figure>
+
+<h2 id="算法、数据结构部分"><a href="#算法、数据结构部分" class="headerlink" title="算法、数据结构部分"></a>算法、数据结构部分</h2><p>本来以为只有头条、猿辅导之类的公司才考算法，但是最后发现每家公司都会考，可能都想拿算法来做下区分度了吧。不过遇到做不出来的面试官基本也都会给提示，提示完能写出来也没问题。总体来说考的都是常见的题或者变形而来的，把LeetCode或剑指offer里常见的easy题看了就行。数据结构和设计模式问的很少，但是自己也需要总结了解下。</p>
+<ol>
+<li>冒泡排序</li>
+<li>快速排序</li>
+<li>回文字符串</li>
+<li>两数之和、k sum</li>
+<li>大数相加</li>
+<li>二分查找</li>
+<li>二叉树前中后遍历</li>
+<li>二叉树层次遍历</li>
+<li>二叉树深度优先遍历(递归、非递归)</li>
+<li>二叉树广度优先遍历(递归、非递归)</li>
+<li>和为n的二叉树路径</li>
+<li>二叉树深度</li>
+<li>二叉树是否对称</li>
+<li>链表反转</li>
+<li>16进制转10进制</li>
+</ol>
+<h2 id="项目部分"><a href="#项目部分" class="headerlink" title="项目部分"></a>项目部分</h2><p>每个公司都会有项目的介绍，如果你介绍的项目面试官有兴趣的话会很加分，所以一定要认真准备。我一般会介绍之前做的一个前端微服务的架构，项目做了很多优化也比较复杂，感觉算是自己比较加分的部分。</p>
+<ol>
+<li><p>介绍下你项目的难点（房型吸顶）</p>
+</li>
+<li><p>如果现在再看这个项目你会做哪些优化</p>
+</li>
+<li><p>根据项目的具体问题</p>
+</li>
+<li><p>我们项目怎么打包发布部署的？<br>通过webpack打包，发布到node服务器，pm2监控及负载均衡。<br>PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g pm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>静态资源怎么发布的<br>a. 简单来说就是文件上传，在不同的区域访问不同的cdn服务器（有cdn中间商来做的，类似七牛云，我们只负责上传就好），<br>b. 版本控制，目前我们是在请求后面加V=xxxxx或者文件生成的时候使用不同的后缀（类似hash）一些静态资源是日期,也有部分hash；目前也是采用日期的形式<br>eg:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;link</span><br><span class="line">        key=<span class="string">"tourplan"</span></span><br><span class="line">        rel=<span class="string">"stylesheet"</span></span><br><span class="line">        type=<span class="string">"text/css"</span></span><br><span class="line">        href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/tourplan.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;,</span><br><span class="line">&lt;link</span><br><span class="line">    key=<span class="string">"h5_koala"</span></span><br><span class="line">    rel=<span class="string">"stylesheet"</span></span><br><span class="line">    type=<span class="string">"text/css"</span></span><br><span class="line">    href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/h5_koala.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;,</span><br><span class="line">&lt;link</span><br><span class="line">    key=<span class="string">"dp_n"</span></span><br><span class="line">    rel=<span class="string">"stylesheet"</span></span><br><span class="line">    type=<span class="string">"text/css"</span></span><br><span class="line">    href=&#123;res.locals.publicPath + <span class="string">'/idiytour/css/dp_new.css?v='</span> + res.locals.version&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>做了哪些性能优化？<br>。。。</p>
+</li>
+<li><p>rn用了什么脚手架？底层是什么原理？<br>react-native-cli<br>讲jsx映射成native组件</p>
+</li>
+<li><p>rn中样式为啥不直接写个object却需要写成stylesheet（{}）这种形式<br>Instead of creating a new style object every time, StyleSheet helps to create style objects with an ID which is further used to reference instead rendering it again.<br>Moving code outside the render() helps in achieving the better understanding of code and adds meaning to low-level components.<br>The stylesheet is sent only once over the bridge unlike normal style object inside render().</p>
+</li>
+<li><p>怎么和服务端通信的，加密怎么加密的？<br>采用公钥密码体制RSA算法对数据加密</p>
+</li>
+<li><p>怎么回滚代码的？<br>git log -&gt; reset head -&gt; git push -f</p>
+</li>
+<li><p>你们jest-converage怎么跑到100%的，这个很难，你们怎么做到的？<br>通过代码覆盖率的检查，分析代码的合理性。删除冗余判断及逻辑，直到覆盖率达到100%</p>
+</li>
+<li><p>grahql你们后端怎么用的<br>目前后端不使用, 只要针对BFF来做graphql</p>
+</li>
+<li><p><a href="https://blog.csdn.net/u014209205/article/details/89892359" target="_blank" rel="noopener">cdn基本工作过程</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/15/jsClientCommunication/" rel="next" title="Hybrid和Javascript之间的秘密">
+                <i class="fa fa-chevron-left"></i> Hybrid和Javascript之间的秘密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/22/React新特性/" rel="prev" title="精读React新特性">
+                精读React新特性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="遗忘的一隅">
+            
+              <p class="site-author-name" itemprop="name">遗忘的一隅</p>
+              <p class="site-description motion-element" itemprop="description">千里之行,始于足下</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/acmwln" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http"><span class="nav-number">2.</span> <span class="nav-text">http</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css"><span class="nav-number">3.</span> <span class="nav-text">css</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-动画相关属性"><span class="nav-number">3.1.</span> <span class="nav-text">8. 动画相关属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#过渡动画"><span class="nav-number">3.1.0.1.</span> <span class="nav-text">过渡动画</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关键帧动画-通过这个对一个动画的过程的每一部分的表现都做出要求。"><span class="nav-number">3.1.0.2.</span> <span class="nav-text">关键帧动画:通过这个对一个动画的过程的每一部分的表现都做出要求。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-line-height属性1-5和150-区别"><span class="nav-number">3.2.</span> <span class="nav-text">11. line-height属性1.5和150%区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-em和rem的区别"><span class="nav-number">3.3.</span> <span class="nav-text">12. em和rem的区别</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#js"><span class="nav-number">4.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-闭包介绍和它的作用（手写）"><span class="nav-number">4.1.</span> <span class="nav-text">11. 闭包介绍和它的作用（手写）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-new实现过程"><span class="nav-number">4.2.</span> <span class="nav-text">12. new实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-防抖和节流（手写）"><span class="nav-number">4.3.</span> <span class="nav-text">13. 防抖和节流（手写）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-set、map介绍；和数组、对象的区别"><span class="nav-number">4.4.</span> <span class="nav-text">22. set、map介绍；和数组、对象的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set基本用法"><span class="nav-number">4.4.1.</span> <span class="nav-text">set基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Set-实例的属性和方法"><span class="nav-number">4.4.2.</span> <span class="nav-text">Set 实例的属性和方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Set-实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。"><span class="nav-number">4.4.3.</span> <span class="nav-text">Set 实例的方法分为两大类：操作方法（用于操作数据）和遍历方法（用于遍历成员）。下面先介绍四个操作方法。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遍历操作"><span class="nav-number">4.4.4.</span> <span class="nav-text">遍历操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map含义和基本用法"><span class="nav-number">4.5.</span> <span class="nav-text">Map含义和基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map实例的属性和操作方法"><span class="nav-number">4.5.1.</span> <span class="nav-text">Map实例的属性和操作方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遍历方法"><span class="nav-number">4.5.2.</span> <span class="nav-text">遍历方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-模块化介绍-commnjs-amd-cmd-umd-export"><span class="nav-number">4.6.</span> <span class="nav-text">23. 模块化介绍(commnjs amd cmd umd export)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-Proxy和Object-defineProperty"><span class="nav-number">4.7.</span> <span class="nav-text">26. Proxy和Object.defineProperty</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Object-defineProperty"><span class="nav-number">4.7.1.</span> <span class="nav-text">使用Object.defineProperty</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点："><span class="nav-number">4.7.1.1.</span> <span class="nav-text">缺点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#区别："><span class="nav-number">4.7.1.2.</span> <span class="nav-text">区别：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-native"><span class="nav-number">5.</span> <span class="nav-text">React native</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ScrollView-FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">ScrollView,FlatList的适用场景及区别。FlatList相对于ListView做了哪些优化？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hybrid"><span class="nav-number">6.</span> <span class="nav-text">hybrid</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#移动端点击事件为什么会有延迟？有哪些方法可以解决？"><span class="nav-number">6.0.0.1.</span> <span class="nav-text">移动端点击事件为什么会有延迟？有哪些方法可以解决？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsBridge通信原理"><span class="nav-number">7.</span> <span class="nav-text">jsBridge通信原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法、数据结构部分"><span class="nav-number">8.</span> <span class="nav-text">算法、数据结构部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目部分"><span class="nav-number">9.</span> <span class="nav-text">项目部分</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">遗忘的一隅</span>
+
+  
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
