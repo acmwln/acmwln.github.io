@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"acmwln.github.io.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="序在地址栏输入了baidu.com发生了什么 一、DNS 解析客户端输入 url 后先会问本地 hosts 文件，你有没有baidu.com对应服务器 IP 的映射关系呀。如果 hosts 说有啊，不就是135.128.111.65么拿去，拿到 IP 后这次找寻就结束了。如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器工作原理">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/02/29/browserWork/index.html">
+<meta property="og:site_name" content="娜一隅">
+<meta property="og:description" content="序在地址栏输入了baidu.com发生了什么 一、DNS 解析客户端输入 url 后先会问本地 hosts 文件，你有没有baidu.com对应服务器 IP 的映射关系呀。如果 hosts 说有啊，不就是135.128.111.65么拿去，拿到 IP 后这次找寻就结束了。如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/images/httpreqheader.jpeg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/images/httpresheader.jpeg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/images/htmldom.jpg">
+<meta property="og:image" content="http://acmwln.github.io.com/2020/02/29/images/cssdom.jpg">
+<meta property="og:updated_time" content="2020-07-20T11:19:51.776Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器工作原理">
+<meta name="twitter:description" content="序在地址栏输入了baidu.com发生了什么 一、DNS 解析客户端输入 url 后先会问本地 hosts 文件，你有没有baidu.com对应服务器 IP 的映射关系呀。如果 hosts 说有啊，不就是135.128.111.65么拿去，拿到 IP 后这次找寻就结束了。如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，">
+<meta name="twitter:image" content="http://acmwln.github.io.com/2020/02/29/images/httpreqheader.jpeg">
+
+<link rel="canonical" href="http://acmwln.github.io.com/2020/02/29/browserWork/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>浏览器工作原理 | 娜一隅</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">娜一隅</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/02/29/browserWork/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content="千里之行,始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浏览器工作原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-29 10:06:11" itemprop="dateCreated datePublished" datetime="2020-02-29T10:06:11+08:00">2020-02-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-20 19:19:51" itemprop="dateModified" datetime="2020-07-20T19:19:51+08:00">2020-07-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>在地址栏输入了<code>baidu.com</code>发生了什么</p>
+<h2 id="一、DNS-解析"><a href="#一、DNS-解析" class="headerlink" title="一、DNS 解析"></a>一、DNS 解析</h2><p>客户端输入 url 后先会问本地 hosts 文件，你有没有<code>baidu.com</code>对应服务器 IP 的映射关系呀。<br>如果 hosts 说有啊，不就是<code>135.128.111.65</code>么拿去，拿到 IP 后这次找寻就结束了。<br>如果 hosts 说没有，那就要问本地 DNS 解析器有没有缓存，如果本地 DNS 解析器说有啊，前几天你刚查过，我这里有记录，拿到 IP 后这次找寻结束。<br>如果本地 DNS 解析器没有，就要问本地 DNS 服务器（TCP/IP 中设置的首选 DNS 服务器），本地 DNS 找了下自己的配置，说有啊有啊我配的有拿去吧，拿到 IP 后本次找寻结束。<br>如果本地 DNS 服务器没有配置但缓存了映射关系，那么调用映射，返回 IP，本次找寻结束。</p>
+<p>如果以上都没有找到，本地 DNS 会请求根 DNS 找寻：<br>本地： 嘿，根 DNS，你知道<code>baidu.com</code>是谁管的么<br>根 DNS： 你去找顶级域名服务器 A 吧，它负责管 <code>.com</code><br>本地： 嘿，A，你知道<code>baidu.com</code>是谁管的么<br>顶级域 A: 你去找第二层域 B 吧，它负责 <code>baidu.com</code><br>本地： 嘿，B，你知道<code>baidu.com</code>谁负责么<br>二级层域 B：知道呀，<code>135.128.111.65</code>就是</p>
+<p>至此完成 DNS 解析。<br>（PS.如果是<code>www.baidu.com</code>, 重复上面的查找操作）</p>
+<p>[补充: DNS 预解析]<br><code>DNS Prefetching</code> 是让具有此属性的域名不需要用户点击链接就在后台解析，而域名解析和内容载入是串行的网络操作，所以这个方式能减少用户的等待时间，提升用户体验 。</p>
+<p>默认情况下浏览器会对页面中和当前域名（正在浏览网页的域名）不在同一个域的域名进行预获取，并且缓存结果，这就是隐式的 <code>DNS Prefetch</code>。如果想对页面中没有出现的域进行预获取，那么就要使用显示 <code>DNS Prefetch</code>了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//用meta信息来告知浏览器, 当前页面要做DNS预解析</span><br><span class="line">&lt;meta http-equiv=<span class="string">"x-dns-prefetch-control"</span> content=<span class="string">"on"</span>&gt;</span><br><span class="line">在页面header中使用link标签来强制对DNS预解析: </span><br><span class="line">&lt;link rel=<span class="string">"dns-prefetch"</span> href=<span class="string">"//www.baidu.com"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>dns-prefetch</code>需慎用，多页面重复DNS预解析会增加重复DNS查询次数，因为有开发者指出 禁用DNS 预读取能节省每月100亿的DNS查询 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//如果需要禁止隐式的 DNS Prefetch</span><br><span class="line">&lt;meta http-equiv=<span class="string">"x-dns-prefetch-control"</span> content=<span class="string">"off"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、建立-TCP-连接"><a href="#二、建立-TCP-连接" class="headerlink" title="二、建立 TCP 连接"></a>二、建立 TCP 连接</h2><p>这就是著名的三次握手了<br>述:建立连接，C向S发送请求连接SYN数据包，S收到SYN返回ACK=1确认与SYN请求连接，C收到ACK发送最终的ACK=1给S</p>
+<p>客户端：喂喂喂，服务器你在吗，我给你发个 X。<br>——第一次【SYN=1、ACK=0、seq=X】<br>服务器：我在我在，我收到你的 X 了，你之后从 X+1 发吧，我给你发个 Y 你能收到么。<br>——第二次【SYN=1、ACK=1、ack=X+1、seq=Y】<br>客户端：好的，我这次从 X+1 开始发，我收到你的 Y 了。<br>——第三次【SYN=1、ACK=1、seq=X+1、ack=Y+1】</p>
+<p>至此 TCP 连接建立完成，开始传输数据。</p>
+<h4 id="三次握手的目的"><a href="#三次握手的目的" class="headerlink" title="三次握手的目的"></a>三次握手的目的</h4><p>建立数据安全连接</p>
+<h4 id="为啥二次握手不行，带来的问题？"><a href="#为啥二次握手不行，带来的问题？" class="headerlink" title="为啥二次握手不行，带来的问题？"></a>为啥二次握手不行，带来的问题？</h4><p>二次握手，如果连接存在网络延迟，过期的连接发送到了服务器（在延迟时间时，客户端已经和服务器完成了数据交互），服务器收到经过两次握手完成连接继续进行数据交互，由于客户端是没有响应的，此时服务器向客户端发送数据，会超时而继续发送，将导致不必要的错误和资源的浪费。</p>
+<h4 id="三次握手第二、三次失败会怎么样？"><a href="#三次握手第二、三次失败会怎么样？" class="headerlink" title="三次握手第二、三次失败会怎么样？"></a>三次握手第二、三次失败会怎么样？</h4><p>服务器在没有收到客户端的ACK确认报文，会在一定的时间（可以设置）重新发送SYN和ACK=1的第二次握手信息，继续完成三次握手，但是在一定的尝试次数后，如果还是没有收到第三次握手的确认信息，则会放弃连接。</p>
+<h2 id="三、传输数据"><a href="#三、传输数据" class="headerlink" title="三、传输数据"></a>三、传输数据</h2><p>与服务器已建立连接，此时客户端发起 http 请求，取得具体数据。</p>
+<h3 id="请求报文"><a href="#请求报文" class="headerlink" title="请求报文"></a>请求报文</h3><p>一般 HTTP 请求报文有以下四个部分组成：</p>
+<h4 id="1-请求行"><a href="#1-请求行" class="headerlink" title="1. 请求行"></a>1. 请求行</h4><ul>
+<li><p>请求方法（GET、POST、PUT、DELETE、PATCH、HEAD、OPTIONS、TRACE）</p>
+</li>
+<li><p>请求地址（例如：<a href="http://baidu.com:80/index" target="_blank" rel="noopener">http://baidu.com:80/index</a> ）</p>
+<blockquote>
+<p>协议、主机、端口、路径，通常 http 请求端口可省略，默认为 80</p>
+</blockquote>
+</li>
+<li><p>协议版本（HTTP/1.0、HTTP/1.1、HTTP/2.0）</p>
+</li>
+</ul>
+<h4 id="2-请求头"><a href="#2-请求头" class="headerlink" title="2. 请求头"></a>2. 请求头</h4><p><img src="../images/httpreqheader.jpeg" alt></p>
+<h4 id="3-请求空行"><a href="#3-请求空行" class="headerlink" title="3. 请求空行"></a>3. 请求空行</h4><ul>
+<li>表示请求头结束，下面是请求数据</li>
+</ul>
+<h4 id="4-请求数据"><a href="#4-请求数据" class="headerlink" title="4. 请求数据"></a>4. 请求数据</h4><ul>
+<li>可选，如 get 请求可无请求数据</li>
+</ul>
+<h3 id="响应报文"><a href="#响应报文" class="headerlink" title="响应报文"></a>响应报文</h3><p>响应报文也由四个部分组成</p>
+<h4 id="1-状态行"><a href="#1-状态行" class="headerlink" title="1. 状态行"></a>1. 状态行</h4><ul>
+<li>协议版本（HTTP/1.0、HTTP/1.1、HTTP/2.0）</li>
+<li>状态码<ul>
+<li>1xx:继续处理</li>
+<li>2xx:成功【200】</li>
+<li>3xx:重定向【304（Not Modified）】</li>
+<li>4xx:客户端错误【400（Bad Request）、404（Not Found）、403（Forbidden）、401（Unauthorized）】</li>
+<li>5xx:服务端错误【500】</li>
+</ul>
+</li>
+<li>状态描述 （对状态码的简单描述）</li>
+</ul>
+<h4 id="2-响应头"><a href="#2-响应头" class="headerlink" title="2. 响应头"></a>2. 响应头</h4><p><img src="../images/httpresheader.jpeg" alt="avatar"></p>
+<h4 id="3-响应空行"><a href="#3-响应空行" class="headerlink" title="3. 响应空行"></a>3. 响应空行</h4><ul>
+<li>表示响应头结束，下面是响应数据</li>
+</ul>
+<h4 id="4-响应数据"><a href="#4-响应数据" class="headerlink" title="4. 响应数据"></a>4. 响应数据</h4><ul>
+<li>以请求<code>http://baidu.com/index</code>为例，响应数据为 html 文档</li>
+</ul>
+<h2 id="四、四次挥手"><a href="#四、四次挥手" class="headerlink" title="四、四次挥手"></a>四、四次挥手</h2><p>述： C向S发送FIN请求断开数据包，S收到后向C发送ACK=1，并继续传输剩下的数据，发送完后在向C发送FIN断开连接，C收到之后，再向S发送ACK=1确认信号，S收到后马上关闭，C在一个时间后自动关闭</p>
+<p>客户端：我没有要发的报文了，我要关闭连接了<br>——第一次【FIN=1、ACK=0、ack=Z、seq=X】<br>服务器：我同意，我还没发完，你再等一会。<br>——第二次【ACK=1、ack=X+1、seq=Z】<br>服务器：我发完了，可以关闭连接了<br>——第三次【FIN=1、ACK=1、ack=X、seq=Y】<br>客户端：真的要关了，再见了。<br>——第四次【ACK=1、seq=X、ack=Y】</p>
+<p>至此 TCP 连接断开</p>
+<h4 id="为啥连接是三次握手，断开连接却是要四次挥手？"><a href="#为啥连接是三次握手，断开连接却是要四次挥手？" class="headerlink" title="为啥连接是三次握手，断开连接却是要四次挥手？"></a>为啥连接是三次握手，断开连接却是要四次挥手？</h4><p>连接三次握手刚好可以保证安全连接；而四次挥手，是因为服务器在给客户端传输数据可能没有完成，所以第二次挥手会告诉客户端已经收到了客户端的断开请求，然后继续传输剩下没有完成的数据，传输完成后才发送第三次挥手FIN确认断开连接</p>
+<h4 id="第四次挥手时，为啥客户端要休2个时间才关闭客户端？"><a href="#第四次挥手时，为啥客户端要休2个时间才关闭客户端？" class="headerlink" title="第四次挥手时，为啥客户端要休2个时间才关闭客户端？"></a>第四次挥手时，为啥客户端要休2个时间才关闭客户端？</h4><p>确保在服务器收到了断开请求ACK，才断开。如果服务器没有收到请求，它会认为客户端没有收到它的FIN，所以它会在两个时间内会再次发送FIN请求，C收到后会重置时间，再发送一次ACK，反复</p>
+<h2 id="五、浏览器解析-HTML"><a href="#五、浏览器解析-HTML" class="headerlink" title="五、浏览器解析 HTML"></a>五、浏览器解析 HTML</h2><h4 id="1-生成-DOM-树"><a href="#1-生成-DOM-树" class="headerlink" title="1.生成 DOM 树"></a>1.生成 DOM 树</h4><p>解析器输出解析树，采用堆栈的方式（遇到开始标签压入，遇到结束标签推出）将 html 文档解析成 dom 树</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;这里是title&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;这里是内容&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  &lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>解析如下:<br><img src="../images/htmldom.jpg" alt="avatar"></p>
+<h4 id="2-生成-CSSOM-树"><a href="#2-生成-CSSOM-树" class="headerlink" title="2.生成 CSSOM 树"></a>2.生成 CSSOM 树</h4><p><img src="../images/cssdom.jpg" alt="avatar"></p>
+<h4 id="3-合并-DOM-树和-CSSOM-树"><a href="#3-合并-DOM-树和-CSSOM-树" class="headerlink" title="3.合并 DOM 树和 CSSOM 树"></a>3.合并 DOM 树和 CSSOM 树</h4><p>合并成渲染树，渲染树只包含渲染网页所需的节点</p>
+<h2 id="六、布局渲染"><a href="#六、布局渲染" class="headerlink" title="六、布局渲染"></a>六、布局渲染</h2><p>根据渲染树计算 CSS 样式，即每个节点在页面中的大小和位置<br>html 默认是流式布局，这里面有两个重要的概念：</p>
+<ol>
+<li>重排（reflow）： 节点尺寸发生变化</li>
+<li>重绘（repaint）：节点尺寸没变，例如颜色变了，但不影响整体布局<br>通常说的 dom 操作的优化就是减少reflow和repaint</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/前端/" rel="tag"># 前端</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/04/React/" rel="prev" title="React的那些事儿">
+      <i class="fa fa-chevron-left"></i> React的那些事儿
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/01/internet/" rel="next" title="计算机网络">
+      计算机网络 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、DNS-解析"><span class="nav-number">2.</span> <span class="nav-text">一、DNS 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、建立-TCP-连接"><span class="nav-number">3.</span> <span class="nav-text">二、建立 TCP 连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手的目的"><span class="nav-number">3.0.1.</span> <span class="nav-text">三次握手的目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为啥二次握手不行，带来的问题？"><span class="nav-number">3.0.2.</span> <span class="nav-text">为啥二次握手不行，带来的问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手第二、三次失败会怎么样？"><span class="nav-number">3.0.3.</span> <span class="nav-text">三次握手第二、三次失败会怎么样？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、传输数据"><span class="nav-number">4.</span> <span class="nav-text">三、传输数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求报文"><span class="nav-number">4.1.</span> <span class="nav-text">请求报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-请求行"><span class="nav-number">4.1.1.</span> <span class="nav-text">1. 请求行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-请求头"><span class="nav-number">4.1.2.</span> <span class="nav-text">2. 请求头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-请求空行"><span class="nav-number">4.1.3.</span> <span class="nav-text">3. 请求空行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-请求数据"><span class="nav-number">4.1.4.</span> <span class="nav-text">4. 请求数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#响应报文"><span class="nav-number">4.2.</span> <span class="nav-text">响应报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-状态行"><span class="nav-number">4.2.1.</span> <span class="nav-text">1. 状态行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-响应头"><span class="nav-number">4.2.2.</span> <span class="nav-text">2. 响应头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-响应空行"><span class="nav-number">4.2.3.</span> <span class="nav-text">3. 响应空行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-响应数据"><span class="nav-number">4.2.4.</span> <span class="nav-text">4. 响应数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、四次挥手"><span class="nav-number">5.</span> <span class="nav-text">四、四次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为啥连接是三次握手，断开连接却是要四次挥手？"><span class="nav-number">5.0.1.</span> <span class="nav-text">为啥连接是三次握手，断开连接却是要四次挥手？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四次挥手时，为啥客户端要休2个时间才关闭客户端？"><span class="nav-number">5.0.2.</span> <span class="nav-text">第四次挥手时，为啥客户端要休2个时间才关闭客户端？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、浏览器解析-HTML"><span class="nav-number">6.</span> <span class="nav-text">五、浏览器解析 HTML</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-生成-DOM-树"><span class="nav-number">6.0.1.</span> <span class="nav-text">1.生成 DOM 树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-生成-CSSOM-树"><span class="nav-number">6.0.2.</span> <span class="nav-text">2.生成 CSSOM 树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-合并-DOM-树和-CSSOM-树"><span class="nav-number">6.0.3.</span> <span class="nav-text">3.合并 DOM 树和 CSSOM 树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、布局渲染"><span class="nav-number">7.</span> <span class="nav-text">六、布局渲染</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">遗忘的一隅</p>
+  <div class="site-description" itemprop="description">千里之行,始于足下</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">遗忘的一隅</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
