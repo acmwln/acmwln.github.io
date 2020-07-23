@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"acmwln.github.io.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="千里之行,始于足下">
-<meta name="keywords" content="网络">
+  <meta name="description" content="序这篇文章用来解决解决 nvm is not compatible with the npm config &amp;quot;prefix&amp;quot;,在使用nvm install 指定版本node的时候安装好后，关闭终端重启终端失效的问题。这个问题困扰很久,最终得到解决，遂记录解决方案，不再踩坑。 使用nvm安装指定版本的node123nvm install v12.18.2          //安">
+<meta name="keywords" content="前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浏览器缓存">
-<meta property="og:url" content="http://acmwln.github.io.com/2020/03/02/browserCache/index.html">
+<meta property="og:title" content="nvm安装node关闭终端失效踩坑记">
+<meta property="og:url" content="http://acmwln.github.io.com/2020/07/23/nvm 安装node关闭终端失效踩坑记/index.html">
 <meta property="og:site_name" content="娜一隅">
-<meta property="og:description" content="千里之行,始于足下">
+<meta property="og:description" content="序这篇文章用来解决解决 nvm is not compatible with the npm config &amp;quot;prefix&amp;quot;,在使用nvm install 指定版本node的时候安装好后，关闭终端重启终端失效的问题。这个问题困扰很久,最终得到解决，遂记录解决方案，不再踩坑。 使用nvm安装指定版本的node123nvm install v12.18.2          //安">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-20T11:19:51.776Z">
+<meta property="og:updated_time" content="2020-07-23T06:42:30.337Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浏览器缓存">
-<meta name="twitter:description" content="千里之行,始于足下">
+<meta name="twitter:title" content="nvm安装node关闭终端失效踩坑记">
+<meta name="twitter:description" content="序这篇文章用来解决解决 nvm is not compatible with the npm config &amp;quot;prefix&amp;quot;,在使用nvm install 指定版本node的时候安装好后，关闭终端重启终端失效的问题。这个问题困扰很久,最终得到解决，遂记录解决方案，不再踩坑。 使用nvm安装指定版本的node123nvm install v12.18.2          //安">
 
-<link rel="canonical" href="http://acmwln.github.io.com/2020/03/02/browserCache/">
+<link rel="canonical" href="http://acmwln.github.io.com/2020/07/23/nvm 安装node关闭终端失效踩坑记/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>浏览器缓存 | 娜一隅</title>
+  <title>nvm安装node关闭终端失效踩坑记 | 娜一隅</title>
   
 
 
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/02/browserCache/">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/07/23/nvm 安装node关闭终端失效踩坑记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浏览器缓存
+          nvm安装node关闭终端失效踩坑记
         </h1>
 
         <div class="post-meta">
@@ -188,23 +188,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-03-02 10:43:46" itemprop="dateCreated datePublished" datetime="2020-03-02T10:43:46+08:00">2020-03-02</time>
+              <time title="创建时间：2020-07-23 14:16:28 / 修改时间：14:42:30" itemprop="dateCreated datePublished" datetime="2020-07-23T14:16:28+08:00">2020-07-23</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-20 19:19:51" itemprop="dateModified" datetime="2020-07-20T19:19:51+08:00">2020-07-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index"><span itemprop="name">网络</span></a>
+                  <a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
                 </span>
             </span>
 
@@ -219,7 +213,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>这篇文章用来解决解决 <code>nvm is not compatible with the npm config &quot;prefix&quot;</code>,在使用<code>nvm install</code> 指定版本<code>node</code>的时候安装好后，关闭终端重启终端失效的问题。这个问题困扰很久,最终得到解决，遂记录解决方案，不再踩坑。</p>
+<h2 id="使用nvm安装指定版本的node"><a href="#使用nvm安装指定版本的node" class="headerlink" title="使用nvm安装指定版本的node"></a>使用nvm安装指定版本的node</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nvm install v12<span class="number">.18</span><span class="number">.2</span>          <span class="comment">//安装指定版本的node</span></span><br><span class="line">nvm use v12<span class="number">.18</span><span class="number">.2</span></span><br><span class="line">nvm alias <span class="keyword">default</span> v12<span class="number">.18</span><span class="number">.2</span>    <span class="comment">//把 node v12.18.2 变成默认版本</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Mac系统每次打开终端都会提示下面这段话"><a href="#Mac系统每次打开终端都会提示下面这段话" class="headerlink" title="Mac系统每次打开终端都会提示下面这段话"></a>Mac系统每次打开终端都会提示下面这段话</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm is not compatible <span class="keyword">with</span> the npm config <span class="string">"prefix"</span> option: currently <span class="keyword">set</span> to "/usr/local" </span><br><span class="line">Run npm config delete prefix or nvm use --delete-prefix v12.18.2 --silent to unset it.</span><br></pre></td></tr></table></figure>
+
+<h2 id="现状问题"><a href="#现状问题" class="headerlink" title="现状问题"></a>现状问题</h2><p>终端运行 <code>nvm use --delete-prefix v12.18.2 --silent</code> 可以解决，但是重新打开终端之后还是会有问题。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
+<li><p>删除并重新设置 <code>nvm prefix</code></p>
+</li>
+<li><p>运行 <code>nvm use --delete-prefix v12.18.2 --silent</code> 确保npm命令可以使用；</p>
+</li>
+<li><p>运行 <code>npm config delete prefix</code> 删除 <code>nvm prefix</code>；</p>
+</li>
+<li><p>运行 <code>npm config set prefix $NVM_DIR/versions/node/v12.18.2</code> 设置 <code>nvm prefix</code> 为v12.18.2。</p>
+</li>
+</ol>
+<p>ps: 注意：更改版本号，用错误消息中的提示的版本号。</p>
+
     </div>
 
     
@@ -228,7 +239,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/网络/" rel="tag"># 网络</a>
+              <a href="/tags/前端/" rel="tag"># 前端</a>
           </div>
 
         
@@ -237,12 +248,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/01/essay/" rel="prev" title="essay">
-      <i class="fa fa-chevron-left"></i> essay
+    <a href="/2020/07/20/异步代码规范/" rel="prev" title="异步代码规范">
+      <i class="fa fa-chevron-left"></i> 异步代码规范
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/02/cookeVsSession/" rel="next" title="浅谈cookie，session和localStorage，sessionStorage的区别及cookie安全方面">
-      浅谈cookie，session和localStorage，sessionStorage的区别及cookie安全方面 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/23/Promise踩坑记/" rel="next" title="Promise踩坑记">
+      Promise踩坑记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -302,6 +313,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用nvm安装指定版本的node"><span class="nav-number">2.</span> <span class="nav-text">使用nvm安装指定版本的node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac系统每次打开终端都会提示下面这段话"><span class="nav-number">3.</span> <span class="nav-text">Mac系统每次打开终端都会提示下面这段话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#现状问题"><span class="nav-number">4.</span> <span class="nav-text">现状问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">5.</span> <span class="nav-text">解决</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

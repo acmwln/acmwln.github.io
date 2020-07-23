@@ -3,7 +3,7 @@ title: promise相关场景题
 date: 2020-04-12 16:48:28
 categories: 前端
 tags: 
-    - 前端
+    - 异步
 ---
 
 

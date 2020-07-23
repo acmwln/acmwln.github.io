@@ -163,6 +163,186 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/07/23/Promise踩坑记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content="千里之行,始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/23/Promise踩坑记/" class="post-title-link" itemprop="url">Promise踩坑记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-23 14:46:25 / 修改时间：14:58:25" itemprop="dateCreated datePublished" datetime="2020-07-23T14:46:25+08:00">2020-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Promise/" itemprop="url" rel="index"><span itemprop="name">Promise</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>异步回调的一个很大的问题在于callback hell也就是“回调地狱”。多层嵌套回调函数，严重影响代码规范，所以Promise的出现就是为了解决callback hell，在前端应用中得到广泛的应用，所以想要用好它还得遵循它的规范。下面结合最近做的需求做了一些总结，对其加深印象：</p>
+<h3 id="分析问题："><a href="#分析问题：" class="headerlink" title="分析问题："></a>分析问题：</h3><p>Promise链式引发的问题，现在需要返回一个Promise</p>
+<p>目标：满足A条件则需要reject()然后触发外层的catch()，形成一个链式，这样就不能走到外部的Promise.then(()=&gt;{})，才不可能走到B流程，反之，resolve()，要走到也就是B流程，不符逻辑</p>
+<h3 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h3><p>Promise有两种异常捕获方式，一个是then中的reject，另一个是catch()方法</p>
+<p>Promise.prototype.catch方法返回也是一个Promise，使用方式同then方法，用于处理异常捕获情况。该方法捕获属于就近捕获原则，距离错误最近的catch将会捕获错误，后续不再捕获。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">  reject(<span class="string">'error'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">p.then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;,(err) =&gt;&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(err)     <span class="comment">//error</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> p1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">  resolve(<span class="string">"success"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">p1.then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'fail!'</span>)</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">e</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="comment">//如果返回reject时会调用这个回调函数</span></span><br><span class="line">  <span class="built_in">console</span>.log(e)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>区别：</p>
+<ul>
+<li><code>catch</code> 捕获的是上一个<code>then</code>方法出现的异常</li>
+<li><code>then</code>方法第二个参数捕获的是当前<code>promise</code>出现的异常</li>
+</ul>
+<p>如果在<code>Promise</code>链条中发生异常，这个异常会被一直往后传递，直到被捕获，所以<code>catch</code>方法是整个链条注册的捕获</p>
+<h3 id="解决问题："><a href="#解决问题：" class="headerlink" title="解决问题："></a>解决问题：</h3><p>返回的内部<code>Promise</code>不要<code>catch()</code>，否则内部<code>Promise</code>出现<code>error</code>是走不到外层<code>catch()</code>的，就会一直走到B流程，不符合业务逻辑场景</p>
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><p><code>async await</code> 一定要加<code>try catch</code>，一定要加<code>try catch</code>，一定要加<code>try catch</code>，重要的事情说三遍～  如果有需要可以根据个人需求加上<code>finally</code></p>
+<h3 id="example："><a href="#example：" class="headerlink" title="example："></a>example：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">handlePreventStatus = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line"> <span class="keyword">this</span>.showLoading()</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">//返回一个promise</span></span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> <span class="keyword">this</span>.getPreventStatus();</span><br><span class="line">  <span class="comment">//your coding</span></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (error) &#123;</span><br><span class="line"> <span class="comment">// 抛出异常</span></span><br><span class="line"> <span class="built_in">console</span>.log(error);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">finally</span> &#123;</span><br><span class="line">  <span class="comment">// 无论try还是catch都会走到这里，个人根据自己的需求视情况coding</span></span><br><span class="line">  <span class="keyword">this</span>.hideLoading()</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="规范："><a href="#规范：" class="headerlink" title="规范："></a>规范：</h3><ul>
+<li><p><code>Promise</code>要符合<code>Promise/A+</code>规范，下面将揭开它的神秘面纱～</p>
+</li>
+<li><p><code>Async Await</code> 以同步的方式处理异步，使用它的时候一定要加<code>try catch</code> ，其实它就是个<code>Generator+ Promise</code>，下面将揭开它的神秘面纱～ </p>
+</li>
+</ul>
+<h3 id="Promise源码："><a href="#Promise源码：" class="headerlink" title="Promise源码："></a>Promise源码：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Promise构造函数源码</span></span><br><span class="line"><span class="keyword">const</span> FULL_FILLED = <span class="string">'fullFilled'</span>;<span class="comment">// 成功</span></span><br><span class="line"><span class="keyword">const</span> REJECTED = <span class="string">'rejected'</span>; <span class="comment">//失败</span></span><br><span class="line"><span class="keyword">const</span> PENDING = <span class="string">'pending'</span>; <span class="comment">//初始状态</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">Promise</span> = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.status = PENDING;</span><br><span class="line">    <span class="keyword">this</span>.successCallbacks = [];</span><br><span class="line">    <span class="keyword">this</span>.failedCallbacks = [];</span><br><span class="line">    <span class="keyword">let</span> resolve = <span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//resolve(value)</span></span><br><span class="line">        <span class="keyword">this</span>.value = v;</span><br><span class="line">        <span class="keyword">this</span>.status = FULL_FILLED;</span><br><span class="line">        <span class="keyword">this</span>.successCallbacks.forEach(<span class="function"><span class="params">fn</span>=&gt;</span>fn(<span class="keyword">this</span>.value))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> reject = <span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.value = v;</span><br><span class="line">        <span class="keyword">this</span>.status = REJECTED;</span><br><span class="line">        <span class="keyword">this</span>.failedCallbacks.forEach(<span class="function"><span class="params">fun</span> =&gt;</span> fn(<span class="keyword">this</span>.value))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        fn(resolve,reject)</span><br><span class="line">    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">        reject(e)    <span class="comment">//new promise.then() 执行失败</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//递归promise</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">excutePromise</span>(<span class="params">promiseOrVal,resolve,reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(promiseOrVal <span class="keyword">instanceof</span> <span class="built_in">Promise</span>)&#123;</span><br><span class="line">        promiseOrVal.then(<span class="function">(<span class="params">v</span>)=&gt;</span>&#123;</span><br><span class="line">            excutePromise(v,resolve,reject)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">//value基本数据类型</span></span><br><span class="line">        resolve(promiseOrVal);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//then一定要返回Promise供外部.then</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.then = <span class="function"><span class="keyword">function</span>(<span class="params">onFullFilledFn,onRejectedFn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> chainPromise;</span><br><span class="line">    <span class="comment">//如果当前,3s以内,pending</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.status === PENDING)&#123;</span><br><span class="line">            chainPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">                <span class="comment">//保存函数</span></span><br><span class="line">                <span class="keyword">this</span>.successCallbacks.push(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                    <span class="comment">//resolve后才会被发布,所执行</span></span><br><span class="line">                    <span class="keyword">try</span>&#123;</span><br><span class="line">                        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                            <span class="keyword">let</span> value = onFullFilledFn(<span class="keyword">this</span>.value)   <span class="comment">//value有可能是promise也有可能是一般值</span></span><br><span class="line">                            excutePromise(value,resolve,reject)</span><br><span class="line">                        &#125;)</span><br><span class="line">                    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)             </span><br><span class="line">                <span class="keyword">this</span>.failedCallbacks.push(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                    <span class="keyword">try</span>&#123;</span><br><span class="line">                        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                        	<span class="keyword">let</span> value = onRejectedFn(<span class="keyword">this</span>.value)   <span class="comment">//value有可能是promise也有可能是一般值</span></span><br><span class="line">                            excutePromise(value,resolve,reject)</span><br><span class="line">                        &#125;)</span><br><span class="line">                    &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line"></span><br><span class="line">             &#125;) </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.status === FULL_FILLED)&#123;</span><br><span class="line">        chainPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                    <span class="keyword">let</span> value = onFullFilledFn(<span class="keyword">this</span>.value)</span><br><span class="line">                    excutePromise(value,resolve,reject)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">                reject(e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.status === REJECTED)&#123;</span><br><span class="line">        chainPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">                    <span class="keyword">let</span> value = onRejectedFn(<span class="keyword">this</span>.value)</span><br><span class="line">                    excutePromise(value,resolve,reject)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">                reject(e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> chainPromise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//模拟3组异步,返回的是promise实例</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'promise执行了'</span>)    <span class="comment">//promise构造器中的函数参数,一经实例化,立即执行</span></span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'第一件事....'</span>)</span><br><span class="line">            resolve(<span class="string">'abcd'</span>);</span><br><span class="line">        &#125;,<span class="number">3000</span>)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'刚才成功了resolve'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'接收到的数据为:'</span>,data)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'第2件事。。。。'</span>)</span><br><span class="line">            resolve(<span class="string">'xxx'</span>)     <span class="comment">//3s后调用resolve函数</span></span><br><span class="line">        &#125;,<span class="number">3000</span>);</span><br><span class="line">    &#125;); </span><br><span class="line">&#125;).then(<span class="function">(<span class="params">d</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'结束了'</span>,d)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="await源码："><a href="#await源码：" class="headerlink" title="await源码："></a>await源码：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> v1 = <span class="keyword">await</span> <span class="built_in">Promise</span>.resolve(<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(v1);</span><br><span class="line">    <span class="keyword">let</span> v2 = <span class="keyword">await</span> <span class="built_in">Promise</span>.resolve(<span class="number">200</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(v2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//await实现原理是从Generator来的</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">yieldPromise</span>(<span class="params">genrator</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> interator = genrator();</span><br><span class="line">    interatorNext.call(interator)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">interatorNext</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    result = interator.next(value)</span><br><span class="line">    <span class="keyword">if</span>(result.done) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">let</span> val = result.value;</span><br><span class="line">    <span class="built_in">Promise</span>.resolve(val).then(<span class="function"><span class="params">val</span>=&gt;</span>&#123;</span><br><span class="line">        interatorNext.call(interator,val)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">yieldPromise(<span class="function"><span class="keyword">function</span>* (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> v1 = <span class="keyword">yield</span> <span class="built_in">Promise</span>.resolve(<span class="number">100</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(v1)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.prototype.then()</span><br><span class="line"><span class="built_in">Promise</span>.prototype.catch()</span><br><span class="line"><span class="comment">//ES2018 引入</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.finally()</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="built_in">Promise</span>.all() </span><br><span class="line"><span class="built_in">Promise</span>.race() </span><br><span class="line"><span class="built_in">Promise</span>.resolve() </span><br><span class="line"><span class="built_in">Promise</span>.reject()</span><br><span class="line"></span><br><span class="line"><span class="comment">//ES2020 新提案</span></span><br><span class="line"><span class="built_in">Promise</span>.allSettled()    </span><br><span class="line"><span class="built_in">Promise</span>.any()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/07/23/nvm 安装node关闭终端失效踩坑记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="遗忘的一隅">
+      <meta itemprop="description" content="千里之行,始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="娜一隅">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/23/nvm 安装node关闭终端失效踩坑记/" class="post-title-link" itemprop="url">nvm安装node关闭终端失效踩坑记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-23 14:16:28 / 修改时间：14:42:30" itemprop="dateCreated datePublished" datetime="2020-07-23T14:16:28+08:00">2020-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>这篇文章用来解决解决 <code>nvm is not compatible with the npm config &quot;prefix&quot;</code>,在使用<code>nvm install</code> 指定版本<code>node</code>的时候安装好后，关闭终端重启终端失效的问题。这个问题困扰很久,最终得到解决，遂记录解决方案，不再踩坑。</p>
+<h2 id="使用nvm安装指定版本的node"><a href="#使用nvm安装指定版本的node" class="headerlink" title="使用nvm安装指定版本的node"></a>使用nvm安装指定版本的node</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nvm install v12<span class="number">.18</span><span class="number">.2</span>          <span class="comment">//安装指定版本的node</span></span><br><span class="line">nvm use v12<span class="number">.18</span><span class="number">.2</span></span><br><span class="line">nvm alias <span class="keyword">default</span> v12<span class="number">.18</span><span class="number">.2</span>    <span class="comment">//把 node v12.18.2 变成默认版本</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Mac系统每次打开终端都会提示下面这段话"><a href="#Mac系统每次打开终端都会提示下面这段话" class="headerlink" title="Mac系统每次打开终端都会提示下面这段话"></a>Mac系统每次打开终端都会提示下面这段话</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm is not compatible <span class="keyword">with</span> the npm config <span class="string">"prefix"</span> option: currently <span class="keyword">set</span> to "/usr/local" </span><br><span class="line">Run npm config delete prefix or nvm use --delete-prefix v12.18.2 --silent to unset it.</span><br></pre></td></tr></table></figure>
+
+<h2 id="现状问题"><a href="#现状问题" class="headerlink" title="现状问题"></a>现状问题</h2><p>终端运行 <code>nvm use --delete-prefix v12.18.2 --silent</code> 可以解决，但是重新打开终端之后还是会有问题。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
+<li><p>删除并重新设置 <code>nvm prefix</code></p>
+</li>
+<li><p>运行 <code>nvm use --delete-prefix v12.18.2 --silent</code> 确保npm命令可以使用；</p>
+</li>
+<li><p>运行 <code>npm config delete prefix</code> 删除 <code>nvm prefix</code>；</p>
+</li>
+<li><p>运行 <code>npm config set prefix $NVM_DIR/versions/node/v12.18.2</code> 设置 <code>nvm prefix</code> 为v12.18.2。</p>
+</li>
+</ol>
+<p>ps: 注意：更改版本号，用错误消息中的提示的版本号。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/07/20/异步代码规范/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -194,7 +374,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-22 17:33:58" itemprop="dateModified" datetime="2020-07-22T17:33:58+08:00">2020-07-22</time>
+                <time title="修改时间：2020-07-23 14:59:34" itemprop="dateModified" datetime="2020-07-23T14:59:34+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,7 +436,7 @@
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">handlePreventStatus = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">this</span>.showLoading()</span><br><span class="line">  <span class="comment">//返回一个promise</span></span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> <span class="keyword">this</span>.getPreventStatus();</span><br><span class="line">  <span class="comment">//your coding...</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">this</span>.hideLoading()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//good</span></span><br><span class="line">handlePreventStatus = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line"> <span class="keyword">this</span>.showLoading()</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">//返回一个promise</span></span><br><span class="line">  <span class="keyword">let</span> res = <span class="keyword">await</span> <span class="keyword">this</span>.getPreventStatus();</span><br><span class="line">  <span class="comment">//your coding...</span></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (error) &#123;</span><br><span class="line"> <span class="comment">// 抛出异常</span></span><br><span class="line"> <span class="built_in">console</span>.log(error);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">finally</span> &#123;</span><br><span class="line">  <span class="comment">// 无论try还是catch都会走到这里，个人根据自己的需求视情况coding</span></span><br><span class="line">  <span class="keyword">this</span>.hideLoading()</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p> 写在最后<br> 想揭开Promise的神秘面纱可以挪步 Promise踩坑记<br>  END～</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p> 想揭开Promise的神秘面纱可以挪步 我的另一篇文章【Promise踩坑记】</p>
 
       
     </div>
@@ -809,7 +989,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-20 19:19:51" itemprop="dateModified" datetime="2020-07-20T19:19:51+08:00">2020-07-20</time>
+                <time title="修改时间：2020-07-23 15:00:28" itemprop="dateModified" datetime="2020-07-23T15:00:28+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1323,238 +1503,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/10/reactNativeStyle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content="千里之行,始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/reactNativeStyle/" class="post-title-link" itemprop="url">CRN布局样式中的一些小分享</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-10 14:54:07" itemprop="dateCreated datePublished" datetime="2020-03-10T14:54:07+08:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-20 19:19:51" itemprop="dateModified" datetime="2020-07-20T19:19:51+08:00">2020-07-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React-Native/" itemprop="url" rel="index"><span itemprop="name">React Native</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>关于<code>&lt;textInput&gt;</code>输入框： <code>TextInput</code>在安卓上默认有一个底边黑线框，同时会有一些<code>padding</code>。如果要想使其看起来和<code>iOS</code>上尽量一致，则需要设置<code>padding: 0</code>，同时设置<code>underlineColorAndroid=&quot;transparent&quot;</code>来去掉底边框。加上<code>padding: 0</code>保证不同机型上下垂直居中。</p>
-</li>
-<li><p>关于省略号： crn中是通过<code>ellipsizeMode=&#39;tail&#39; numberOfLines={1}</code>两个属性同时控制省略号…（注：这两个属性需要写在<code>&lt;Text&gt;</code>上，不能写在<code>style</code>里。）</p>
-</li>
-<li><p><code>borderRadius</code>不能和实现三角形样式一起使用，否则不生效；单独写<code>borderBottomLeftRadius</code>和<code>borderBottomRightRadius、borderTopLeftRadius、borderTopRightRadius</code>也不会生效。</p>
-</li>
-<li><p>实现文本垂直居中的时候尽量不要使用行高，因为行高会在不同平台和机型上面表现的形式不一样，为了保险起见，根据主轴方向使用<code>justifyContent: ‘center’</code>就可以啦!</p>
-</li>
-<li><p>一般设计稿的尺寸是<code>iphone6</code>的尺寸<code>750px</code>的，我们需要做个适配：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; width, height &#125; = Dimensions.get(<span class="string">'window'</span>);</span><br><span class="line"><span class="keyword">let</span> WIDTH = width, HEIGHT = height;</span><br><span class="line"><span class="keyword">const</span> rem = <span class="function">(<span class="params">a</span>) =&gt;</span> &#123; <span class="keyword">return</span> a * (WIDTH / <span class="number">750</span>); &#125;;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>关于<code>&lt;Text&gt;</code>： <code>Text</code>元素会继承<code>View</code>层的<code>background</code>: 可以给<code>Text</code>设置<code>backgroundColor:&#39;transparent&#39;</code>解决</p>
-</li>
-<li><p><code>crn</code>中的<code>width</code>和<code>height</code>是包含<code>padding</code>和<code>border</code>的。</p>
-</li>
-<li><p>关于<code>Image</code>：可以做背景图展示，它有几个属性方法：<br><code>Source：{uri:string}</code> 进行标记图片的引用，该参数可以为一个网络url地址或者一个本地的路径<br>resizeMode：缩放比例，可选参数<code>(&#39;cover&#39;, &#39;contain&#39;, &#39;stretch&#39;)</code> 该当图片的尺寸超过布局的尺寸的时候，会根据设置<code>Mode</code>进行缩放或者裁剪图片，eg：<code>resizeMode: Image.resizeMode.cover</code></p>
-</li>
-<li><p>关于雪碧图<code>&lt;SpriteImage&gt;</code>： 雪碧图需要去根据crop裁剪图片，所以会导致在不同机型或者平台中有拉伸缩小情况。以后建议尽量不适用雪碧图。如果需要使用雪碧图也有解决方案: 通过判断机型的dpr来加载图片，安卓的dpr比较散，有1、1.5、2、3、4的，ios的dpr有2、3的。所以需要@3图和@2倍图来做下兼容：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;SpriteImage style=&#123;styles.spritePic&#125;</span><br><span class="line">source=&#123;&#123; <span class="attr">uri</span>: PixelRatio.get() === <span class="number">3</span> ? <span class="string">'https://pic.c-ctrip.com/VacationH5Pic/taocan/sdp/n_banner/un_banner@3.png'</span> : <span class="string">'https://pic.c-ctrip.com/VacationH5Pic/taocan/sdp/n_banner/un_banner.png'</span>, <span class="attr">imageSize</span>: &#123; <span class="attr">width</span>: <span class="number">169</span>, <span class="attr">height</span>: <span class="number">167</span> &#125;, crop &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">&lt;<span class="regexp">/SpriteImage&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对于小屏手机例如<code>320</code>的，可以通过<code>width === 320</code> 来进行小屏手机的一些兼容</p>
-</li>
-<li><p>针对<code>1px</code>的<code>border</code>线: <code>border: 1 / PixelRatio.get()</code></p>
-</li>
-<li><p>关于<code>&lt;TouchableOpacity&gt;</code>：添加点击事件的标签，展示效果会有透明度的变化可以使用<code>activeOpacity={1}</code>去除透明度的变化，<code>&lt;View&gt;</code>外层套此标签的时候style样式尽量写在<code>&lt;View&gt;</code>里，之前做的时候发现写在<br><code>&lt;TouchableOpacity&gt;</code>这个里面出现问题。</p>
-</li>
-<li><p><code>crn</code>中的分辨率适配： <code>react native</code>中使用的尺寸单位是<code>pt</code>,是一个绝对长度，设计稿使用的是<code>px</code>，这两种尺寸换算可以通过<code>PixelRatio</code>转换。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;PixelRatio&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">const</span> pt2px = <span class="function"><span class="params">pt</span>=&gt;</span>PixelRatio.getPixelSizeForLayoutSize(pt);</span><br><span class="line"><span class="keyword">const</span> px2pt = <span class="function"><span class="params">px</span>=&gt;</span>PixelRatio.roundToNearestPixel(px);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>梯形+圆角</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Text, View, StyleSheet &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">          &lt;View style = &#123;[styles.btn_one,&#123;<span class="attr">backgroundColor</span>: <span class="string">'#fff'</span>&#125;]&#125;&gt;</span><br><span class="line">            &lt;Text style = &#123;styles.textblock&#125;&gt;高铁+地铁&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">            &lt;View style = &#123;styles.cateory&#125;&gt;&lt;/</span>View&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">          &lt;View style = &#123;styles.btn_one&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Text style = &#123;styles.textblock&#125;&gt;高铁&lt;/</span>Text&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">           &lt;View style = &#123;styles.btn_one&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Text style = &#123;styles.textblock&#125;&gt;地铁&lt;/</span>Text&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>View&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  container: &#123;</span><br><span class="line">    backgroundColor: <span class="string">'#53b8fb'</span>,</span><br><span class="line">    height: <span class="number">100</span>,</span><br><span class="line">    flexDirection: <span class="string">"row"</span>,</span><br><span class="line">    borderTopLeftRadius: <span class="number">7</span>,</span><br><span class="line">    borderTopRightRadius: <span class="number">7</span>,</span><br><span class="line">    marginTop: <span class="number">100</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btn_one: &#123;</span><br><span class="line">    flex: <span class="number">1</span>,</span><br><span class="line">    borderRadius: <span class="number">10</span>,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">cateory: &#123;</span><br><span class="line"> height:<span class="number">0</span>,</span><br><span class="line"> width:<span class="number">0</span>,</span><br><span class="line"> borderBottomWidth: <span class="number">100</span>,</span><br><span class="line"> borderLeftWidth: <span class="number">50</span>,</span><br><span class="line"> borderRightWidth: <span class="number">50</span>,</span><br><span class="line"> borderStyle: <span class="string">'solid'</span>,</span><br><span class="line"> borderBottomColor: <span class="string">'#f00'</span>,</span><br><span class="line"> borderLeftColor: <span class="string">'transparent'</span>,</span><br><span class="line"> borderRightColor: <span class="string">'transparent'</span>,</span><br><span class="line"> marginRight: <span class="number">10</span>,</span><br><span class="line"> transform: [&#123;<span class="attr">skewX</span>: <span class="string">'45deg'</span>&#125;,&#123;<span class="attr">rotateX</span>:<span class="string">'180deg'</span>&#125;,&#123;<span class="attr">rotateY</span>:<span class="string">'180deg'</span>&#125;],</span><br><span class="line"> position: <span class="string">'absolute'</span>,</span><br><span class="line"> bottom: <span class="number">0</span>,</span><br><span class="line"> left: <span class="number">0</span>,</span><br><span class="line"> &#125;,</span><br><span class="line">textblock: &#123;</span><br><span class="line">    color: <span class="string">'#fff'</span>,</span><br><span class="line">    fontSize: <span class="number">14</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://acmwln.github.io.com/2020/03/10/reactNative/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="遗忘的一隅">
-      <meta itemprop="description" content="千里之行,始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="娜一隅">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/reactNative/" class="post-title-link" itemprop="url">CRN踩坑记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-10 14:06:52" itemprop="dateCreated datePublished" datetime="2020-03-10T14:06:52+08:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-20 19:19:51" itemprop="dateModified" datetime="2020-07-20T19:19:51+08:00">2020-07-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React-Native/" itemprop="url" rel="index"><span itemprop="name">React Native</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="非技术方面"><a href="#非技术方面" class="headerlink" title="非技术方面"></a>非技术方面</h2><h3 id="遇到的坑："><a href="#遇到的坑：" class="headerlink" title="遇到的坑："></a>遇到的坑：</h3><pre><code>1.    需求问题，由于多数需求与以前保持一致也没有出新的需求文档，就直接扒了h5的逻辑，提测后就哭了:sob:
-2.    对CRN现有功能不熟悉，例：右上角消息盒子，到开发阶段后期才发现 公共不支持此功能</code></pre><h3 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h3><pre><code>1.    测试让咋改就咋改了。。。以后做之前一定要明确需求，不能自己YY，即使是扒逻辑也要和相关人员进行确认
-2.    和框架沟通支持相关功能。做之前熟悉下相关API，对不确定是否能做到的东西要尽早提出。</code></pre><h2 id="技术方面"><a href="#技术方面" class="headerlink" title="技术方面"></a>技术方面</h2><h3 id="一-功能"><a href="#一-功能" class="headerlink" title="一. 功能"></a>一. 功能</h3><p>熟悉RN及CRN的API后基本没什么大问题</p>
-<h3 id="二-性能"><a href="#二-性能" class="headerlink" title="二. 性能"></a>二. 性能</h3><h4 id="页面切换"><a href="#页面切换" class="headerlink" title="页面切换"></a>页面切换</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props)</span><br><span class="line">    <span class="keyword">this</span>.state = &#123;</span><br><span class="line">        showInit: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">componentDidMount() &#123;</span><br><span class="line">    InteractionManager.runAfterInteractions(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            showInit: <span class="literal">false</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">render() &#123;</span><br><span class="line">    &#123;<span class="keyword">this</span>.state.showInit ?</span><br><span class="line">    &lt;View&gt;&lt;LoadingView style=&#123;&#123; flex: 1 &#125;&#125; /&gt;&lt;/View&gt;:</span><br><span class="line">    &lt;ViewPort&gt;</span><br><span class="line">        &lt;HeaderView page=&#123;<span class="keyword">this</span>&#125; title=&#123;<span class="string">'选择日期'</span>&#125; /&gt;</span><br><span class="line">        &lt;View&gt;巴拉巴拉&lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>ViewPort&gt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">componentDidMount() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; dir = <span class="string">'flight'</span>, type,index,curCity = &#123;&#125; &#125; = <span class="keyword">this</span>.props</span><br><span class="line">    InteractionManager.runAfterInteractions(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.props.events.reqCityList(&#123;</span><br><span class="line">            dir,</span><br><span class="line">            type,</span><br><span class="line">            index,</span><br><span class="line">            curCity</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>耗时较长的工作安排到所有互动或动画完成之后再进行 <code>RN InteractionManager</code><br>tip:注意<code>dispatch</code>用的点，<code>dispatch</code>会改变组件的<code>state</code></p>
-<h4 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h4><h5 id="1-ScrollView"><a href="#1-ScrollView" class="headerlink" title="1. ScrollView"></a>1. <code>ScrollView</code></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">子元素一次性渲染 </span><br><span class="line">scrollTo(&#123; x: 0, animated: <span class="literal">true</span> &#125;)  animated为<span class="literal">true</span>时对x方向定义点问题  </span><br><span class="line">tip：安卓上scrollTo方法需要添加setTimeout才生效。。。</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-ListView"><a href="#2-ListView" class="headerlink" title="2. ListView"></a>2. <code>ListView</code></h5><p>可惰性渲染，超出页面的不会回收，数据量大的时候，内存损耗大<br>eg：城市选择页，有右边索引条，快速滑动。<br>坑：数据量大，直接滚动到最下面的时候，<code>ios</code>为白屏，安卓只能滚到当前渲染到的地方。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解决方法：</span><br><span class="line">1. onContentSizeChange</span><br><span class="line">监控当前渲染的位置，没有到要滚到点的位置，自动触发scrollTo再次滚</span><br><span class="line">2. scrollRenderAheadDistance</span><br><span class="line">当一个行接近屏幕范围多少像素之内的时候，就开始渲染这一行。</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;ListView</span><br><span class="line">    ref=&#123;listView =&gt; <span class="keyword">this</span>._listView = listView&#125;</span><br><span class="line">    dataSource=&#123;<span class="keyword">this</span>.state.dataSource&#125;</span><br><span class="line">    onContentSizeChange=&#123;<span class="keyword">this</span>.onContentSizeChange.bind(<span class="keyword">this</span>)&#125;</span><br><span class="line">    renderRow=&#123;<span class="keyword">this</span>.renderRow.bind(<span class="keyword">this</span>)&#125;</span><br><span class="line">    renderSectionHeader=&#123;<span class="keyword">this</span>.renderSectionHeader&#125;</span><br><span class="line">    initialListSize=&#123;<span class="number">20</span>&#125;<span class="comment">//组件刚挂载的时候渲染多少行数据</span></span><br><span class="line">    scrollRenderAheadDistance=&#123;<span class="keyword">this</span>.state.height&#125;</span><br><span class="line">    pageSize=&#123;<span class="number">100</span>&#125; <span class="comment">//每次事件循环（每帧）渲染的行数</span></span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="3-CRNListView"><a href="#3-CRNListView" class="headerlink" title="3. CRNListView"></a>3. <code>CRNListView</code></h5><p>基于<code>ListView</code><br>有一些自定义的功能，下拉刷新、加载更多、侧边栏等<br>但是侧边栏支持ios不支持安卓。。。:triumph:<br><code>SectionList FlatList</code><br>官方为解决<code>listview</code>性能问题重新推出的<code>list</code><br>有回收机制（不再屏幕内的内容会被回收）</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;FlatList</span><br><span class="line">    initialNumToRender=&#123;<span class="number">6</span>&#125;<span class="comment">//如方法名，这部分不会在滚动过程中被卸载</span></span><br><span class="line">    maxToRenderPerBatch=&#123;<span class="number">6</span>&#125;</span><br><span class="line">    getItemLayout=&#123;<span class="keyword">this</span>.getItemLayout&#125;<span class="comment">//可选的优化 对于我们的场景（有scrollTo）必需</span></span><br><span class="line">    horizontal=&#123;<span class="keyword">this</span>.props.horizontal&#125;</span><br><span class="line">    keyExtractor=&#123;(item)=&gt;item.showMonth&#125;</span><br><span class="line">    ref=&#123;flatList =&gt; <span class="keyword">this</span>._flatList = flatList&#125;</span><br><span class="line">    data=&#123;<span class="keyword">this</span>.state.monthInfo&#125;</span><br><span class="line">    renderItem=&#123;<span class="keyword">this</span>.getMonthView.bind(<span class="keyword">this</span>)&#125;/&gt;</span><br></pre></td></tr></table></figure>
-
-<p>属性 <code>initialScrollIndex</code><br>    小坑：设置了这个属性<code>（getItemLayout(data, index)</code>这个<code>index</code>会返回-1）<br>方法 <code>scrollToIndex scrollToOffset</code></p>
-<h4 id="代码写法"><a href="#代码写法" class="headerlink" title="代码写法"></a>代码写法</h4><ul>
-<li>减少<code>View</code>层的嵌套，<code>cpu</code>优化</li>
-<li>避免不必要的循环，尤其是在页面渲染的时候（反面例子 日历页计算今天明天后天的时候）</li>
-<li>健壮性 慎用<code>a.b.c.d</code>写法；<code>async await</code> 这种写法不同与<code>promise</code>的<code>then catch</code>，需要用<code>try catch</code>捕获异常；</li>
-<li>可读性</li>
-<li>可维护性</li>
-</ul>
-<h4 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h4><ul>
-<li><code>console</code> 会影响性能</li>
-<li><code>debugger</code>页面要单拉出来</li>
-</ul>
-<h3 id="三-样式"><a href="#三-样式" class="headerlink" title="三. 样式"></a>三. 样式</h3><ul>
-<li>遵循标准UI稿或者<code>CSS</code>稿</li>
-<li>尽量少使用特殊判断或者计算，能用<code>flex</code>解决的要用<code>flex</code>解决</li>
-<li>有意识的考虑到不同屏幕手机</li>
-<li>慎用 <code>Sprite Image</code>，会增大不必要的内存消耗。</li>
-</ul>
-<h3 id="四-兼容性"><a href="#四-兼容性" class="headerlink" title="四. 兼容性"></a>四. 兼容性</h3><ul>
-<li>样式的兼容</li>
-<li>注意<code>API</code>上 <code>android ios</code>的不同点</li>
-</ul>
-<h3 id="五-其他"><a href="#五-其他" class="headerlink" title="五. 其他"></a>五. 其他</h3><ul>
-<li>调试 <code>debugger console.log</code></li>
-<li>性能调试 <code>console.time</code></li>
-</ul>
-<h2 id="git提交事项"><a href="#git提交事项" class="headerlink" title="git提交事项"></a>git提交事项</h2><ul>
-<li>提测后 慎提交<code>mock</code>数据</li>
-<li>尽量用<code>rebase</code></li>
-<li>切记不要影响别人的项目代码</li>
-</ul>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>会深入学习会在性能及用户体验上多下功夫，发挥<code>RN</code>的优势</p>
-<blockquote>
-<p>对自己的代码负责。<br>没有解决不了的bug。如果有，一定是没有找到方法。<br>没有填不平的坑。如果有，一定要尽力填平。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1624,20 +1572,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
